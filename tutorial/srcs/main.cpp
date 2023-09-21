@@ -8,7 +8,7 @@
 #include <netdb.h>
 #include <string.h>
 
-#define PORT 667
+#define PORT 669
 
 int main( void ) {
 	// creation du socket
@@ -63,12 +63,12 @@ int main( void ) {
 
 	if (result)
 	{
-		std::cout << host << " - connecte a : " << svc << std::endl;
+		std::cout << host << " - s'est connecte a : " << svc << std::endl;
 	}
 	else
 	{
 		inet_ntop(AF_INET, &client.sin_addr, host, NI_MAXHOST);
-		std::cout << host << " - connecte a : " << ntohs(client.sin_port) << std::endl;
+		std::cout << host << " - s'est connecte a : " << ntohs(client.sin_port) << std::endl;
 	}
 
 	// tant quon recoit des requete, afficher un message

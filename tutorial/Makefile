@@ -6,7 +6,7 @@
 #    By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/30 10:58:16 by afrigger          #+#    #+#              #
-#    Updated: 2023/09/21 10:16:18 by afrigger         ###   ########.fr        #
+#    Updated: 2023/09/21 11:18:33 by afrigger         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,8 +17,8 @@ RESET = \033[0m
 
 NAME =     tutorial
 
-CC =         c++
-CFLAGS =     
+CC =         c++ 
+CFLAGS =     -std=c++98 -Wall -Wextra -Werror
 RM =         rm -rf
 
 DIR_H = headers/
