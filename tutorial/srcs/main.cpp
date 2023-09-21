@@ -13,7 +13,7 @@
 
 int main( void ) {
 	// initialisation de mypoll
-	int counter = 0;
+	//int counter = 0;
 	struct pollfd mypoll[2];
 	bzero(&mypoll, sizeof(mypoll));
 
@@ -127,7 +127,7 @@ int main( void ) {
 		}
 	}
 
-	std::cout << "Time in ms: " << counter * 100 << std::endl;
+	//std::cout << "Time in ms: " << counter * 100 << std::endl;
 
 	// close le socket
 	close(mypoll[0].fd);
