@@ -9,12 +9,12 @@
 #include <string.h>
 #include <poll.h>
 
-#define PORT 669
+#define PORT 8080
 
 int main( void ) {
 	// initialisation de mypoll
 	int counter = 0;
-	struct pollfd mypoll;
+	struct pollfd mypoll[2];
 	bzero(&mypoll, sizeof(mypoll));
 
 	// creation du socket
@@ -38,8 +38,8 @@ int main( void ) {
 		return (-2);
 	}
 
-	mypoll.fd = listening_socket;
-	mypoll.events = POLLIN;
+//	mypoll[0].fd = listening_socket;
+//	mypoll[0].events = POLLIN;
 
 	// listen sur le socket
 	if (listen(listening_socket, 128) < 0)
@@ -54,12 +54,23 @@ int main( void ) {
 	char host[NI_MAXHOST];
 	char svc[NI_MAXSERV];
 
-	int clientsocket = accept(listening_socket, (sockaddr *)&client, &clientsize);
-
-	if (clientsocket < 0)
+	//int clientsocket = accept(listening_socket, (sockaddr *)&client, &clientsize);
+	for (size_t i = 0; i < 2; i++)
 	{
-		std::cerr << "Probleme lors de la connexion au client" << std::endl;
-		return (-4);
+		clientsize = sizeof(client);
+		bzero(&client, sizeof(client));
+		mypoll[i].fd = accept(listening_socket, (sockaddr *)&client, &clientsize);
+		mypoll[i].events = POLLIN;
+	}
+	
+
+	for(int i = 0; i < 2; i++)
+	{
+		if (mypoll[i].fd < 0)
+		{
+			std::cerr << "Probleme lors de la connexion au client" << std::endl;
+			return (-4);
+		}
 	}
 
 	// close le socket quon listen
@@ -86,16 +97,15 @@ int main( void ) {
 	while (true)
 	{
 
-		if (poll(&mypoll, 1, 100) == 1)
-		{
-
-
+		poll(mypoll, 2, 100);
 
 		// clear le buffer
-		bzero(buffer, sizeof(buffer));
 
 		// attendre un message
-		int bytesRcv = recv(clientsocket, buffer, sizeof(buffer), 0);
+		for ( int i = 0; i < 2; i++)
+		{
+		bzero(buffer, sizeof(buffer));
+		int bytesRcv = recv(mypoll[i].fd, buffer, sizeof(buffer), 0);
 
 		if (bytesRcv < 0)
 		{
@@ -113,18 +123,14 @@ int main( void ) {
 		std::cout << "Message recu: " << buffer << std::endl;
 
 		// renvoyer un message
-		send(clientsocket, buffer, bytesRcv + 1, 0);
-
-		}
-		else
-		{
-			counter++;
+		send(mypoll[i].fd, buffer, bytesRcv + 1, 0);
 		}
 	}
 
 	std::cout << "Time in ms: " << counter * 100 << std::endl;
 
 	// close le socket
-	close(clientsocket);
+	close(mypoll[0].fd);
+	close(mypoll[1].fd);
 	return 0;
 }
