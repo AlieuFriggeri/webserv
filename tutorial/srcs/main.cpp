@@ -7,10 +7,16 @@
 #include <unistd.h>
 #include <netdb.h>
 #include <string.h>
+#include <poll.h>
 
 #define PORT 669
 
 int main( void ) {
+	// initialisation de mypoll
+	int counter = 0;
+	struct pollfd mypoll;
+	bzero(&mypoll, sizeof(mypoll));
+
 	// creation du socket
 	int listening_socket = socket(AF_INET, SOCK_STREAM, 0);
 	if (listening_socket < 0)
@@ -31,6 +37,9 @@ int main( void ) {
 		std::cerr << "Impossible de bind l'ip et / ou le port au socket" << std::endl;
 		return (-2);
 	}
+
+	mypoll.fd = listening_socket;
+	mypoll.events = POLLIN;
 
 	// listen sur le socket
 	if (listen(listening_socket, 128) < 0)
@@ -76,6 +85,12 @@ int main( void ) {
 
 	while (true)
 	{
+
+		if (poll(&mypoll, 1, 100) == 1)
+		{
+
+
+
 		// clear le buffer
 		bzero(buffer, sizeof(buffer));
 
@@ -100,7 +115,15 @@ int main( void ) {
 		// renvoyer un message
 		send(clientsocket, buffer, bytesRcv + 1, 0);
 
+		}
+		else
+		{
+			counter++;
+		}
 	}
+
+	std::cout << "Time in ms: " << counter * 100 << std::endl;
+
 	// close le socket
 	close(clientsocket);
 	return 0;
