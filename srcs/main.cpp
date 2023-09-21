@@ -47,7 +47,7 @@ int main( void ) {
 		}
 
 		char buffer[30000] = {0};
-		valread = read(server_fd, buffer, 30000);
+		valread = read(new_socket, buffer, 30000);
 		printf("%s\n", buffer);
 		write(new_socket, hello, strlen(hello));
 		printf("Message Sent to client\n");
