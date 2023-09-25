@@ -10,14 +10,14 @@ Client::~Client()
 
 }
 
-void Client::acceptConnection(int listeningsocket)
+void Client::acceptConnection(int listeningsocket, int *fd)
 {
 	bzero(&_client, sizeof(_client));
 	_clientsize = sizeof(_client);
 
-	_client_socket = accept(listeningsocket, (sockaddr *)&_client, (socklen_t *)&_clientsize);
+	*fd = accept(listeningsocket, (sockaddr *)&_client, (socklen_t *)&_clientsize);
 
-	if (_client_socket < 0)
+	if (*fd < 0)
 	{
 		std::cerr << "Error while connecting to client" << std::endl;
 		exit(5);

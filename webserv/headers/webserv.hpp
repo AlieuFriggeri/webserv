@@ -13,6 +13,7 @@
 #include <poll.h>
 #include <sys/event.h>
 #include <sys/time.h>
+#include <fcntl.h>
 
 
 class Server{
@@ -22,12 +23,13 @@ class Server{
 	Server();
 	~Server();
 	void setup(int port);
-	void handleConnection(int clientsocket);
+	void handleConnection(int clientsocket, int i);
 
 
 	int _listening_socket;
 	sockaddr_in _server;
 	fd_set _current_socket, _ready_socket;
+	pollfd _mypoll[2];
 	char _svc[NI_MAXSERV];
 	char _buffer[4096];
 	private:
