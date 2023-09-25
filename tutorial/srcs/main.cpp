@@ -8,6 +8,7 @@
 #include <netdb.h>
 #include <string.h>
 #include <poll.h>
+#include <sys/event.h>
 
 #define PORT 8080
 
@@ -16,7 +17,6 @@ int main( void ) {
 	//int counter = 0;
 	struct pollfd mypoll[2];
 	bzero(&mypoll, sizeof(mypoll));
-
 	// creation du socket
 	int listening_socket = socket(AF_INET, SOCK_STREAM, 0);
 	if (listening_socket < 0)
@@ -24,7 +24,6 @@ int main( void ) {
 		std::cerr << "Impossible de creer le socket" << std::endl;
 		return -1;
 	}
-
 	// bind du socket a l'ip et au port
 	sockaddr_in serveur;
 
