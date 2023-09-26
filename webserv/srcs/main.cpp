@@ -10,7 +10,7 @@
 #include <poll.h>
 #include <sys/event.h>
 #include <list>
-#include "../headers/webserv.hpp"
+#include "../headers/Socket.hpp"
 #include "../headers/client.hpp"
 #include <sys/select.h>
 
@@ -18,28 +18,32 @@
 
 int main( void ) {
 
-	Server serv;
+	Socket serv;
 	Client client;
-	Client client2;
+	client._client_socket = -1;
 	//std::list<Client> clientlist;
 
 	serv.setup(PORT);
 
 	bzero(serv._svc, sizeof(serv._svc));
 	bzero(client._host, sizeof(client._host));
-	bzero(client2._host, sizeof(client2._host));
-
-
-	client.acceptConnection(serv._listening_socket);
 
 	fcntl(serv._listening_socket, F_SETFL, O_NONBLOCK, FD_CLOEXEC);
+
+
 	
 	while (1)
 	{
+		if (client._client_socket == -1)
+		{
+			client.acceptConnection(serv._listening_socket);
+			fcntl(client._client_socket, F_SETFL, O_NONBLOCK, FD_CLOEXEC);
+		}
+		
+		std::cout << "Waiting for connection . . ." << std::endl;
 
-		std::cout << "Waiting for connection" << std::endl;
+		serv.prepareConnection(client._client_socket);
 
-		serv.handleConnection(client._client_socket);
 	}
 	return 0;
 }

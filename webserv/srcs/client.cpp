@@ -19,8 +19,8 @@ void Client::acceptConnection(int listeningsocket)
 
 	if (_client_socket < 0)
 	{
-		std::cerr << "Error while connecting to client" << std::endl;
-		exit(5);
+		std::cerr << "No client connected" << std::endl;
+		return;
 	}
 
 }

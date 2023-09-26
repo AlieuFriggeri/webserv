@@ -15,21 +15,23 @@
 #include <sys/time.h>
 #include <fcntl.h>
 #include <sys/select.h>
+#include <algorithm>
 
 
-class Server{
+class Socket{
 
 
 	public:
-	Server();
-	~Server();
+	Socket();
+	~Socket();
 	void setup(int port);
 	void handleConnection(int clientsocket);
+	void prepareConnection(int clientsocket);
 
-
-	int _listening_socket;
 	sockaddr_in _server;
-	fd_set _current_socket, _ready_socket;
+	fd_set _read, _write, _except;
+	timeval _timeout;
+	int _listening_socket, _r, _w, _e;
 	char _svc[NI_MAXSERV];
 	char _buffer[4096];
 	private:
