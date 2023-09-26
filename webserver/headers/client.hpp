@@ -14,6 +14,8 @@
 #include <sys/event.h>
 #include <sys/time.h>
 #include <sys/select.h>
+#include <fcntl.h>
+#include <list>
 
 
 class Client{
@@ -22,7 +24,7 @@ class Client{
 	Client();
 	~Client();
 
-	void acceptConnection(int listeningsocket);
+	void acceptConnection(int listeningsocket, std::list<Client>clientlist);
 
 
 
