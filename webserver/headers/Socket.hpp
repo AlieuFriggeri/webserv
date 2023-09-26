@@ -16,6 +16,8 @@
 #include <fcntl.h>
 #include <sys/select.h>
 #include <algorithm>
+#include <list>
+#include "client.hpp"
 
 
 class Socket{
@@ -26,7 +28,8 @@ class Socket{
 	~Socket();
 	void setup(int port);
 	void handleConnection(int clientsocket);
-	void prepareConnection(int clientsocket);
+	//void prepareConnection(int clientsocket);
+	void prepareConnection(std::list<Client> clientlist);
 
 	sockaddr_in _server;
 	fd_set _read, _write, _except;

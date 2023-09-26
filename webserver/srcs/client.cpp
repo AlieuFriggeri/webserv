@@ -22,10 +22,10 @@ void Client::acceptConnection(int listeningsocket, std::list<Client>clientlist)
 
 	if (_client_socket < 0)
 	{
-		std::cerr << "No client connected" << std::endl;
+		std::cerr << "No new connection request" << std::endl;
 		return;
 	}
-	
+
 	fcntl(_client_socket, F_SETFL, O_NONBLOCK, FD_CLOEXEC);
 
 }

@@ -6,7 +6,7 @@ Socket::Socket()
 	FD_ZERO(&_write);
 	FD_ZERO(&_read);
 	FD_ZERO(&_except);
-	_timeout.tv_sec = 3;
+	_timeout.tv_sec = 1;
 	_timeout.tv_usec = 0;
 	bzero(&_svc, sizeof(_svc));
 }
@@ -73,23 +73,39 @@ void Socket::handleConnection(int clientsocket)
 
 }
 
-void Socket::prepareConnection(int clientsocket)
+void Socket::prepareConnection(std::list<Client> clientlist)
 {
-	int max_sock;
+	int max_sock = 0;
 	long rcv = 0;
+
+	// if (clientlist.size() == 1)
+	// {
+	// 	return;
+	// }
 
 	FD_ZERO(&_read);
 	FD_ZERO(&_write);
-	FD_SET(clientsocket, &_read);
-	FD_SET(clientsocket, &_write);
+	for (std::list<Client>::iterator it = clientlist.begin(); it != clientlist.end(); it++)
+	{
+		if(it->_client_socket != -1)
+		{
+			FD_SET(it->_client_socket, &_read);
+			//FD_SET(clientsocket, &_write);
+		}
+
+	}
 	bzero(_buffer, sizeof(_buffer));
 
-	_timeout.tv_sec = 2;
+	_timeout.tv_sec = 1;
 	_timeout.tv_usec = 0;
 	// FD_SET(_w, &_write);
 	// FD_SET(_e, &_except);
 
-	max_sock = clientsocket;
+	for (std::list<Client>::iterator it = clientlist.begin(); it != clientlist.end(); it++)
+	{
+		max_sock = std::max(max_sock, it->_client_socket);
+	}
+	
 	//max_sock = std::max(max_sock, _e);
 
 	rcv = select(max_sock + 1, &_read, NULL, NULL, &_timeout);
@@ -145,6 +161,15 @@ void Socket::prepareConnection(int clientsocket)
 				{
 					std::cout << "host terminated connection" << std::endl;
 					FD_CLR(i, &_read);
+					for (std::list<Client>::iterator it = clientlist.begin(); it != clientlist.end(); it++)
+					{
+						if (it->_client_socket == i)
+						{
+							clientlist.erase(it);
+							break;
+						}
+					}
+					
 					//close(i);
 				}
 				else	
