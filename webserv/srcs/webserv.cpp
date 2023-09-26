@@ -2,7 +2,6 @@
 
 Server::Server()
 {
-	bzero(&_mypoll, sizeof(_mypoll));
 
 }
 
@@ -38,13 +37,13 @@ void Server::setup(int port)
 	}
 }
 
-void Server::handleConnection(int clientsocket, int i)
+void Server::handleConnection(int clientsocket)
 {
 
 	int bytesRcv;
 
 	bzero(_buffer, sizeof(_buffer));
-	bytesRcv = recv(_mypoll[i].fd, _buffer, sizeof(_buffer), 0);
+	bytesRcv = recv(clientsocket, _buffer, sizeof(_buffer), 0);
 
 	if (bytesRcv < 0)
 	{
@@ -61,5 +60,6 @@ void Server::handleConnection(int clientsocket, int i)
 	// afficher le message
 	std::cout << "Message recu: " << _buffer << std::endl;
 
-	send(_mypoll[i].fd, _buffer, bytesRcv + 1, 0);
+	send(clientsocket, _buffer, bytesRcv + 1, 0);
+
 }

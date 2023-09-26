@@ -13,6 +13,7 @@
 #include <poll.h>
 #include <sys/event.h>
 #include <sys/time.h>
+#include <sys/select.h>
 
 
 class Client{
@@ -21,7 +22,7 @@ class Client{
 	Client();
 	~Client();
 
-	void acceptConnection(int listeningsocket, int *fd);
+	void acceptConnection(int listeningsocket);
 
 
 
