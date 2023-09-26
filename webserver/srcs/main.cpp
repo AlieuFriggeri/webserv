@@ -24,20 +24,22 @@ int main( void ) {
 	serv.setup(PORT);
 	clientlist.push_back(Client());
 
+	std::cout << "Waiting for connection . . ." << std::endl;
 	while (1)
 	{
 		if (clientlist.back()._client_socket == -1)
 		{
-			std::cout << "Waiting for connection . . ." << std::endl;
 			clientlist.back().acceptConnection(serv._listening_socket, clientlist);
 			if (clientlist.back()._client_socket != -1)
 			{
 				clientlist.push_back(Client());
 				std::cout << "New client has been connected" << std::endl;
+				std::cout << clientlist.size() - 1<< " Client actually connected" << std::endl;
 			}
 		}
 
-		serv.prepareConnection(clientlist.front()._client_socket);
+		//serv.prepareConnection(clientlist.front()._client_socket);
+		serv.prepareConnection2(clientlist);
 
 	}
 	
