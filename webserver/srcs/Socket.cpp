@@ -8,7 +8,7 @@ Socket::Socket()
 	FD_ZERO(&_except);
 	_timeout.tv_sec = 3;
 	_timeout.tv_usec = 0;
-
+	bzero(&_svc, sizeof(_svc));
 }
 
 Socket::~Socket()
@@ -41,6 +41,8 @@ void Socket::setup(int port)
 		std::cerr << "Error while listening on socket" << std::endl;
 		exit(3);
 	}
+
+	fcntl(_listening_socket, F_SETFL, O_NONBLOCK, FD_CLOEXEC);
 	
 }
 
@@ -99,7 +101,7 @@ void Socket::prepareConnection(int clientsocket)
 	}
 	else if (rcv == 0)
 	{
-		std::cout << "No pending data / connections" << std::endl;
+		std::cout << "No pending data" << std::endl;
 	}
 	else
 	{

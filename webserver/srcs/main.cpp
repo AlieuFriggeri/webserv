@@ -19,32 +19,27 @@
 int main( void ) {
 
 	Socket serv;
-	Client client;
-	client._client_socket = -1;
-	//std::list<Client> clientlist;
+	std::list<Client> clientlist;
 
 	serv.setup(PORT);
+	clientlist.push_back(Client());
 
-	bzero(serv._svc, sizeof(serv._svc));
-	bzero(client._host, sizeof(client._host));
-
-	fcntl(serv._listening_socket, F_SETFL, O_NONBLOCK, FD_CLOEXEC);
-
-
-	
 	while (1)
 	{
-		if (client._client_socket == -1)
+		if (clientlist.back()._client_socket == -1)
 		{
-			client.acceptConnection(serv._listening_socket);
-			fcntl(client._client_socket, F_SETFL, O_NONBLOCK, FD_CLOEXEC);
-			getnameinfo((sockaddr *)&client._client, sizeof(client._client), client._host, NI_MAXHOST, serv._svc, NI_MAXSERV, 0);
-			std::cout << client._host << " connected to server " << serv._svc << std::endl;
+			std::cout << "Waiting for connection . . ." << std::endl;
+			clientlist.back().acceptConnection(serv._listening_socket, clientlist);
+			if (clientlist.back()._client_socket != -1)
+			{
+				clientlist.push_back(Client());
+				std::cout << "New client has been connected" << std::endl;
+			}
 		}
-		std::cout << "Waiting for connection . . ." << std::endl;
 
-		serv.prepareConnection(client._client_socket);
+		serv.prepareConnection(clientlist.front()._client_socket);
 
 	}
+	
 	return 0;
 }
