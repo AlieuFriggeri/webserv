@@ -38,8 +38,9 @@ int main( void ) {
 		{
 			client.acceptConnection(serv._listening_socket);
 			fcntl(client._client_socket, F_SETFL, O_NONBLOCK, FD_CLOEXEC);
+			getnameinfo((sockaddr *)&client._client, sizeof(client._client), client._host, NI_MAXHOST, serv._svc, NI_MAXSERV, 0);
+			std::cout << client._host << " connected to server " << serv._svc << std::endl;
 		}
-		
 		std::cout << "Waiting for connection . . ." << std::endl;
 
 		serv.prepareConnection(client._client_socket);

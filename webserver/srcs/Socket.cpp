@@ -90,7 +90,7 @@ void Socket::prepareConnection(int clientsocket)
 	max_sock = clientsocket;
 	//max_sock = std::max(max_sock, _e);
 
-	rcv = select(max_sock + 1, &_read, &_write, NULL, &_timeout);
+	rcv = select(max_sock + 1, &_read, NULL, NULL, &_timeout);
 
 	if (rcv < 0)
 	{
@@ -147,7 +147,7 @@ void Socket::prepareConnection(int clientsocket)
 				}
 				else	
 					std::cout << "Received: " << _buffer << std::endl;
-				exit(1);
+				//exit(1);
 				rcv = 0;
 				break;
 			}
