@@ -1,5 +1,5 @@
-#ifndef WEBSERV_HPP
-#define WEBSERV_HPP
+#ifndef SOCKET_HPP
+#define SOCKET_HPP
 
 #include <iostream>
 #include <string>
@@ -11,7 +11,7 @@
 #include <netdb.h>
 #include <string.h>
 #include <poll.h>
-#include <sys/event.h>
+//#include <sys/event.h>
 #include <sys/time.h>
 #include <fcntl.h>
 #include <sys/select.h>
