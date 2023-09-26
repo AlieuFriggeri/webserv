@@ -39,7 +39,7 @@ int main( void ) {
 		}
 
 		//serv.prepareConnection(clientlist.front()._client_socket);
-		serv.prepareConnection2(clientlist);
+		serv.prepareConnection(clientlist);
 
 	}
 	

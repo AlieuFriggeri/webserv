@@ -166,10 +166,9 @@ void Socket::prepareConnection(std::list<Client> clientlist)
 						if (it->_client_socket == i)
 						{
 							clientlist.erase(it);
-							break;
+							return;
 						}
 					}
-					
 					//close(i);
 				}
 				else	
