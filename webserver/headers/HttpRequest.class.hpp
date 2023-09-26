@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/09/26 16:02:17 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/09/26 17:04:17 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include <iostream>
 # include <string>
+# include <sstream>
+# include <map>
 
 enum HttpMethod
 {
@@ -26,22 +28,28 @@ enum HttpMethod
 
 enum ParsingState
 {
-
+	REQUEST_LINE,
+	REQUEST_LINE_METHOD,
+	REQUEST_LINE_FIRST_SPACE,
+	REQUEST_LINE_URI,
+	PARSING_DONE
 };
 
 class HttpRequest
 {
 	private:
-		HttpMethod		_method;
-		std::string		_path;
-		std::string		_host;
-		std::string		_user_agent;
-		std::string		_accept;
-		std::string		_acc_lang;
-		std::string		_acc_encode;
-		std::string		_conn;
-		std::string		_up_ins_req;
-		ParsingState	_state;
+		HttpMethod					_method;
+		std::map<int, std::string>	_method_str;
+		std::string					_path;
+		std::string					_host;
+		std::string					_user_agent;
+		std::string					_accept;
+		std::string					_acc_lang;
+		std::string					_acc_encode;
+		std::string					_conn;
+		std::string					_up_ins_req;
+		int							_err_code;
+		ParsingState				_state;
 
 	public:
 		HttpRequest();
