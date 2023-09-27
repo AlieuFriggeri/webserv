@@ -10,8 +10,8 @@
 #include <poll.h>
 //#include <sys/event.h>
 #include <list>
-#include "../headers/Socket.hpp"
-#include "../headers/client.hpp"
+#include "Socket.hpp"
+#include "Client.hpp"
 #include <sys/select.h>
 
 #define PORT 667
@@ -23,24 +23,12 @@ int main( void ) {
 
 	serv.setup(PORT);
 	clientlist.push_back(Client());
-
 	std::cout << "Waiting for connection . . ." << std::endl;
 	while (1)
 	{
-		if (clientlist.back()._client_socket == -1)
-		{
-			clientlist.back().acceptConnection(serv._listening_socket, clientlist);
-			if (clientlist.back()._client_socket != -1)
-			{
-				clientlist.push_back(Client());
-				std::cout << "New client has been connected" << std::endl;
-				std::cout << clientlist.size() - 1<< " Client actually connected" << std::endl;
-			}
-		}
-
-		//serv.prepareConnection(clientlist.front()._client_socket);
+		clientlist.back().acceptConnection(serv._listening_socket);
+		clientlist.back().checknewconnection(&clientlist);
 		serv.prepareConnection(clientlist);
-
 	}
 	
 	return 0;
