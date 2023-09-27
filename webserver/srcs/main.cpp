@@ -16,35 +16,35 @@
 
 #define PORT 667
 
-int main( void ) {
+// int main( void ) {
 
-	Socket serv;
-	Client client;
-	client._client_socket = -1;
-	//std::list<Client> clientlist;
+// 	Socket serv;
+// 	Client client;
+// 	client._client_socket = -1;
+// 	//std::list<Client> clientlist;
 
-	serv.setup(PORT);
+// 	serv.setup(PORT);
 
-	bzero(serv._svc, sizeof(serv._svc));
-	bzero(client._host, sizeof(client._host));
+// 	bzero(serv._svc, sizeof(serv._svc));
+// 	bzero(client._host, sizeof(client._host));
 
-	fcntl(serv._listening_socket, F_SETFL, O_NONBLOCK, FD_CLOEXEC);
+// 	fcntl(serv._listening_socket, F_SETFL, O_NONBLOCK, FD_CLOEXEC);
 
 
 	
-	while (1)
-	{
-		if (client._client_socket == -1)
-		{
-			client.acceptConnection(serv._listening_socket);
-			fcntl(client._client_socket, F_SETFL, O_NONBLOCK, FD_CLOEXEC);
-			getnameinfo((sockaddr *)&client._client, sizeof(client._client), client._host, NI_MAXHOST, serv._svc, NI_MAXSERV, 0);
-			std::cout << client._host << " connected to server " << serv._svc << std::endl;
-		}
-		std::cout << "Waiting for connection . . ." << std::endl;
+// 	while (1)
+// 	{
+// 		if (client._client_socket == -1)
+// 		{
+// 			client.acceptConnection(serv._listening_socket);
+// 			fcntl(client._client_socket, F_SETFL, O_NONBLOCK, FD_CLOEXEC);
+// 			getnameinfo((sockaddr *)&client._client, sizeof(client._client), client._host, NI_MAXHOST, serv._svc, NI_MAXSERV, 0);
+// 			std::cout << client._host << " connected to server " << serv._svc << std::endl;
+// 		}
+// 		std::cout << "Waiting for connection . . ." << std::endl;
 
-		serv.prepareConnection(client._client_socket);
+// 		serv.prepareConnection(client._client_socket);
 
-	}
-	return 0;
-}
+// 	}
+// 	return 0;
+// }

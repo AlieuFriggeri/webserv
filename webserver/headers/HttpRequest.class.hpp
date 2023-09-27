@@ -6,12 +6,12 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/09/26 17:04:17 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/09/27 16:58:05 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HTTPREQUEST_CLASS_HPP
-# define HTTPREQUEST_CALL_HPP
+# define HTTPREQUEST_CLASS_HPP
 
 # include <iostream>
 # include <string>
@@ -30,8 +30,20 @@ enum ParsingState
 {
 	REQUEST_LINE,
 	REQUEST_LINE_METHOD,
-	REQUEST_LINE_FIRST_SPACE,
+	REQUEST_LINE_SPACE_BEFORE_URI,
+	REQUEST_LINE_URI_SLASH,
 	REQUEST_LINE_URI,
+	REQUEST_LINE_SPACE_AFTER_URI,
+	REQUEST_LINE_H,
+	REQUEST_LINE_HT,
+	REQUEST_LINE_HTT,
+	REQUEST_LINE_HTTP,
+	REQUEST_LINE_MAJOR_DIGIT,
+	REQUEST_LINE_DOT,
+	REQUEST_LINE_MINOR_DIGIT,
+	HOST,
+	HOST_DOUBLE_DOT,
+	HOST_PORT,
 	PARSING_DONE
 };
 
