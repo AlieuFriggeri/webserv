@@ -62,16 +62,15 @@ void Socket::handleConnection(std::list<Client> * clientlist)
 		if(it->_client_socket != -1)
 		{
 			FD_SET(it->_client_socket, &_read);
-			//FD_SET(clientsocket, &_write);
+			FD_SET(it->_client_socket, &_write);
 		}
 
 	}
+
 	bzero(_buffer, sizeof(_buffer));
 
 	_timeout.tv_sec = 1;
 	_timeout.tv_usec = 0;
-	// FD_SET(_w, &_write);
-	// FD_SET(_e, &_except);
 
 	for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
 	{
@@ -124,7 +123,7 @@ void Socket::handleConnection(std::list<Client> * clientlist)
 						if (it->_client_socket == i)
 						{
 							std::cout << "Received: " << _buffer << "From client " << it->_clientnumber << std::endl;
-							return;
+							send(it->_client_socket, "Message bien recu chef\n", 24, 0);
 						}
 					}
 				}
