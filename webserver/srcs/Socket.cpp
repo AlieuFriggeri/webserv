@@ -46,34 +46,7 @@ void Socket::setup(int port)
 	
 }
 
-void Socket::handleConnection(int clientsocket)
-{
-
-	int bytesRcv;
-
-	bzero(_buffer, sizeof(_buffer));
-	bytesRcv = recv(clientsocket, _buffer, sizeof(_buffer), 0);
-
-	if (bytesRcv < 0)
-	{
-		std::cerr << "Error while connecting" << std::endl;
-		return;
-	}
-
-	if (bytesRcv == 0)
-	{
-		std::cout << "Client has disconnected" << std::endl;
-		exit(0);
-	}
-
-	// afficher le message
-	std::cout << "Message recu: " << _buffer << std::endl;
-
-	send(clientsocket, _buffer, bytesRcv + 1, 0);
-
-}
-
-void Socket::prepareConnection(std::list<Client> clientlist)
+void Socket::handleConnection(std::list<Client> * clientlist)
 {
 	int max_sock = 0;
 	long rcv = 0;
@@ -84,7 +57,7 @@ void Socket::prepareConnection(std::list<Client> clientlist)
 
 	FD_ZERO(&_read);
 	FD_ZERO(&_write);
-	for (std::list<Client>::iterator it = clientlist.begin(); it != clientlist.end(); it++)
+	for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
 	{
 		if(it->_client_socket != -1)
 		{
@@ -100,7 +73,7 @@ void Socket::prepareConnection(std::list<Client> clientlist)
 	// FD_SET(_w, &_write);
 	// FD_SET(_e, &_except);
 
-	for (std::list<Client>::iterator it = clientlist.begin(); it != clientlist.end(); it++)
+	for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
 	{
 		max_sock = std::max(max_sock, it->_client_socket);
 	}
@@ -116,36 +89,11 @@ void Socket::prepareConnection(std::list<Client> clientlist)
 	}
 	else if (rcv == 0)
 	{
-		std::cout << "No pending data" << std::endl;
+		//std::cout << "No pending data" << std::endl;
+		return;
 	}
 	else
 	{
-		// for (int i = 0; i < max_sock + 1; i++)
-		// {
-		// 	if (FD_ISSET(i, &_write))
-		// 	{
-		// 		rcv = send(i, _buffer, sizeof(_buffer), 0);
-		// 		if (rcv < 0)
-		// 		{
-		// 			FD_CLR(i, &_write);
-		// 			//FD_CLR(i, &_read);
-		// 		}
-		// 		else if (rcv == 0)
-		// 		{
-		// 			std::cout << "host terminated connection" << std::endl;
-		// 			FD_CLR(i, &_write);
-		// 		}
-		// 		else
-		// 			std::cout << "Sent: " << _buffer << std::endl;
-		// 		rcv = 0;
-		// 		break;
-		// 	}
-			
-		// }
-		
-		// if (rcv)
-		// 	std::cout << "Connection established" << std::endl;
-
 		for (int i = 0; i < max_sock + 1; i++)
 		{
 			if (FD_ISSET(i, &_read))
@@ -158,33 +106,31 @@ void Socket::prepareConnection(std::list<Client> clientlist)
 				}
 				else if (rcv == 0)
 				{
-					std::cout << "host terminated connection" << std::endl;
 					FD_CLR(i, &_read);
-					for (std::list<Client>::iterator it = clientlist.begin(); it != clientlist.end(); it++)
+					for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
 					{
 						if (it->_client_socket == i)
 						{
-							clientlist.erase(it);
+							std::cout << "host [" << it->_clientnumber << "] terminated connection" << std::endl;
+							clientlist->erase(it);
 							return;
 						}
 					}
-					//close(i);
 				}
-				else	
-					std::cout << "Received: " << _buffer << std::endl;
-				//exit(1);
+				else
+				{
+					for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
+					{
+						if (it->_client_socket == i)
+						{
+							std::cout << "Received: " << _buffer << "From client " << it->_clientnumber << std::endl;
+							return;
+						}
+					}
+				}
 				rcv = 0;
 				break;
 			}
-			// else if (FD_ISSET(_w, &_write))
-			// {
-			// 	std::cout << "Write ready" << std::endl;
-			// }
-			// else if (FD_ISSET(_e, &_except))
-			// {
-			// 	std::cerr << "Exception apparement" << std::endl;
-			// 	exit(1217);
-			// }
 		}
 		
 	}

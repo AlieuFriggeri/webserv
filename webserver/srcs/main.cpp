@@ -28,7 +28,7 @@ int main( void ) {
 	{
 		clientlist.back().acceptConnection(serv._listening_socket);
 		clientlist.back().checknewconnection(&clientlist);
-		serv.prepareConnection(clientlist);
+		serv.handleConnection(&clientlist);
 	}
 	
 	return 0;

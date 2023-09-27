@@ -27,9 +27,9 @@ class Socket{
 	Socket();
 	~Socket();
 	void setup(int port);
-	void handleConnection(int clientsocket);
+	//void handleConnection(int clientsocket);
 	//void prepareConnection(int clientsocket);
-	void prepareConnection(std::list<Client> clientlist);
+	void handleConnection(std::list<Client> * clientlist);
 
 	sockaddr_in _server;
 	fd_set _read, _write, _except;
