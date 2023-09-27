@@ -24,11 +24,12 @@ class Client{
 	Client();
 	~Client();
 
-	void acceptConnection(int listeningsocket, std::list<Client>clientlist);
-
+	void acceptConnection(int listeningsocket);
+	void checknewconnection(std::list<Client> * clientlist);
 
 
 	int _client_socket;
+	int _clientnumber;
 	sockaddr_in _client;
 	socklen_t _clientsize;
 	char _host[NI_MAXHOST];

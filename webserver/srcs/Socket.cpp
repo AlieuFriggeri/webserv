@@ -1,4 +1,4 @@
-#include "../headers/Socket.hpp"
+#include "Socket.hpp"
 
 Socket::Socket()
 {
@@ -77,7 +77,6 @@ void Socket::prepareConnection(std::list<Client> clientlist)
 {
 	int max_sock = 0;
 	long rcv = 0;
-
 	// if (clientlist.size() == 1)
 	// {
 	// 	return;

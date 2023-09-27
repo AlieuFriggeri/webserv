@@ -17,7 +17,7 @@
 #include <sys/select.h>
 #include <algorithm>
 #include <list>
-#include "client.hpp"
+#include "Client.hpp"
 
 
 class Socket{
