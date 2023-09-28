@@ -13,16 +13,23 @@ Client::~Client()
 
 }
 
-void Client::acceptConnection(int listeningsocket)
+void Client::acceptConnection(int listeningsocket, int nbclient)
 {
 	bzero(&_client, sizeof(_client));
 	_clientsize = sizeof(_client);
+
+	if (nbclient >= 1024)
+	{
+		std::cout << "SERVER FULL" << std::endl;
+		_client_socket = -1;
+		return;
+	}
+
 
 	_client_socket = accept(listeningsocket, (sockaddr *)&_client, (socklen_t *)&_clientsize);
 
 	if (_client_socket < 0)
 	{
-		//std::cerr << "No new connection request" << std::endl;
 		return;
 	}
 

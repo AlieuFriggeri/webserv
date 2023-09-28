@@ -26,7 +26,7 @@ int main( void ) {
 	std::cout << "Waiting for connection . . ." << std::endl;
 	while (1)
 	{
-		clientlist.back().acceptConnection(serv._listening_socket);
+		clientlist.back().acceptConnection(serv._listening_socket, clientlist.size() - 1);
 		clientlist.back().checknewconnection(&clientlist);
 		serv.handleConnection(&clientlist);
 	}
