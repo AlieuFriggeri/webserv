@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/09/27 16:58:05 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/09/28 20:31:26 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <string>
 # include <sstream>
 # include <map>
+
+# define URI_MAX_LEN 4096
 
 enum HttpMethod
 {
@@ -33,17 +35,24 @@ enum ParsingState
 	REQUEST_LINE_SPACE_BEFORE_URI,
 	REQUEST_LINE_URI_SLASH,
 	REQUEST_LINE_URI,
+	REQUEST_LINE_URI_QUERY,
+	REQUEST_LINE_URI_FRAGMENT,
 	REQUEST_LINE_SPACE_AFTER_URI,
 	REQUEST_LINE_H,
 	REQUEST_LINE_HT,
 	REQUEST_LINE_HTT,
 	REQUEST_LINE_HTTP,
+	REQUEST_LINE_HTTP_SLASH,
 	REQUEST_LINE_MAJOR_DIGIT,
 	REQUEST_LINE_DOT,
 	REQUEST_LINE_MINOR_DIGIT,
-	HOST,
-	HOST_DOUBLE_DOT,
-	HOST_PORT,
+	REQUEST_LINE_CR,
+	REQUEST_LINE_LF,
+	FIELDS_START,
+	FIELDS_KEY,
+	FIELDS_VALUE,
+	FIELDS_VALUE_END,
+	FIELDS_END,
 	PARSING_DONE
 };
 
@@ -53,6 +62,8 @@ class HttpRequest
 		HttpMethod					_method;
 		std::map<int, std::string>	_method_str;
 		std::string					_path;
+		std::string					_query;
+		std::string					_fragment;
 		std::string					_host;
 		std::string					_user_agent;
 		std::string					_accept;
@@ -61,6 +72,9 @@ class HttpRequest
 		std::string					_conn;
 		std::string					_up_ins_req;
 		int							_err_code;
+		int							_ver_maj;
+		int							_ver_min;
+		std::string					_tmp;
 		ParsingState				_state;
 
 	public:
