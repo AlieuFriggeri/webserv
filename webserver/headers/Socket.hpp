@@ -37,6 +37,7 @@ class Socket{
 	int _listening_socket, _r, _w, _e;
 	char _svc[NI_MAXSERV];
 	char _buffer[4096];
+	int _max_sock;
 	private:
 
 

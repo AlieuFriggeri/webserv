@@ -9,6 +9,7 @@ Socket::Socket()
 	_timeout.tv_sec = 1;
 	_timeout.tv_usec = 0;
 	bzero(&_svc, sizeof(_svc));
+	_max_sock = 0;
 }
 
 Socket::~Socket()
@@ -48,21 +49,20 @@ void Socket::setup(int port)
 
 void Socket::handleConnection(std::list<Client> * clientlist)
 {
-	int max_sock = 0;
 	long rcv = 0;
-	// if (clientlist.size() == 1)
-	// {
-	// 	return;
-	// }
+	_max_sock = 0;
 
 	FD_ZERO(&_read);
 	FD_ZERO(&_write);
+	FD_ZERO(&_except);
+
 	for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
 	{
 		if(it->_client_socket != -1)
 		{
 			FD_SET(it->_client_socket, &_read);
 			FD_SET(it->_client_socket, &_write);
+			FD_SET(it->_client_socket, &_except);
 		}
 
 	}
@@ -70,21 +70,21 @@ void Socket::handleConnection(std::list<Client> * clientlist)
 	bzero(_buffer, sizeof(_buffer));
 
 	_timeout.tv_sec = 1;
-	_timeout.tv_usec = 0;
+	_timeout.tv_usec = 42;
 
 	for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
 	{
-		max_sock = std::max(max_sock, it->_client_socket);
+		if(it->_client_socket != -1)
+			_max_sock = std::max(_max_sock, it->_client_socket);
 	}
-	
-	//max_sock = std::max(max_sock, _e);
 
-	rcv = select(max_sock + 1, &_read, NULL, NULL, &_timeout);
+	rcv = select(1024, &_read, &_write, &_except, &_timeout);
 
 	if (rcv < 0)
 	{
 		perror("select");
-		exit(1);
+		std::cout << "maxsock: " << _max_sock << std::endl;
+		exit(12);
 	}
 	else if (rcv == 0)
 	{
@@ -93,7 +93,10 @@ void Socket::handleConnection(std::list<Client> * clientlist)
 	}
 	else
 	{
-		for (int i = 0; i < max_sock + 1; i++)
+		_timeout.tv_sec = 1;
+		_timeout.tv_usec = 42;
+
+		for (int i = 0; i < _max_sock + 1; i++)
 		{
 			if (FD_ISSET(i, &_read))
 			{
@@ -110,7 +113,8 @@ void Socket::handleConnection(std::list<Client> * clientlist)
 					{
 						if (it->_client_socket == i)
 						{
-							std::cout << "host [" << it->_clientnumber << "] terminated connection" << std::endl;
+							std::cout << "Client[" << it->_clientnumber << "] terminated connection" << std::endl;
+							close(it->_client_socket);
 							clientlist->erase(it);
 							return;
 						}
@@ -122,14 +126,23 @@ void Socket::handleConnection(std::list<Client> * clientlist)
 					{
 						if (it->_client_socket == i)
 						{
-							std::cout << "Received: " << _buffer << "From client " << it->_clientnumber << std::endl;
-							send(it->_client_socket, "Message bien recu chef\n", 24, 0);
+							std::cout << "Request  received from Client " << it->_clientnumber << std::endl;
+							if (FD_ISSET(i, &_write))
+							{
+
+								int index = open("./index.html", O_RDONLY);
+								char buffer2[4096];
+								read(index, buffer2, sizeof(buffer2));
+								send(it->_client_socket, buffer2, sizeof(buffer2), 0);
+								std::cout << "response sent to Client[" << it->_clientnumber << "]" << std::endl;
+							}
 						}
 					}
 				}
 				rcv = 0;
 				break;
 			}
+			//else if ()
 		}
 		
 	}

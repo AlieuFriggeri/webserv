@@ -24,7 +24,7 @@ class Client{
 	Client();
 	~Client();
 
-	void acceptConnection(int listeningsocket);
+	void acceptConnection(int listeningsocket, int nbclient);
 	void checknewconnection(std::list<Client> * clientlist);
 
 
