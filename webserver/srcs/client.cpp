@@ -30,6 +30,7 @@ void Client::acceptConnection(int listeningsocket, int nbclient)
 
 	if (_client_socket < 0)
 	{
+		close(_client_socket);
 		return;
 	}
 
@@ -48,6 +49,6 @@ void Client::checknewconnection(std::list<Client> * clientlist)
 			clientlist->back()._clientnumber = 1;
 		std::cout << "Client [" << clientlist->back()._clientnumber << "] has been connected" << std::endl;
 		clientlist->push_back(Client());
+		std::cout << clientlist->size() - 1 << " Client actually connected" << std::endl;
 	}
-	std::cout << clientlist->size() - 1 << " Client actually connected" << std::endl;
 }
