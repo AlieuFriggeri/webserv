@@ -51,18 +51,20 @@ void Socket::handleConnection(std::list<Client> * clientlist)
 {
 	long rcv = 0;
 	_max_sock = 0;
+	std::string str;
+	fd_set readcpy;
+	fd_set writecpy;
 
-	FD_ZERO(&_read);
-	FD_ZERO(&_write);
-	FD_ZERO(&_except);
+	FD_ZERO(&readcpy);
+	FD_ZERO(&writecpy);
 
 	for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
 	{
 		if(it->_client_socket != -1)
 		{
-			FD_SET(it->_client_socket, &_read);
-			FD_SET(it->_client_socket, &_write);
-			FD_SET(it->_client_socket, &_except);
+			FD_SET(it->_client_socket, &readcpy);
+			//FD_SET(it->_client_socket, &_write);
+			//FD_SET(it->_client_socket, &_except);
 		}
 
 	}
@@ -78,72 +80,92 @@ void Socket::handleConnection(std::list<Client> * clientlist)
 			_max_sock = std::max(_max_sock, it->_client_socket);
 	}
 
-	rcv = select(1024, &_read, &_write, &_except, &_timeout);
-
-	if (rcv < 0)
+	while(1)
 	{
-		perror("select");
-		std::cout << "maxsock: " << _max_sock << std::endl;
-		exit(12);
-	}
-	else if (rcv == 0)
-	{
-		//std::cout << "No pending data" << std::endl;
-		return;
-	}
-	else
-	{
+		_read = readcpy;
+		_write =  writecpy;
 		_timeout.tv_sec = 1;
 		_timeout.tv_usec = 42;
+		rcv = select(_max_sock + 1, &_read, &_write, NULL, &_timeout);
 
-		for (int i = 0; i < _max_sock + 1; i++)
+		if (rcv < 0)
 		{
-			if (FD_ISSET(i, &_read))
-			{
-				rcv = recv(i, _buffer, sizeof(_buffer), 0);
-				if (rcv < 0)
-				{
-					//FD_CLR(i, &_write);
-					FD_CLR(i, &_read);
-				}
-				else if (rcv == 0)
-				{
-					FD_CLR(i, &_read);
-					for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
-					{
-						if (it->_client_socket == i)
-						{
-							std::cout << "Client[" << it->_clientnumber << "] terminated connection" << std::endl;
-							close(it->_client_socket);
-							clientlist->erase(it);
-							return;
-						}
-					}
-				}
-				else
-				{
-					for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
-					{
-						if (it->_client_socket == i)
-						{
-							std::cout << "Request  received from Client " << it->_clientnumber << std::endl;
-							if (FD_ISSET(i, &_write))
-							{
+			perror("select");
+			std::cout << "maxsock: " << _max_sock << std::endl;
+			exit(12);
+		}
+		else if (rcv == 0)
+		{
+			//std::cout << "No pending data" << std::endl;
+			return;
+		}
+		else
+		{
 
-								int index = open("./index.html", O_RDONLY);
-								char buffer2[4096];
-								read(index, buffer2, sizeof(buffer2));
-								send(it->_client_socket, buffer2, sizeof(buffer2), 0);
-								std::cout << "response sent to Client[" << it->_clientnumber << "]" << std::endl;
+			for (int i = 0; i < _max_sock + 1; i++)
+			{
+				if (FD_ISSET(i, &_read))
+				{
+					rcv = recv(i, _buffer, sizeof(_buffer), 0);
+					if (rcv < 0)
+					{
+						//FD_CLR(i, &_write);
+						FD_CLR(i, &_read);
+					}
+					else if (rcv == 0)
+					{
+						FD_CLR(i, &_read);
+						for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
+						{
+							if (it->_client_socket == i)
+							{
+								std::cout << "Client[" << it->_clientnumber << "] terminated connection" << std::endl;
+								close(it->_client_socket);
+								clientlist->erase(it);
+								return;
 							}
 						}
 					}
+					else
+					{
+						for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
+						{
+							if (it->_client_socket == i)
+							{
+								std::cout << "Request received from Client " << it->_clientnumber << std::endl;
+								FD_CLR(i, &_read);
+								FD_SET(i, &_write);
+								if (FD_ISSET(i, &_write))
+								{
+
+									int index = open("./index.html", O_RDONLY);
+									char buffer2[4096];
+									read(index, buffer2, sizeof(buffer2));
+									send(it->_client_socket, buffer2, sizeof(buffer2), 0);
+									std::cout << "Response sent to Client[" << it->_clientnumber << "]" << std::endl;
+									str = _buffer;
+								}
+								if (str.find("close") != std::string::npos)
+								{
+									std::cout << "Client[" << it->_clientnumber << "] terminated connection" << std::endl;
+									FD_CLR(it->_client_socket, &_write);
+									close(it->_client_socket);
+									clientlist->erase(it);
+								}
+							}
+						}
+					}
+					rcv = 0;
+					break;
 				}
-				rcv = 0;
-				break;
+				else
+				{
+					FD_CLR(i, &_read);
+					FD_CLR(i, &_write);
+					FD_CLR(i, &_except);
+				}
 			}
-			//else if ()
+			
 		}
-		
 	}
 }
