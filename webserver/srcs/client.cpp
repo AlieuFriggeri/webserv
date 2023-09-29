@@ -13,7 +13,7 @@ Client::~Client()
 
 }
 
-void Client::acceptConnection(int listeningsocket, int nbclient)
+void Client::acceptConnection(int listeningsocket, int nbclient, fd_set *readset)
 {
 	bzero(&_client, sizeof(_client));
 	_clientsize = sizeof(_client);
@@ -35,7 +35,8 @@ void Client::acceptConnection(int listeningsocket, int nbclient)
 	}
 
 	fcntl(_client_socket, F_SETFL, O_NONBLOCK, FD_CLOEXEC);
-
+	FD_SET(_client_socket, readset);
+	
 }
 
 void Client::checknewconnection(std::list<Client> * clientlist)
