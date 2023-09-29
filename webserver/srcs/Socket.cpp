@@ -47,6 +47,27 @@ void Socket::setup(int port)
 	
 }
 
+void	Socket::initsets(std::list<Client> * clientlist)
+{
+
+	FD_ZERO(&_read);
+	FD_ZERO(&_write);
+
+	for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
+	{
+		if(it->_client_socket != -1)
+			FD_SET(it->_client_socket, &_read);
+
+	}
+
+	for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
+	{
+		if(it->_client_socket != -1)
+			this->_max_sock = std::max(_max_sock, it->_client_socket);
+	}
+
+}
+
 void Socket::handleConnection(std::list<Client> * clientlist)
 {
 	long rcv = 0;
@@ -55,74 +76,63 @@ void Socket::handleConnection(std::list<Client> * clientlist)
 	fd_set readcpy;
 	fd_set writecpy;
 
-	FD_ZERO(&readcpy);
-	FD_ZERO(&writecpy);
-
-	for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
-	{
-		if(it->_client_socket != -1)
-		{
-			FD_SET(it->_client_socket, &readcpy);
-			//FD_SET(it->_client_socket, &_write);
-			//FD_SET(it->_client_socket, &_except);
-		}
-
-	}
-
-	bzero(_buffer, sizeof(_buffer));
-
-	_timeout.tv_sec = 1;
-	_timeout.tv_usec = 42;
-
-	for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
-	{
-		if(it->_client_socket != -1)
-			_max_sock = std::max(_max_sock, it->_client_socket);
-	}
+	initsets(clientlist);
 
 	while(1)
 	{
-		_read = readcpy;
-		_write =  writecpy;
+		readcpy = _read;
+		writecpy = _write;
+		bzero(_buffer, sizeof(_buffer));
 		_timeout.tv_sec = 1;
 		_timeout.tv_usec = 42;
-		rcv = select(_max_sock + 1, &_read, &_write, NULL, &_timeout);
+		clientlist->back().acceptConnection(_listening_socket, clientlist->size() - 1, &_read);
+		if (_max_sock < clientlist->back()._client_socket)
+			_max_sock = clientlist->back()._client_socket;
+		clientlist->back().checknewconnection(clientlist);
+
+		rcv = select(_max_sock + 1, &readcpy, &writecpy, NULL, &_timeout);
 
 		if (rcv < 0)
 		{
-			perror("select");
-			std::cout << "maxsock: " << _max_sock << std::endl;
-			exit(12);
+			//perror("select");
+			//std::cout << "maxsock: " << _max_sock << std::endl;
+			//exit(12);
 		}
 		else if (rcv == 0)
 		{
 			//std::cout << "No pending data" << std::endl;
-			return;
+			//return;
 		}
 		else
 		{
 
 			for (int i = 0; i < _max_sock + 1; i++)
 			{
-				if (FD_ISSET(i, &_read))
+				if (FD_ISSET(i, &readcpy))
 				{
 					rcv = recv(i, _buffer, sizeof(_buffer), 0);
 					if (rcv < 0)
 					{
-						//FD_CLR(i, &_write);
-						FD_CLR(i, &_read);
+						//FD_CLR(i, &writecpy);
+						FD_CLR(i, &readcpy);
+						//FD_CLR(i, &_read);
+						if (i == _max_sock)
+							_max_sock--;
+						close(i);
 					}
 					else if (rcv == 0)
 					{
-						FD_CLR(i, &_read);
+						FD_CLR(i, &readcpy);
+						//FD_CLR(i, &_read);
 						for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
 						{
 							if (it->_client_socket == i)
 							{
 								std::cout << "Client[" << it->_clientnumber << "] terminated connection" << std::endl;
+								if (i == _max_sock)
+									_max_sock--;
 								close(it->_client_socket);
 								clientlist->erase(it);
-								return;
 							}
 						}
 					}
@@ -133,9 +143,9 @@ void Socket::handleConnection(std::list<Client> * clientlist)
 							if (it->_client_socket == i)
 							{
 								std::cout << "Request received from Client " << it->_clientnumber << std::endl;
-								FD_CLR(i, &_read);
-								FD_SET(i, &_write);
-								if (FD_ISSET(i, &_write))
+								FD_CLR(i, &readcpy);
+								FD_SET(i, &writecpy);
+								if (FD_ISSET(i, &writecpy))
 								{
 
 									int index = open("./index.html", O_RDONLY);
@@ -148,21 +158,24 @@ void Socket::handleConnection(std::list<Client> * clientlist)
 								if (str.find("close") != std::string::npos)
 								{
 									std::cout << "Client[" << it->_clientnumber << "] terminated connection" << std::endl;
-									FD_CLR(it->_client_socket, &_write);
+									FD_CLR(it->_client_socket, &writecpy);
 									close(it->_client_socket);
 									clientlist->erase(it);
 								}
+								// if (i == _max_sock)
+								// 	_max_sock--;
 							}
 						}
 					}
-					rcv = 0;
-					break;
+					//rcv = 0;
+					//break;
 				}
 				else
 				{
-					FD_CLR(i, &_read);
-					FD_CLR(i, &_write);
-					FD_CLR(i, &_except);
+					//FD_CLR(i, &readcpy);
+					// FD_CLR(i, &writecpy);
+					// if (i == _max_sock)
+					// 	_max_sock--;
 				}
 			}
 			
