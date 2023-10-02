@@ -6,7 +6,7 @@ Client::Client() : _client_socket(-1)
 	_clientsize = sizeof(_client);
 	bzero(&_host, sizeof(_host));
 	_clientnumber = -1;
-	_last_msg = 0;
+	_last_msg = time(NULL);
 }
 
 Client::~Client()
@@ -29,15 +29,13 @@ void Client::acceptConnection(int listeningsocket, int nbclient, fd_set *readset
 
 	_client_socket = accept(listeningsocket, (sockaddr *)&_client, (socklen_t *)&_clientsize);
 
-	if (_client_socket < 0)
+	if (_client_socket < 0 || fcntl(_client_socket, F_SETFL, O_NONBLOCK, FD_CLOEXEC) < 0)
 	{
 		close(_client_socket);
 		return;
 	}
 
-	fcntl(_client_socket, F_SETFL, O_NONBLOCK, FD_CLOEXEC);
 	FD_SET(_client_socket, readset);
-	
 }
 
 void Client::checknewconnection(std::list<Client> * clientlist)

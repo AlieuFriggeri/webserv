@@ -35,6 +35,8 @@ class Socket{
 	void addfdtoset(int fd, fd_set *set);
 	void closeconnection(std::list<Client> *clientlist, int i);
 	void checktimeout(std::list<Client> *clientlist);
+	void readrequest(std::list<Client> *clientlist, int fd, long rcv);
+	int findclient(std::list<Client> *clientlist, int fd);
 
 	sockaddr_in _server;
 	fd_set _read, _write, _except;
@@ -43,6 +45,7 @@ class Socket{
 	char _svc[NI_MAXSERV];
 	char _buffer[4096];
 	int _max_sock;
+
 	private:
 
 
