@@ -34,6 +34,7 @@ class Client{
 	socklen_t _clientsize;
 	char _host[NI_MAXHOST];
 	time_t _last_msg;
+	char _buff[4096];
 	
 	private:
 
