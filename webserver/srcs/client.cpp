@@ -6,6 +6,7 @@ Client::Client() : _client_socket(-1)
 	_clientsize = sizeof(_client);
 	bzero(&_host, sizeof(_host));
 	_clientnumber = -1;
+	_last_msg = 0;
 }
 
 Client::~Client()

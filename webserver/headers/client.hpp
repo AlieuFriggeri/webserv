@@ -33,7 +33,8 @@ class Client{
 	sockaddr_in _client;
 	socklen_t _clientsize;
 	char _host[NI_MAXHOST];
-
+	time_t _last_msg;
+	
 	private:
 
 
