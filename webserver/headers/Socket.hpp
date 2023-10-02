@@ -29,8 +29,12 @@ class Socket{
 	void setup(int port);
 	//void handleConnection(int clientsocket);
 	//void prepareConnection(int clientsocket);
-	void handleConnection(std::list<Client> * clientlist);
-	void initsets(std::list<Client> * clientlist);
+	void handleConnection(std::list<Client> *clientlist);
+	void initsets(std::list<Client> *clientlist);
+	void rmfdfromset(int fd, fd_set *set);
+	void addfdtoset(int fd, fd_set *set);
+	void closeconnection(std::list<Client> *clientlist, int i);
+	void checktimeout(std::list<Client> *clientlist);
 
 	sockaddr_in _server;
 	fd_set _read, _write, _except;
