@@ -14,17 +14,18 @@ Client::~Client()
 
 }
 
-void Client::acceptConnection(int listeningsocket, int nbclient, fd_set *readset)
+void Client::acceptConnection(int listeningsocket, int nbclient, fd_set *readset, std::list<Client> *clientlist)
 {
 	bzero(&_client, sizeof(_client));
 	_clientsize = sizeof(_client);
-
-	if (nbclient >= 1024)
-	{
-		std::cout << "SERVER FULL" << std::endl;
-		_client_socket = -1;
-		return;
-	}
+	std::list<Client>::iterator it2;
+	(void)nbclient;
+	// if (nbclient >= 1024)
+	// {
+	// 	std::cout << "SERVER FULL" << std::endl;
+	// 	_client_socket = -1;
+	// 	return;
+	// }
 
 
 	_client_socket = accept(listeningsocket, (sockaddr *)&_client, (socklen_t *)&_clientsize);
@@ -32,22 +33,29 @@ void Client::acceptConnection(int listeningsocket, int nbclient, fd_set *readset
 	if (_client_socket < 0 || fcntl(_client_socket, F_SETFL, O_NONBLOCK, FD_CLOEXEC) < 0)
 	{
 		close(_client_socket);
+		_client_socket = -1;
 		return;
 	}
-
-	FD_SET(_client_socket, readset);
+	(void)clientlist;
+	// for(std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
+	// {
+	// 	it2 = it;
+	// 	if (_client_socket == it->_client_socket && (++it2) != clientlist->end())
+	// 	{
+	// 		clientlist->erase(it);
+	// 		break;
+	// 	}
+	// }
+	(void)readset;
 }
 
 void Client::checknewconnection(std::list<Client> * clientlist)
 {
-	static int i = 1;
+	static int i = 0;
 	if (clientlist->back()._client_socket != -1)
 	{
-		if (clientlist->size() > 1)
-			clientlist->back()._clientnumber = ++i;
-		else
-			clientlist->back()._clientnumber = 1;
-		std::cout << "Client [" << clientlist->back()._clientnumber << "] has been connected" << std::endl;
+		clientlist->back()._clientnumber = ++i;
+		//std::cout << "Client [" << clientlist->back()._clientnumber << "] has been connected" << std::endl;
 		clientlist->push_back(Client());
 		std::cout << clientlist->size() - 1 << " Client actually connected" << std::endl;
 	}
