@@ -43,7 +43,7 @@ void Socket::setup(int port)
 		exit(3);
 	}
 
-	fcntl(_listening_socket, F_SETFL, O_NONBLOCK, FD_CLOEXEC);
+	fcntl(_listening_socket, F_SETFL, O_NONBLOCK);
 	
 }
 
@@ -71,11 +71,10 @@ void	Socket::initsets(std::list<Client> * clientlist)
 void Socket::handleConnection(std::list<Client> * clientlist)
 {
 	long rcv = 0;
-	_max_sock = 0;
 	std::string str;
 	fd_set readcpy;
 	fd_set writecpy;
-
+	std::list<Client>::iterator tmp;
 	initsets(clientlist);
 
 	FD_ZERO(&readcpy);
@@ -83,16 +82,16 @@ void Socket::handleConnection(std::list<Client> * clientlist)
 
 	while(1)
 	{
+		// for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
+		// {
+		// 	if (it->_client_socket == -2)
+		// 		clientlist->erase(it);
+		// }
 		readcpy = _read;
 		writecpy = _write;
 		bzero(_buffer, sizeof(_buffer));
 		_timeout.tv_sec = 1;
 		_timeout.tv_usec = 0;
-		// clientlist->back().acceptConnection(_listening_socket, clientlist->size() - 1, &_read);
-		// clientlist->back().checknewconnection(clientlist);
-		_max_sock = 0;
-		if (_max_sock < clientlist->back()._client_socket)
-			_max_sock = clientlist->back()._client_socket;
 		if (_max_sock < _listening_socket)
 			_max_sock = _listening_socket;
 		for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
@@ -100,88 +99,38 @@ void Socket::handleConnection(std::list<Client> * clientlist)
 			if(it->_client_socket != -1)
 				this->_max_sock = std::max(_max_sock, it->_client_socket);
 		}
-
+		//std::cout << "max_sock: " << _max_sock << std::endl;
 		rcv = select(_max_sock + 1, &readcpy, &writecpy, NULL, &_timeout);
 
 		if (rcv < 0)
 		{
-			//perror("select");
+			perror("select");
+			//std::cout << _max_sock << " | " << clientlist->size() << std::endl;
+			exit(1);
 			//std::cout << "maxsock: " << _max_sock << std::endl;
 			//exit(12);
 		}
 		else if (rcv == 0)
 		{
-			
+			std::cout << "rcv = 0" << std::endl;
 			//return;
 		}
 		else
 		{	//std::cout << "for loop" << std::endl;
-			for (int i = 0; i < _max_sock + 1; i++)
+			for (int i = 0; i <= _max_sock; i++)
 			{
 				bzero(_buffer, sizeof(_buffer));
-				// if (FD_ISSET(i, &readcpy) && findclient(clientlist, i))
-				// 	clientlist->back().acceptConnection(_listening_socket, clientlist->size() - 1, &_read);
+
 				if(FD_ISSET(i, &readcpy) && i == _listening_socket)
 				{
-					clientlist->back().acceptConnection(_listening_socket, clientlist->size() - 1, &_read);
+					clientlist->back().acceptConnection(_listening_socket, clientlist->size() - 1, &_read, clientlist);
+					addfdtoset(clientlist->back()._client_socket, &_read);
 					clientlist->back().checknewconnection(clientlist);
 				}
-				else if (FD_ISSET(i, &readcpy))
+				else if (FD_ISSET(i, &readcpy) && i != _listening_socket)
 				{
-					rcv = recv(i, _buffer, sizeof(_buffer), 0);
+					rcv = read(i, _buffer, sizeof(_buffer));
 					readrequest(clientlist, i, rcv);
-					// if (rcv < 0)
-					// {
-					// 	closeconnection(clientlist, i);
-					// 	std::cout << "Error in recv" << std::endl;
-					// }
-					// else if (rcv == 0)
-					// {
-					// 	closeconnection(clientlist, i);
-					// }
-					// else
-					// {
-					// 	for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
-					// 	{
-					// 		if (it->_client_socket == i)
-					// 		{	
-					// 			it->_last_msg = time(NULL);
-					// 			//addfdtoset(i, _write);
-					// 			//rmfdfromset(i, _read);
-					// 			addfdtoset(i, &writecpy);
-					// 			rmfdfromset(i, &readcpy);
-					// 			//FD_SET(i, &writecpy);
-					// 			std::cout << "Request received from Client " << it->_clientnumber << std::endl;
-					// 			str = _buffer;
-					// 			if (FD_ISSET(i, &writecpy))
-					// 			{
-
-					// 				int index = open("./index.html", O_RDONLY);
-					// 				char buffer2[4096];
-					// 				read(index, buffer2, sizeof(buffer2));
-					// 				send(it->_client_socket, buffer2, sizeof(buffer2), 0);
-					// 				std::cout << "Response sent to Client[" << it->_clientnumber << "]" << std::endl;
-					// 			}
-					// 			if (str.find("close") != std::string::npos)
-					// 			{
-					// 				std::cout << "asked to close" << std::endl;
-					// 				rmfdfromset(i, &readcpy);
-					// 				rmfdfromset(i, &writecpy);
-					// 				closeconnection(clientlist, i);
-					// 			}
-					// 			else
-					// 			{
-					// 				//addfdtoset(i, _read);
-					// 				addfdtoset(i, &readcpy);
-					// 				//rmfdfromset(i, _write);
-					// 				rmfdfromset(i, &writecpy);
-					// 			}
-					// 			break;
-					// 		}
-					// 	}
-					// }
-					//rcv = 0;
-					//break;
 				}
 				else if (FD_ISSET(i, &writecpy))
 				{
@@ -191,49 +140,16 @@ void Socket::handleConnection(std::list<Client> * clientlist)
 						{
 							int index = open("./index.html", O_RDONLY);
 							char buffer2[4096];
+							bzero(buffer2, sizeof(buffer2));
 							read(index, buffer2, sizeof(buffer2));
-							send(it->_client_socket, buffer2, sizeof(buffer2), 0);
-							std::cout << "Response sent to Client[" << it->_clientnumber << "]" << std::endl;
+							write(i, buffer2, sizeof(buffer2));
+							//std::cout << "Response sent to Client[" << it->_clientnumber << "]" << std::endl;
 							str = it->_buff;
-							//if (str.find("close") != std::string::npos)
-							//{
-								closeconnection(clientlist, i);
-							//}
-							// else
-							// {
-							// 	rmfdfromset(i, &_write);
-							// 	addfdtoset(i, &_read);
-							// }
+							close(i);
+							closeconnection(clientlist, i);
 						}
 					}
 				}
-				// {
-				// 	for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
-				// 	{
-				// 		int index = open("./index.html", O_RDONLY);
-				// 		char buffer2[4096];
-				// 		read(index, buffer2, sizeof(buffer2));
-				// 		send(it->_client_socket, buffer2, sizeof(buffer2), 0);
-				// 		std::cout << "Response sent to Client[" << it->_clientnumber << "]" << std::endl;
-						
-				// 		if (str.find("close") != std::string::npos)
-				// 		{
-				// 			std::cout << "sigkill" << std::endl;
-				// 			closeconnection(clientlist, i);
-				// 		}
-				// 		else
-				// 		{
-							// addfdtoset(i, _read);
-							// addfdtoset(i, readcpy);
-							// rmfdfromset(i, _write);
-							// rmfdfromset(i, writecpy);
-				// 		}
-				// 	}
-				// }
-				// else if (FD_ISSET(i, &writecpy))
-				// {
-				// 	std::cout << "salutmec" << std::endl;
-				// }
 			}
 		}
 		checktimeout(clientlist);
@@ -242,17 +158,16 @@ void Socket::handleConnection(std::list<Client> * clientlist)
 
 void Socket::rmfdfromset(int fd, fd_set *set)
 {
-	// if (fd == _max_sock)
-	// 	_max_sock--;
-	if (FD_ISSET(fd, set))
-		FD_CLR(fd, set);
+	FD_CLR(fd, set);
+	if (fd == _max_sock)
+		_max_sock--;
 }
 
 void Socket::addfdtoset(int fd, fd_set *set)
 {
-	// if (_max_sock < fd)
-	// 	_max_sock = fd;
 	FD_SET(fd, set);
+	if (_max_sock < fd)
+		_max_sock = fd;
 }
 
 void Socket::closeconnection(std::list<Client> *clientlist, int i)
@@ -261,12 +176,16 @@ void Socket::closeconnection(std::list<Client> *clientlist, int i)
 	{
 		if (it->_client_socket == i)
 		{
-			std::cout << "Client [" << it->_clientnumber << "] disconnected" << std::endl;
+			//std::cout << "Client [" << it->_clientnumber << "] disconnected" << std::endl;
+			//if (FD_ISSET(i, &_read))
 			rmfdfromset(i, &_read);
+			//if (FD_ISSET(i, &_write))
 			rmfdfromset(i, &_write);
-			close(it->_client_socket);
+			//close(it->_client_socket);
 			close(i);
-			clientlist->erase(it);
+			it->_client_socket = -2;
+			//clientlist->erase(it);
+			break;
 		}
 	}
 }
@@ -277,7 +196,7 @@ void Socket::checktimeout(std::list<Client> *clientlist)
 	{
 			if (time(NULL) - it->_last_msg > 10 && it->_client_socket != -1)
 			{
-				std::cout << "Client number {" << it->_clientnumber << "} has timed out" << std::endl;
+				//std::cout << "Client number {" << it->_clientnumber << "} has timed out" << std::endl;
 				closeconnection(clientlist, it->_client_socket);
 			}
 	}
@@ -308,8 +227,7 @@ void Socket::readrequest(std::list<Client> *clientlist, int fd, long rcv)
 				addfdtoset(fd, &_write);
 				rmfdfromset(fd, &_read);
 
-				std::cout << "Request received from Client " << it->_clientnumber << std::endl;
-				std::cout << _buffer << std::endl;
+				//std::cout << "Request received from Client " << it->_clientnumber << std::endl;
 				str = _buffer;
 				break;
 			}
