@@ -56,7 +56,7 @@ void Client::checknewconnection(std::list<Client> * clientlist)
 	{
 		clientlist->back()._clientnumber = ++i;
 		//std::cout << "Client [" << clientlist->back()._clientnumber << "] has been connected" << std::endl;
+		std::cout << clientlist->size() << " Client actually connected with socket: " << clientlist->back()._client_socket << std::endl;
 		clientlist->push_back(Client());
-		std::cout << clientlist->size() - 1 << " Client actually connected" << std::endl;
 	}
 }
