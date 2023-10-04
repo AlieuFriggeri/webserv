@@ -37,6 +37,7 @@ class Socket{
 	void checktimeout(std::list<Client> *clientlist);
 	void readrequest(std::list<Client> *clientlist, int fd, long rcv);
 	int findclient(std::list<Client> *clientlist, int fd);
+	void setMaxSock(std::list<Client> *clientlist);
 
 	sockaddr_in _server;
 	fd_set _read, _write, _except;

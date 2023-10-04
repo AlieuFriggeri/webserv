@@ -14,7 +14,7 @@
 #include "Client.hpp"
 #include <sys/select.h>
 
-#define PORT 667
+#define PORT 8002
 
 int main( void ) {
 
