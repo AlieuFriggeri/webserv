@@ -30,6 +30,7 @@ class Client{
 
 	int _client_socket;
 	int _clientnumber;
+	int _bytesrcv;
 	sockaddr_in _client;
 	socklen_t _clientsize;
 	char _host[NI_MAXHOST];
