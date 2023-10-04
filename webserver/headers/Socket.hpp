@@ -30,17 +30,19 @@ class Socket{
 	//void handleConnection(int clientsocket);
 	//void prepareConnection(int clientsocket);
 	void handleConnection(std::list<Client> *clientlist);
-	void initsets(std::list<Client> *clientlist);
+	void initsets(std::list<Client> *clientlist, Client *clientarray[]);
 	void rmfdfromset(int fd, fd_set *set);
 	void addfdtoset(int fd, fd_set *set);
 	void closeconnection(std::list<Client> *clientlist, int i);
 	void checktimeout(std::list<Client> *clientlist);
-	void readrequest(std::list<Client> *clientlist, int fd, long rcv);
+	void readrequest(Client *clientarray[], int fd);
 	int findclient(std::list<Client> *clientlist, int fd);
-	void setMaxSock(std::list<Client> *clientlist);
-
+	void setMaxSock(Client *clientarray[]);
+	void acceptConnection2(int listeningsocket, Client *clientarray[]);
+	void sendresponse(Client *clientarray[], int fd);
+	
 	sockaddr_in _server;
-	fd_set _read, _write, _except;
+	fd_set _read, _write, _except, _main;
 	timeval _timeout;
 	int _listening_socket, _r, _w, _e;
 	char _svc[NI_MAXSERV];

@@ -7,6 +7,7 @@ Client::Client() : _client_socket(-1)
 	bzero(&_host, sizeof(_host));
 	_clientnumber = -1;
 	_last_msg = time(NULL);
+	_bytesrcv = 0;
 }
 
 Client::~Client()
