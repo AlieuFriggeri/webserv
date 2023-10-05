@@ -107,7 +107,7 @@ void Socket::handleConnection(std::list<Client> * clientlist)
 
 		if (ret == 0)
 		{
-			std::cout << "Timeout with select" << std::endl;
+			std::cout << "Waiting..." << std::endl;
 		}
 		else if (ret == -1)
 		{
@@ -115,7 +115,7 @@ void Socket::handleConnection(std::list<Client> * clientlist)
 			exit(17);
 		}
 
-		std::cout << "Max_sock is " << _max_sock << std::endl;
+		//std::cout << "Max_sock is " << _max_sock << std::endl;
 
 		for (int i = 0; i <= _max_sock; i++)
 		{
@@ -169,6 +169,7 @@ void Socket::handleConnection(std::list<Client> * clientlist)
 				}
 			}
 		}
+		checktimeout(clientarray);
 	}
 }
 
@@ -217,17 +218,28 @@ void Socket::closeconnection(std::list<Client> *clientlist, int i)
 	}
 }
 
-void Socket::checktimeout(std::list<Client> *clientlist)
+void Socket::checktimeout(Client *clientarray[])
 {
-	for ( std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
+	Client *client;
+
+	for (int i = 0; i < 1024; i++)
 	{
-			if (time(NULL) - it->_last_msg > 10 && it->_client_socket != -1)
+		if (clientarray[i])
+		{
+			client = clientarray[i];
+
+			if (time(NULL) - client->_last_msg > 5)
 			{
-				//std::cout << "Client number {" << it->_clientnumber << "} has timed out" << std::endl;
-				closeconnection(clientlist, it->_client_socket);
-				//setMaxSock(clientlist);
+				std::cout << "Client timed out on socket " << client->_client_socket << std::endl;
+				FD_CLR(client->_client_socket, &_main);
+				close(client->_client_socket);
+				delete client;
+				clientarray[i] = NULL;
 			}
+		}
 	}
+
+	setMaxSock(clientarray);
 }
 
 void Socket::readrequest(Client *clientarray[], int fd)
@@ -241,22 +253,21 @@ void Socket::readrequest(Client *clientarray[], int fd)
 	bzero(buff, 4096);
 
 	rcv = recv(fd, buff, sizeof(buff), 0);
+	client->_last_msg = time(NULL);
 	if (rcv <= 0)
 	{
 		if (rcv == 0)
 			std::cout << "client closed connection on socket " << client->_client_socket << std::endl;
 		else
 			std::cout << "Error on socket " << client->_client_socket << " closing connection"<< std::endl;
-		{
-			perror("recv");
-			close(fd);
-			FD_CLR(fd, &_main);
-			delete client;
-			clientarray[fd] = NULL;
-			delete [] buff;
-			setMaxSock(clientarray);
-			return;
-		}
+		perror("recv");
+		FD_CLR(fd, &_main);
+		close(fd);
+		delete client;
+		clientarray[fd] = NULL;
+		delete [] buff;
+		setMaxSock(clientarray);
+		return;
 	}
 
 	delete [] buff;
@@ -273,14 +284,22 @@ void Socket::sendresponse(Client *clientarray[], int fd)
 
 	unsigned long rcv = send(fd, response, sizeof(response), 0);
 
+	close(html);
+
 	if (rcv < sizeof(response))
 		std::cout << "Could not send all index.html to client with socket " << fd << std::endl;
 	else
 		std::cout << "Server sent response to client with socket " << fd << std::endl;
 
 	std::cout << "Terminating connection with socket " << fd << std::endl;
-	close(fd);
 	FD_CLR(fd, &_main);
+
+	if(close(fd))
+	{
+		perror("close");
+		exit(2);
+	}
+
 	delete clientarray[fd];
 	clientarray[fd] = NULL;
 }
@@ -327,7 +346,10 @@ void Socket::acceptConnection2(int listeningsocket, Client *clientarray[])
 	if (tmp->_client_socket < 0)
 	{
 		std::cout << "Error while accepting client" << std::endl;
+		perror("accept");
+		close(tmp->_client_socket);
 		delete tmp;
+		//exit(1);
 		return;
 	}
 
