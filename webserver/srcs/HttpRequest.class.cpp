@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/09/28 20:37:47 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/10/11 19:03:47 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ void	HttpRequest::parse(char *data, size_t len)
 				{
 					_path.append(temp);
 					temp.clear();
-					_state = REQUEST_LINE_SPACE_AFTER_URI;
+					_state = REQUEST_LINE_H;
 					continue ;
 				}
 				else if (c == '?')
@@ -188,7 +188,7 @@ void	HttpRequest::parse(char *data, size_t len)
 				{
 					_query.append(temp);
 					temp.clear();
-					_state = REQUEST_LINE_SPACE_AFTER_URI;
+					_state = REQUEST_LINE_H;
 					continue ;
 				}
 				else if (c == '#')
@@ -242,7 +242,7 @@ void	HttpRequest::parse(char *data, size_t len)
 				else
 				{
 					_err_code = 400;
-					std::cerr << "Bad Request (REQUEST_LINE_SPACE_AFTER_URI)" << std::endl;
+					std::cerr << "Bad Request (REQUEST_LINE_SPACE_AFTER_URI" << std::endl;
 					return ;
 				}
 			}
@@ -368,7 +368,9 @@ void	HttpRequest::parse(char *data, size_t len)
 			{
 				if (c == '\r')
 					_state = FIELDS_END;
+				else if (c )
 				_state = FIELDS_KEY;
+				std::cout << std::endl << temp << std::endl << std::endl;
 				break ;
 			}
 			case FIELDS_KEY:
@@ -430,4 +432,17 @@ void	HttpRequest::parse(char *data, size_t len)
 		if (_state == PARSING_DONE)
 			return ;
 	}
+}
+
+void	HttpRequest::setHeader(std::string key, std::string value)
+{
+	// key to lower
+	for (size_t i = 0; i < key.length(); i++)
+		key[i] = std::tolower(key[i]);
+
+	// trim spaces before and after the value
+	value.erase(0, value.find_first_not_of(" \t"));
+	value.erase(value.find_last_not_of(" \t") + 1);
+	
+	_headers[key] = value;
 }

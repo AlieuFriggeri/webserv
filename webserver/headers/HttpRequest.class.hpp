@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/09/28 20:31:26 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/10/11 18:53:11 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,23 +59,24 @@ enum ParsingState
 class HttpRequest
 {
 	private:
-		HttpMethod					_method;
-		std::map<int, std::string>	_method_str;
-		std::string					_path;
-		std::string					_query;
-		std::string					_fragment;
-		std::string					_host;
-		std::string					_user_agent;
-		std::string					_accept;
-		std::string					_acc_lang;
-		std::string					_acc_encode;
-		std::string					_conn;
-		std::string					_up_ins_req;
-		int							_err_code;
-		int							_ver_maj;
-		int							_ver_min;
-		std::string					_tmp;
-		ParsingState				_state;
+		HttpMethod							_method;
+		std::map<int, std::string>			_method_str;
+		std::map<std::string, std::string>	_headers;
+		std::string							_path;
+		std::string							_query;
+		std::string							_fragment;
+		std::string							_host;
+		std::string							_user_agent;
+		std::string							_accept;
+		std::string							_acc_lang;
+		std::string							_acc_encode;
+		std::string							_conn;
+		std::string							_up_ins_req;
+		int									_err_code;
+		int									_ver_maj;
+		int									_ver_min;
+		std::string							_tmp;
+		ParsingState						_state;
 
 	public:
 		HttpRequest();
@@ -87,6 +88,7 @@ class HttpRequest
 		std::string	getPath(void) const;
 
 		void		parse(char *data, size_t len);
+		void		setHeader(std::string key, std::string value);
 };
 
 #endif
