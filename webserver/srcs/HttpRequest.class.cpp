@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/10/11 19:03:47 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/10/17 20:03:18 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ HttpRequest::HttpRequest(void)
 	_method_str[::POST] = "POST";
 	_method_str[::DELETE] = "DELETE";
 	_method_str[::NONE] = "NONE";
+	_fields_done = false;
 	return ;
 }
 
@@ -59,8 +60,7 @@ bool    allowedCharURI(char c)
 
 bool	checkUriPath(std::string _path)
 {
-	char	*tmp;
-	tmp = strtok((char *)_path.c_str(), "/");
+	char	*tmp = strtok((char *)_path.c_str(), "/");
 	int		pos = 0;
 
 	while (tmp != NULL)
@@ -315,6 +315,12 @@ void	HttpRequest::parse(char *data, size_t len)
 					std::cerr << "Bad Request (REQUEST_LINE_MAJOR_DIGIT)" << std::endl;
 					return ;
 				}
+				if (c != '1')
+				{
+					_err_code = 505;
+					std::cerr << "HTTP Version Not Supported" << std::endl;
+					return ;
+				}
 				_ver_maj = c - '0';
 				_state = REQUEST_LINE_DOT;
 				break ;
@@ -336,6 +342,12 @@ void	HttpRequest::parse(char *data, size_t len)
 				{
 					_err_code = 400;
 					std::cerr << "Bad Request (REQUEST_LINE_MINOR_DIGIT)" << std::endl;
+					return ;
+				}
+				if (c != '1')
+				{
+					_err_code = 505;
+					std::cerr << "HTTP Version Not Supported" << std::endl;
 					return ;
 				}
 				_ver_min = c - '0';
@@ -368,19 +380,31 @@ void	HttpRequest::parse(char *data, size_t len)
 			{
 				if (c == '\r')
 					_state = FIELDS_END;
-				else if (c )
-				_state = FIELDS_KEY;
-				std::cout << std::endl << temp << std::endl << std::endl;
+				else if (isalpha(c) || c == '_')
+					_state = FIELDS_KEY;
+				else
+				{
+					_err_code = 400;
+					std::cerr << "Bad Request (FIELDS_START)" << std::endl;
+					return ;
+				}
 				break ;
 			}
 			case FIELDS_KEY:
 			{
 				if (c == ':')
 				{
+					_tmp.clear();
 					_tmp = temp; // _tmp devient la clé
 					temp.clear();
 					_state = FIELDS_VALUE;
 					continue ;
+				}
+				else if (!isalpha(c) && c != '_')
+				{
+					_err_code = 400;
+					std::cerr << "Bad Request (FIELDS_KEY)" << std::endl;
+					return ;
 				}
 				break ;
 			}
@@ -391,6 +415,7 @@ void	HttpRequest::parse(char *data, size_t len)
 					setHeader(_tmp, temp); // _tmp = key | temp = value
 					_tmp.clear();
 					temp.clear();
+					_state = FIELDS_VALUE_END;
 					continue ;
 				}
 				break ;
@@ -415,8 +440,10 @@ void	HttpRequest::parse(char *data, size_t len)
 				if (c == '\n')
 				{
 					temp.clear();
-
-
+					_fields_done = true;
+					HANDLE_HEADER;
+						// verifier si "content-length: x" ou "transfer-encoding: chunked" existe --> defini si un body existe ou pas
+						// etc...
 					
 				}
 				else

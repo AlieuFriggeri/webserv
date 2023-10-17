@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/10/11 18:53:11 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/10/17 20:01:02 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,9 @@ class HttpRequest
 		std::string							_path;
 		std::string							_query;
 		std::string							_fragment;
-		std::string							_host;
-		std::string							_user_agent;
-		std::string							_accept;
-		std::string							_acc_lang;
-		std::string							_acc_encode;
 		std::string							_conn;
-		std::string							_up_ins_req;
+		bool								_fields_done;
+		bool								_body_exist;
 		int									_err_code;
 		int									_ver_maj;
 		int									_ver_min;
