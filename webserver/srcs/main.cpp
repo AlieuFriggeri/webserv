@@ -13,6 +13,7 @@
 #include "Socket.hpp"
 #include "Client.hpp"
 #include <sys/select.h>
+#include "HttpRequest.class.hpp"
 
 #define PORT 8002
 
