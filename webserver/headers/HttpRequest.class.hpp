@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/10/17 20:01:02 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/10/18 14:25:27 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,18 @@ class HttpRequest
 		std::string							_query;
 		std::string							_fragment;
 		std::string							_conn;
+		std::string							_host;
 		bool								_fields_done;
 		bool								_body_exist;
+		bool								_chunked;
 		int									_err_code;
 		int									_ver_maj;
 		int									_ver_min;
 		std::string							_tmp;
 		ParsingState						_state;
 
+		void								_handleHeaders(void);
+	
 	public:
 		HttpRequest();
 		HttpRequest(const HttpRequest& src);

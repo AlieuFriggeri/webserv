@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/10/17 20:03:18 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/10/18 14:42:49 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ HttpRequest::HttpRequest(void)
 	_method_str[::DELETE] = "DELETE";
 	_method_str[::NONE] = "NONE";
 	_fields_done = false;
+	_chunked = false;
+	_body_exist = false;
 	return ;
 }
 
@@ -74,6 +76,24 @@ bool	checkUriPath(std::string _path)
 		tmp = strtok(NULL, "/");
 	}
 	return true;
+}
+
+void	HttpRequest::_handleHeaders(void)
+{
+	if (_headers.count("content-length"))
+	{
+		_body_exist = true;
+	}
+	else if (_headers.count("transfer-encoding"))
+	{
+		_body_exist = true;
+		if (_headers["transfer-encoding"].find_first_of("chunked") != std::npos)
+			_chunked = true;
+	}
+	if (_headers.count("host"))
+	{
+		
+	}
 }
 
 void	HttpRequest::parse(char *data, size_t len)
@@ -441,9 +461,13 @@ void	HttpRequest::parse(char *data, size_t len)
 				{
 					temp.clear();
 					_fields_done = true;
-					HANDLE_HEADER;
-						// verifier si "content-length: x" ou "transfer-encoding: chunked" existe --> defini si un body existe ou pas
-						// etc...
+					if (_headers.count("content-length") && _headers.count("transfer-encoding"))
+					{
+						_err_code = 400;
+						std::cerr << "Bad Request (content-length + transfer-encoding)" << std::endl;
+						return ;
+					}
+					_handleHeaders();
 					
 				}
 				else
