@@ -150,6 +150,7 @@ void Socket::handleConnection(std::list<Client> * clientlist)
 							char buffer2[4096];
 							bzero(buffer2, sizeof(buffer2));
 							read(index, buffer2, sizeof(buffer2));
+							close(index);
 							write(i, buffer2, sizeof(buffer2));
 							//std::cout << "Response sent to Client[" << it->_clientnumber << "]" << std::endl;
 							str = _buffer;
