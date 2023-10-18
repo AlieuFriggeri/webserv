@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/10/18 19:18:21 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/10/18 19:28:16 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -601,6 +601,11 @@ void	HttpRequest::parse(char *data, size_t len)
 
 				}
 				_state = CHUNKED_END_LF;
+			}
+			case CHUNKED_END_LF:
+			{
+				if (c == '\n')
+					_state = PARSING_DONE;
 			}
 			case BODY:
 			{
