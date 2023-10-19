@@ -24,6 +24,7 @@ HttpRequest::HttpRequest(void)
 	_fields_done = false;
 	_chunked = false;
 	_body_exist = false;
+	_multiform = false;
 	return ;
 }
 
@@ -113,9 +114,110 @@ HttpMethod	HttpRequest::getMethod(void) const
 	return _method;
 }
 
+std::string	HttpRequest::getMethodStr(void) const
+{
+	return _method_str[_method];
+}
+
 std::string	HttpRequest::getPath(void) const
 {
 	return _path;
+}
+
+std::string HttpRequest::getErrorCode(void) const
+{
+	return _err_code;
+}
+
+std::string HttpRequest::getServerName(void) const
+{
+	return _server_name;
+}
+
+std::string HttpRequest::getQuery(void) const
+{
+	return _query;
+}
+
+std::string HttpRequest::getFragment(void) const
+{
+	return _fragment;
+}
+
+std::string HttpRequest::getHeader(std::string const &name) const
+{
+	return _headers[name];
+}
+
+std::map<std::string, std::string> HttpRequest::getHeaders(void) const
+{
+	return _headers;
+}
+
+std::string HttpRequest::getBody(void) const
+{
+	return _body_str;
+}
+
+std::string	HttpRequest::getBoundary(void) const
+{
+	return _boundary
+}
+
+bool HttpRequest::isMultiform(void) const
+{
+	return _multiform;
+}
+
+bool HttpRequest::isParsingDone(void) const
+{
+	if (_state == PARSING_DONE)
+		return true;
+	else
+		return false;
+}
+
+void	HttpRequest::keepAlive(void) const
+{
+	if (_headers.count("connection"))
+    {
+        if (_headers["connection"].find("close", 0) != std::string::npos)
+            return (false);
+    }
+    return (true);
+}
+
+void	HttpRequest::printMessage(void) const
+{
+	std::cout << "HttpRequest with:" << std::endl;
+	std::cout << "Method\t" << _method_str[_method] << "\tHTTP/" << _ver_maj << "." << _ver_min << std::endl;
+	std::cout << "Path\t\t" << _path << std::endl;
+	std::cout << "Query\t\t" << _query << std::endl;
+	std::cout << "Fragment\t" << _fragment << std::endl;
+	std::cout << "ServerName\t" << _server_name << std::endl;
+	std::cout << "ErrorCode\t" << _err_code << std::endl;
+	std::cout << "ParserState\t" << _state << std::endl;
+	std::cout << "Boundry\t" << _boundary << "\tMultiform\t" << _multiform << std::endl;
+	
+	for (std::map<std::string, std::string>::iterator i = _headers.begin(); i != _headers.end(); i++)
+        std::cout << i->first + ":" + i->second << std::endl;
+
+    for (std::vector<unsigned char>::iterator i = _body.begin(); i != _body.end(); i++)
+        std::cout << *i;
+    std::cout << std::endl;
+}
+
+void	HttpRequest::setHeader(std::string key, std::string value)
+{
+	// key to lower
+	for (size_t i = 0; i < key.length(); i++)
+		key[i] = std::tolower(key[i]);
+
+	// trim spaces before and after the value
+	value.erase(0, value.find_first_not_of(" \t"));
+	value.erase(value.find_last_not_of(" \t") + 1);
+	
+	_headers[key] = value;
 }
 
 void	HttpRequest::parse(char *data, size_t len)
@@ -647,19 +749,6 @@ void	HttpRequest::parse(char *data, size_t len)
 	}
 }
 
-void	HttpRequest::setHeader(std::string key, std::string value)
-{
-	// key to lower
-	for (size_t i = 0; i < key.length(); i++)
-		key[i] = std::tolower(key[i]);
-
-	// trim spaces before and after the value
-	value.erase(0, value.find_first_not_of(" \t"));
-	value.erase(value.find_last_not_of(" \t") + 1);
-	
-	_headers[key] = value;
-}
-
 void	HttpRequest::_handleHeaders(void)
 {
 	std::stringstream	s;
@@ -673,21 +762,18 @@ void	HttpRequest::_handleHeaders(void)
 	else if (_headers.count("transfer-encoding"))
 	{
 		_body_exist = true;
-		if (_headers["transfer-encoding"].find_first_of("chunked") != std::string::npos)
-			_chunked = true;
+		_chunked = true;
 	}
 	if (_headers.count("host"))
 	{
-		_server_name = _headers["host"];
+		size_t	end = _headers["host"].substr(":");
+		_server_name = _headers["host"].substr(0, end);
 	}
-}
-
-void	HttpRequest::keepAlive(void) const
-{
-	if (_headers.count("connection"))
-    {
-        if (_headers["connection"].find("close", 0) != std::string::npos)
-            return (false);
-    }
-    return (true);
+	if (_headers.count("content-type") && _headers["content-type"].find("multipart/form-data") != std::string::npos)
+	{
+		size_t	pos = _headers["content-type"].find("boundary=");
+		if (pos != std::string:npos)
+			_boundry = _headers["content-type"].substr(pos + 9, _headers["content-type"].size());
+		_multiform = true;
+	}
 }
