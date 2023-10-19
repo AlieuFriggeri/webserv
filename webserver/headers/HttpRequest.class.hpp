@@ -70,6 +70,8 @@ class HttpRequest
 		HttpMethod							_method;
 		std::map<int, std::string>			_method_str;
 		std::map<std::string, std::string>	_headers;
+		std::vector<unsigned char>			_body;
+		std::string							_body_str;
 		std::string							_path;
 		std::string							_query;
 		std::string							_fragment;
@@ -79,6 +81,7 @@ class HttpRequest
 		bool								_fields_done;
 		bool								_body_exist;
 		bool								_chunked;
+		size_t								_body_len;
 		int									_err_code;
 		int									_ver_maj;
 		int									_ver_min;
@@ -94,6 +97,7 @@ class HttpRequest
 
 		HttpMethod	getMethod(void) const;
 		std::string	getPath(void) const;
+		bool		keepAlive(void) const;
 
 		void		parse(char *data, size_t len);
 		void		setHeader(std::string key, std::string value);

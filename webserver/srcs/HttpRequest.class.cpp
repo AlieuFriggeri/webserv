@@ -19,6 +19,7 @@ HttpRequest::HttpRequest(void)
 	_method_str[::POST] = "POST";
 	_method_str[::DELETE] = "DELETE";
 	_method_str[::NONE] = "NONE";
+	_body.clear();
 	_state = REQUEST_LINE;
 	_fields_done = false;
 	_chunked = false;
@@ -41,6 +42,8 @@ HttpRequest::HttpRequest(const HttpRequest& src)
 		_host = src._host;
 		_server_name = src._server_name;
 		_body_exist = src._body_exist;
+		_body = src._body;
+		_body_str = src._body_str;
 		_chunked = src._chunked;
 		_err_code = src._err_code;
 		_ver_maj = src._ver_maj;
@@ -79,16 +82,6 @@ HttpRequest::~HttpRequest(void)
 	// std::cout << "HttpRequest Destructor called" << std::endl;
 }
 
-HttpMethod	HttpRequest::getMethod(void) const
-{
-	return _method;
-}
-
-std::string	HttpRequest::getPath(void) const
-{
-	return _path;
-}
-
 bool    allowedCharURI(char c)
 {
     if ((c >= '#' && c <= ';') || (c >= '?' && c <= '[') || (c >= 'a' && c <= 'z') ||
@@ -115,22 +108,14 @@ bool	checkUriPath(std::string _path)
 	return true;
 }
 
-void	HttpRequest::_handleHeaders(void)
+HttpMethod	HttpRequest::getMethod(void) const
 {
-	if (_headers.count("content-length"))
-	{
-		_body_exist = true;
-	}
-	else if (_headers.count("transfer-encoding"))
-	{
-		_body_exist = true;
-		if (_headers["transfer-encoding"].find_first_of("chunked") != std::string::npos)
-			_chunked = true;
-	}
-	if (_headers.count("host"))
-	{
-		_server_name = _headers["host"];
-	}
+	return _method;
+}
+
+std::string	HttpRequest::getPath(void) const
+{
+	return _path;
 }
 
 void	HttpRequest::parse(char *data, size_t len)
@@ -500,10 +485,10 @@ void	HttpRequest::parse(char *data, size_t len)
 				{
 					temp.clear();
 					_fields_done = true;
-					if (_headers.count("content-length") && _headers.count("transfer-encoding"))
+					if (_headers.count("content-length") && _headers.count("transfer-encoding") && _headers["transfer-encoding"].find_first_of("chunked") != std::string::npos)
 					{
 						_err_code = 400;
-						std::cerr << "Bad Request (content-length + transfer-encoding)" << std::endl;
+						std::cerr << "Bad Request (Transfer-Encoding: Chunked + Content-Length)" << std::endl;
 						return ;
 					}
 					_handleHeaders();
@@ -564,7 +549,7 @@ void	HttpRequest::parse(char *data, size_t len)
 					std::cerr << "Bad Request (CHUNKED_LENGTH)" << std::endl;
 					return ;
 				}
-				continue ;
+				break ;
 			}
 			case CHUNKED_LEN_CR:
 			{
@@ -575,6 +560,7 @@ void	HttpRequest::parse(char *data, size_t len)
 					return ;
 				}
 				_state = CHUNKED_LEN_LF;
+				break ;
 			}
 			case CHUNKED_LEN_LF:
 			{
@@ -588,27 +574,66 @@ void	HttpRequest::parse(char *data, size_t len)
 					_state = CHUNKED_END_CR;
 				else
 					_state = CHUNKED_VALUE;
-				continue ;
+				break ;
 			}
-			case CHUNKED_VALUE:
+			case CHUNKED_DATA:
 			{
+				_body.push_back(c);
+				chunk_len--;
+				if (chunk_len == 0)
+					_state = CHUNKED_DATA_CR;
+				break ;
+			}
+			case CHUNKED_DATA_CR:
+			{
+				if (c != '\r')
+				{
+					_err_code = 400;
+					std::cerr << "Bad Request (CHUNKED_DATA_CR)" << std::endl;
+					return ;
+				}
+				_state = CHUNKED_DATA_LF;
+				break ;
+			}
+			case CHUNKED_DATA_LF:
+			{
+				if (c != '\n')
+				{
+					_err_code = 400;
+					std::cerr << "Bad Request (CHUNKED_DATA_LF)" << std::endl;
+					return ;
+				}
+				_state = CHUNKED_LENGTH_BEGIN;
 				break ;
 			}
 			case CHUNKED_END_CR:
 			{
 				if (c != '\r')
 				{
-
+					_err_code = 400;
+					std::cerr << "Bad Request (CHUNKED_END_CR)" << std::endl;
+					return ;
 				}
 				_state = CHUNKED_END_LF;
+				break ;
 			}
 			case CHUNKED_END_LF:
 			{
-				if (c == '\n')
-					_state = PARSING_DONE;
+				if (c != '\n')
+				{
+					_err_code = 400;
+					std::cerr << "Bad Request (CHUNKED_END_LF)" << std::endl;
+					return ;
+				}
+				_state = PARSING_DONE;
+				break ;
 			}
 			case BODY:
 			{
+				if (_body.size() < _body_len)
+					_body.push_back(c);
+				if (_body.size() == _body_len)
+					_state = PARSING_DONE;
 				break ;
 			}
 			case PARSING_DONE:
@@ -618,7 +643,7 @@ void	HttpRequest::parse(char *data, size_t len)
 		}
 		temp += c;
 		if (_state == PARSING_DONE)
-			return ;
+			_body_str.append((char *)_body.data(), _body.size());
 	}
 }
 
@@ -633,4 +658,36 @@ void	HttpRequest::setHeader(std::string key, std::string value)
 	value.erase(value.find_last_not_of(" \t") + 1);
 	
 	_headers[key] = value;
+}
+
+void	HttpRequest::_handleHeaders(void)
+{
+	std::stringstream	s;
+
+	if (_headers.count("content-length"))
+	{
+		_body_exist = true;
+		s << _headers["content-length"];
+		s >> _body_len;
+	}
+	else if (_headers.count("transfer-encoding"))
+	{
+		_body_exist = true;
+		if (_headers["transfer-encoding"].find_first_of("chunked") != std::string::npos)
+			_chunked = true;
+	}
+	if (_headers.count("host"))
+	{
+		_server_name = _headers["host"];
+	}
+}
+
+void	HttpRequest::keepAlive(void) const
+{
+	if (_headers.count("connection"))
+    {
+        if (_headers["connection"].find("close", 0) != std::string::npos)
+            return (false);
+    }
+    return (true);
 }
