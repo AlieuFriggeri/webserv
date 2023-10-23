@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:52:34 by vgroux            #+#    #+#             */
-/*   Updated: 2023/10/23 17:00:54 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/10/23 17:15:19 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ class RequestHandler
 {
 	private:
 		
+		
 	public:
 		RequestHandler(void);
 		~RequestHandler(void);
 
 		virtual HttpRespond	handleRequest(HttpRequest req) = 0;
-		
 };
 
 #endif
