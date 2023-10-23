@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/10/18 19:10:12 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/10/23 13:36:43 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <string>
 # include <sstream>
 # include <map>
+# include <vector>
 
 # define URI_MAX_LEN 4096
 
@@ -57,7 +58,9 @@ enum ParsingState
 	CHUNKED_LENGTH,
 	CHUNKED_LEN_CR,
 	CHUNKED_LEN_LF,
-	CHUNKED_VALUE,
+	CHUNKED_DATA,
+	CHUNKED_DATA_CR,
+	CHUNKED_DATA_LF,
 	CHUNKED_END_CR,
 	CHUNKED_END_LF,
 	BODY,
@@ -68,7 +71,7 @@ class HttpRequest
 {
 	private:
 		HttpMethod							_method;
-		std::map<int, std::string>			_method_str;
+		std::map<HttpMethod, std::string>	_method_str;
 		std::map<std::string, std::string>	_headers;
 		std::vector<unsigned char>			_body;
 		std::string							_body_str;
@@ -99,7 +102,6 @@ class HttpRequest
 		HttpMethod							getMethod(void) const;
 		std::string							getMethodStr(void) const;
 		std::string							getPath(void) const;
-		std::string							getErrorCode(void) const;
 		std::string							getServerName(void) const;
 		std::string							getQuery(void) const;
 		std::string							getFragment(void) const;
@@ -107,6 +109,7 @@ class HttpRequest
 		std::map<std::string, std::string>	getHeaders(void) const;
 		std::string							getBody(void) const;
 		std::string							getBoundary(void) const;
+		int									getErrorCode(void) const;
 
 		bool	isMultiform(void) const;
 		bool	isParsingDone(void) const;

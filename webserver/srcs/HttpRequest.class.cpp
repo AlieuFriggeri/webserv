@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/10/18 19:28:16 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/10/23 13:52:14 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ HttpRequest::HttpRequest(const HttpRequest& src)
 		_query = src._query;
 		_fragment = src._fragment;
 		_conn = src._conn;
-		_host = src._host;
+		_server_name = src._server_name;
 		_server_name = src._server_name;
 		_body_exist = src._body_exist;
 		_body = src._body;
@@ -66,7 +66,7 @@ HttpRequest&	HttpRequest::operator=(const HttpRequest& src)
 		_query = src._query;
 		_fragment = src._fragment;
 		_conn = src._conn;
-		_host = src._host;
+		_server_name = src._server_name;
 		_server_name = src._server_name;
 		_body_exist = src._body_exist;
 		_chunked = src._chunked;
@@ -116,7 +116,7 @@ HttpMethod	HttpRequest::getMethod(void) const
 
 std::string	HttpRequest::getMethodStr(void) const
 {
-	return _method_str[_method];
+	return _method_str.at(_method);
 }
 
 std::string	HttpRequest::getPath(void) const
@@ -124,7 +124,7 @@ std::string	HttpRequest::getPath(void) const
 	return _path;
 }
 
-std::string HttpRequest::getErrorCode(void) const
+int HttpRequest::getErrorCode(void) const
 {
 	return _err_code;
 }
@@ -146,7 +146,7 @@ std::string HttpRequest::getFragment(void) const
 
 std::string HttpRequest::getHeader(std::string const &name) const
 {
-	return _headers[name];
+	return _headers.at(name);
 }
 
 std::map<std::string, std::string> HttpRequest::getHeaders(void) const
@@ -161,7 +161,7 @@ std::string HttpRequest::getBody(void) const
 
 std::string	HttpRequest::getBoundary(void) const
 {
-	return _boundary
+	return _boundary;
 }
 
 bool HttpRequest::isMultiform(void) const
@@ -177,11 +177,11 @@ bool HttpRequest::isParsingDone(void) const
 		return false;
 }
 
-void	HttpRequest::keepAlive(void) const
+bool	HttpRequest::keepAlive(void) const
 {
 	if (_headers.count("connection"))
     {
-        if (_headers["connection"].find("close", 0) != std::string::npos)
+        if (_headers.at("connection").find_first_of("close") != std::string::npos)
             return (false);
     }
     return (true);
@@ -190,7 +190,7 @@ void	HttpRequest::keepAlive(void) const
 void	HttpRequest::printMessage(void) const
 {
 	std::cout << "HttpRequest with:" << std::endl;
-	std::cout << "Method\t" << _method_str[_method] << "\tHTTP/" << _ver_maj << "." << _ver_min << std::endl;
+	std::cout << "Method\t" << _method_str.at(_method) << "\tHTTP/" << _ver_maj << "." << _ver_min << std::endl;
 	std::cout << "Path\t\t" << _path << std::endl;
 	std::cout << "Query\t\t" << _query << std::endl;
 	std::cout << "Fragment\t" << _fragment << std::endl;
@@ -199,10 +199,10 @@ void	HttpRequest::printMessage(void) const
 	std::cout << "ParserState\t" << _state << std::endl;
 	std::cout << "Boundry\t" << _boundary << "\tMultiform\t" << _multiform << std::endl;
 	
-	for (std::map<std::string, std::string>::iterator i = _headers.begin(); i != _headers.end(); i++)
+	for (std::map<std::string, std::string>::const_iterator i = _headers.begin(); i != _headers.end(); i++)
         std::cout << i->first + ":" + i->second << std::endl;
 
-    for (std::vector<unsigned char>::iterator i = _body.begin(); i != _body.end(); i++)
+    for (std::vector<unsigned char>::const_iterator i = _body.begin(); i != _body.end(); i++)
         std::cout << *i;
     std::cout << std::endl;
 }
@@ -675,7 +675,7 @@ void	HttpRequest::parse(char *data, size_t len)
 				if (chunk_len == 0)
 					_state = CHUNKED_END_CR;
 				else
-					_state = CHUNKED_VALUE;
+					_state = CHUNKED_DATA;
 				break ;
 			}
 			case CHUNKED_DATA:
@@ -766,14 +766,14 @@ void	HttpRequest::_handleHeaders(void)
 	}
 	if (_headers.count("host"))
 	{
-		size_t	end = _headers["host"].substr(":");
+		size_t	end = _headers["host"].find_first_of(":");
 		_server_name = _headers["host"].substr(0, end);
 	}
 	if (_headers.count("content-type") && _headers["content-type"].find("multipart/form-data") != std::string::npos)
 	{
 		size_t	pos = _headers["content-type"].find("boundary=");
-		if (pos != std::string:npos)
-			_boundry = _headers["content-type"].substr(pos + 9, _headers["content-type"].size());
+		if (pos != std::string::npos)
+			_boundary = _headers["content-type"].substr(pos + 9, _headers["content-type"].size());
 		_multiform = true;
 	}
 }
