@@ -11,9 +11,11 @@
 #include <netdb.h>
 #include <string.h>
 #include <poll.h>
-#include <sys/event.h>
+//#include <sys/event.h>
 #include <sys/time.h>
 #include <sys/select.h>
+#include <fcntl.h>
+#include <list>
 
 
 class Client{
@@ -22,15 +24,19 @@ class Client{
 	Client();
 	~Client();
 
-	void acceptConnection(int listeningsocket);
-
+	void acceptConnection(int listeningsocket, int nbclient, fd_set *readset, std::list<Client> *clientlist);
+	void checknewconnection(std::list<Client> * clientlist);
 
 
 	int _client_socket;
+	int _clientnumber;
+	int _bytesrcv;
 	sockaddr_in _client;
 	socklen_t _clientsize;
 	char _host[NI_MAXHOST];
-
+	time_t _last_msg;
+	char _buff[4096];
+	
 	private:
 
 

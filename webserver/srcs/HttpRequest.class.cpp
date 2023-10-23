@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/10/18 14:42:49 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/10/23 17:23:15 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,37 +19,70 @@ HttpRequest::HttpRequest(void)
 	_method_str[::POST] = "POST";
 	_method_str[::DELETE] = "DELETE";
 	_method_str[::NONE] = "NONE";
+	_body.clear();
+	_state = REQUEST_LINE;
 	_fields_done = false;
 	_chunked = false;
 	_body_exist = false;
+	_multiform = false;
 	return ;
 }
 
 HttpRequest::HttpRequest(const HttpRequest& src)
 {
 	// std::cout << "HttpRequest Copy constructor called" << std::endl;
+	if (this != &src)
+	{
+		_method_str = src._method_str;
+		_method = src._method;
+		_headers = src._headers;
+		_path = src._path;
+		_query = src._query;
+		_fragment = src._fragment;
+		_conn = src._conn;
+		_server_name = src._server_name;
+		_server_name = src._server_name;
+		_body_exist = src._body_exist;
+		_body = src._body;
+		_body_str = src._body_str;
+		_chunked = src._chunked;
+		_err_code = src._err_code;
+		_ver_maj = src._ver_maj;
+		_ver_min = src._ver_min;
+		_state = src._state;
+		_boundary = src._boundary;
+		
+	}
 	return ;
 }
 
 HttpRequest&	HttpRequest::operator=(const HttpRequest& src)
 {
 	// std::cout << "HttpRequest Assignement constructor called" << std::endl;
+	if (this != &src)
+	{
+		_method_str = src._method_str;
+		_method = src._method;
+		_headers = src._headers;
+		_path = src._path;
+		_query = src._query;
+		_fragment = src._fragment;
+		_conn = src._conn;
+		_server_name = src._server_name;
+		_server_name = src._server_name;
+		_body_exist = src._body_exist;
+		_chunked = src._chunked;
+		_err_code = src._err_code;
+		_ver_maj = src._ver_maj;
+		_ver_min = src._ver_min;
+		_state = src._state;
+	}
 	return *this;
 }
 
 HttpRequest::~HttpRequest(void)
 {
 	// std::cout << "HttpRequest Destructor called" << std::endl;
-}
-
-HttpMethod	HttpRequest::getMethod(void) const
-{
-	return _method;
-}
-
-std::string	HttpRequest::getPath(void) const
-{
-	return _path;
 }
 
 bool    allowedCharURI(char c)
@@ -78,30 +111,125 @@ bool	checkUriPath(std::string _path)
 	return true;
 }
 
-void	HttpRequest::_handleHeaders(void)
+HttpMethod	HttpRequest::getMethod(void) const
 {
-	if (_headers.count("content-length"))
-	{
-		_body_exist = true;
-	}
-	else if (_headers.count("transfer-encoding"))
-	{
-		_body_exist = true;
-		if (_headers["transfer-encoding"].find_first_of("chunked") != std::npos)
-			_chunked = true;
-	}
-	if (_headers.count("host"))
-	{
-		
-	}
+	return _method;
+}
+
+std::string	HttpRequest::getMethodStr(void) const
+{
+	return _method_str.at(_method);
+}
+
+std::string	HttpRequest::getPath(void) const
+{
+	return _path;
+}
+
+int HttpRequest::getErrorCode(void) const
+{
+	return _err_code;
+}
+
+std::string HttpRequest::getServerName(void) const
+{
+	return _server_name;
+}
+
+std::string HttpRequest::getQuery(void) const
+{
+	return _query;
+}
+
+std::string HttpRequest::getFragment(void) const
+{
+	return _fragment;
+}
+
+std::string HttpRequest::getHeader(std::string const &name) const
+{
+	return _headers.at(name);
+}
+
+std::map<std::string, std::string> HttpRequest::getHeaders(void) const
+{
+	return _headers;
+}
+
+std::string HttpRequest::getBody(void) const
+{
+	return _body_str;
+}
+
+std::string	HttpRequest::getBoundary(void) const
+{
+	return _boundary;
+}
+
+bool HttpRequest::isMultiform(void) const
+{
+	return _multiform;
+}
+
+bool HttpRequest::isParsingDone(void) const
+{
+	if (_state == PARSING_DONE)
+		return true;
+	else
+		return false;
+}
+
+bool	HttpRequest::keepAlive(void) const
+{
+	if (_headers.count("connection"))
+    {
+        if (_headers.at("connection").find_first_of("close") != std::string::npos)
+            return (false);
+    }
+    return (true);
+}
+
+void	HttpRequest::printMessage(void) const
+{
+	std::cout << "HttpRequest with:" << std::endl;
+	std::cout << "Method\t" << _method_str.at(_method) << "\tHTTP/" << _ver_maj << "." << _ver_min << std::endl;
+	std::cout << "Path\t\t" << _path << std::endl;
+	std::cout << "Query\t\t" << _query << std::endl;
+	std::cout << "Fragment\t" << _fragment << std::endl;
+	std::cout << "ServerName\t" << _server_name << std::endl;
+	std::cout << "ErrorCode\t" << _err_code << std::endl;
+	std::cout << "ParserState\t" << _state << std::endl;
+	std::cout << "Boundary\t" << _boundary << "\tMultiform\t" << _multiform << std::endl;
+	
+	for (std::map<std::string, std::string>::const_iterator i = _headers.begin(); i != _headers.end(); i++)
+        std::cout << i->first + ":" + i->second << std::endl;
+
+    for (std::vector<unsigned char>::const_iterator i = _body.begin(); i != _body.end(); i++)
+        std::cout << *i;
+    std::cout << std::endl;
+}
+
+void	HttpRequest::setHeader(std::string key, std::string value)
+{
+	// key to lower
+	for (size_t i = 0; i < key.length(); i++)
+		key[i] = std::tolower(key[i]);
+
+	// trim spaces before and after the value
+	value.erase(0, value.find_first_not_of(" \t"));
+	value.erase(value.find_last_not_of(" \t") + 1);
+	
+	_headers[key] = value;
 }
 
 void	HttpRequest::parse(char *data, size_t len)
 {
 	char				c;
 	short				mi = 1;
+	int					chunk_len = 0;
 	std::stringstream	s;
 	std::string			temp;
+	std::string			tmp;
 
 	for (size_t i = 0; i < len; i++)
 	{
@@ -236,7 +364,7 @@ void	HttpRequest::parse(char *data, size_t len)
 			{
 				if (c == ' ')
 				{
-					_query.append(temp);
+					_fragment.append(temp);
 					temp.clear();
 					_state = REQUEST_LINE_H ;
 					continue ;
@@ -414,16 +542,16 @@ void	HttpRequest::parse(char *data, size_t len)
 			{
 				if (c == ':')
 				{
-					_tmp.clear();
-					_tmp = temp; // _tmp devient la clé
+					tmp.clear();
+					tmp = temp; // tmp devient la clé
 					temp.clear();
 					_state = FIELDS_VALUE;
 					continue ;
 				}
-				else if (!isalpha(c) && c != '_')
+				else if (!isalpha(c) && c != '-')
 				{
 					_err_code = 400;
-					std::cerr << "Bad Request (FIELDS_KEY)" << std::endl;
+					std::cerr << "Bad Request (FIELDS_KEY) and char is " << c << std::endl;
 					return ;
 				}
 				break ;
@@ -432,8 +560,8 @@ void	HttpRequest::parse(char *data, size_t len)
 			{
 				if (c == '\r')
 				{
-					setHeader(_tmp, temp); // _tmp = key | temp = value
-					_tmp.clear();
+					setHeader(tmp, temp); // tmp = key | temp = value
+					tmp.clear();
 					temp.clear();
 					_state = FIELDS_VALUE_END;
 					continue ;
@@ -461,14 +589,22 @@ void	HttpRequest::parse(char *data, size_t len)
 				{
 					temp.clear();
 					_fields_done = true;
-					if (_headers.count("content-length") && _headers.count("transfer-encoding"))
+					if (_headers.count("content-length") && _headers.count("transfer-encoding") && _headers["transfer-encoding"].find_first_of("chunked") != std::string::npos)
 					{
 						_err_code = 400;
-						std::cerr << "Bad Request (content-length + transfer-encoding)" << std::endl;
+						std::cerr << "Bad Request (Transfer-Encoding: Chunked + Content-Length)" << std::endl;
 						return ;
 					}
 					_handleHeaders();
-					
+					if (_body_exist)
+					{
+						if (_chunked)
+							_state = CHUNKED_LENGTH_BEGIN;
+						else
+							_state = BODY;
+					}
+					else
+						_state = PARSING_DONE;
 				}
 				else
 				{
@@ -478,22 +614,168 @@ void	HttpRequest::parse(char *data, size_t len)
 				}
 				break ;
 			}
+			case CHUNKED_LENGTH_BEGIN:
+			{
+				if (!isxdigit(c))
+				{
+					_err_code = 400;
+					std::cerr << "Bad Request (CHUNKED_LENGTH_BEGIN)" << std::endl;
+					return ;
+				}
+				chunk_len = 0;
+				s.str("");
+				s.clear();
+				s << c;
+				s >> std::hex >> chunk_len;
+				if (chunk_len == 0)
+					_state = CHUNKED_LEN_CR;
+				else
+					_state = CHUNKED_LENGTH;
+				break ;
+			}
+			case CHUNKED_LENGTH:
+			{
+				if (isxdigit(c))
+				{
+					mi = 0;
+					s.str("");
+					s.clear();
+					s << c;
+					s >> std::hex >> mi;
+					chunk_len *= 16;
+					chunk_len += mi;
+				}
+				else if (c == '\r')
+					_state = CHUNKED_LEN_LF;
+				else
+				{
+					_err_code = 400;
+					std::cerr << "Bad Request (CHUNKED_LENGTH)" << std::endl;
+					return ;
+				}
+				break ;
+			}
+			case CHUNKED_LEN_CR:
+			{
+				if (c != '\r')
+				{
+					_err_code = 400;
+					std::cerr << "Bad Request (CHUNKED_CR)" << std::endl;
+					return ;
+				}
+				_state = CHUNKED_LEN_LF;
+				break ;
+			}
+			case CHUNKED_LEN_LF:
+			{
+				if (c != '\n')
+				{
+					_err_code = 400;
+					std::cerr << "Bad Request (CHUNKED_LF)" << std::endl;
+					return ;
+				}
+				if (chunk_len == 0)
+					_state = CHUNKED_END_CR;
+				else
+					_state = CHUNKED_DATA;
+				break ;
+			}
+			case CHUNKED_DATA:
+			{
+				_body.push_back(c);
+				chunk_len--;
+				if (chunk_len == 0)
+					_state = CHUNKED_DATA_CR;
+				break ;
+			}
+			case CHUNKED_DATA_CR:
+			{
+				if (c != '\r')
+				{
+					_err_code = 400;
+					std::cerr << "Bad Request (CHUNKED_DATA_CR)" << std::endl;
+					return ;
+				}
+				_state = CHUNKED_DATA_LF;
+				break ;
+			}
+			case CHUNKED_DATA_LF:
+			{
+				if (c != '\n')
+				{
+					_err_code = 400;
+					std::cerr << "Bad Request (CHUNKED_DATA_LF)" << std::endl;
+					return ;
+				}
+				_state = CHUNKED_LENGTH_BEGIN;
+				break ;
+			}
+			case CHUNKED_END_CR:
+			{
+				if (c != '\r')
+				{
+					_err_code = 400;
+					std::cerr << "Bad Request (CHUNKED_END_CR)" << std::endl;
+					return ;
+				}
+				_state = CHUNKED_END_LF;
+				break ;
+			}
+			case CHUNKED_END_LF:
+			{
+				if (c != '\n')
+				{
+					_err_code = 400;
+					std::cerr << "Bad Request (CHUNKED_END_LF)" << std::endl;
+					return ;
+				}
+				_state = PARSING_DONE;
+				break ;
+			}
+			case BODY:
+			{
+				if (_body.size() < _body_len)
+					_body.push_back(c);
+				if (_body.size() == _body_len)
+					_state = PARSING_DONE;
+				break ;
+			}
+			case PARSING_DONE:
+			{
+				return ;
+			}
 		}
 		temp += c;
 		if (_state == PARSING_DONE)
-			return ;
+			_body_str.append((char *)_body.data(), _body.size());
 	}
 }
 
-void	HttpRequest::setHeader(std::string key, std::string value)
+void	HttpRequest::_handleHeaders(void)
 {
-	// key to lower
-	for (size_t i = 0; i < key.length(); i++)
-		key[i] = std::tolower(key[i]);
+	std::stringstream	s;
 
-	// trim spaces before and after the value
-	value.erase(0, value.find_first_not_of(" \t"));
-	value.erase(value.find_last_not_of(" \t") + 1);
-	
-	_headers[key] = value;
+	if (_headers.count("content-length"))
+	{
+		_body_exist = true;
+		s << _headers["content-length"];
+		s >> _body_len;
+	}
+	else if (_headers.count("transfer-encoding"))
+	{
+		_body_exist = true;
+		_chunked = true;
+	}
+	if (_headers.count("host"))
+	{
+		size_t	end = _headers["host"].find_first_of(":");
+		_server_name = _headers["host"].substr(0, end);
+	}
+	if (_headers.count("content-type") && _headers["content-type"].find("multipart/form-data") != std::string::npos)
+	{
+		size_t	pos = _headers["content-type"].find("boundary=");
+		if (pos != std::string::npos)
+			_boundary = _headers["content-type"].substr(pos + 9, _headers["content-type"].size());
+		_multiform = true;
+	}
 }

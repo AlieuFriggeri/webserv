@@ -8,43 +8,24 @@
 #include <netdb.h>
 #include <string.h>
 #include <poll.h>
-#include <sys/event.h>
+//#include <sys/event.h>
 #include <list>
-#include "../headers/Socket.hpp"
-#include "../headers/client.hpp"
+#include "Socket.hpp"
+#include "Client.hpp"
 #include <sys/select.h>
+#include "HttpRequest.class.hpp"
 
-#define PORT 667
+#define PORT 8002
 
 // int main( void ) {
 
-// 	Socket serv;
-// 	Client client;
-// 	client._client_socket = -1;
-// 	//std::list<Client> clientlist;
+	Socket serv;
+	std::list<Client> clientlist;
 
-// 	serv.setup(PORT);
-
-// 	bzero(serv._svc, sizeof(serv._svc));
-// 	bzero(client._host, sizeof(client._host));
-
-// 	fcntl(serv._listening_socket, F_SETFL, O_NONBLOCK, FD_CLOEXEC);
-
-
+	serv.setup(PORT);
+	clientlist.push_back(Client());
+	std::cout << "Launching WEBSERV listening on port " << PORT << std::endl;
+	serv.handleConnection(&clientlist);
 	
-// 	while (1)
-// 	{
-// 		if (client._client_socket == -1)
-// 		{
-// 			client.acceptConnection(serv._listening_socket);
-// 			fcntl(client._client_socket, F_SETFL, O_NONBLOCK, FD_CLOEXEC);
-// 			getnameinfo((sockaddr *)&client._client, sizeof(client._client), client._host, NI_MAXHOST, serv._svc, NI_MAXSERV, 0);
-// 			std::cout << client._host << " connected to server " << serv._svc << std::endl;
-// 		}
-// 		std::cout << "Waiting for connection . . ." << std::endl;
-
-// 		serv.prepareConnection(client._client_socket);
-
-// 	}
-// 	return 0;
-// }
+	return 0;
+}

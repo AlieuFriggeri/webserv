@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/10/18 14:25:27 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/10/23 17:23:41 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <string>
 # include <sstream>
 # include <map>
+# include <vector>
 
 # define URI_MAX_LEN 4096
 
@@ -53,6 +54,16 @@ enum ParsingState
 	FIELDS_VALUE,
 	FIELDS_VALUE_END,
 	FIELDS_END,
+	CHUNKED_LENGTH_BEGIN,
+	CHUNKED_LENGTH,
+	CHUNKED_LEN_CR,
+	CHUNKED_LEN_LF,
+	CHUNKED_DATA,
+	CHUNKED_DATA_CR,
+	CHUNKED_DATA_LF,
+	CHUNKED_END_CR,
+	CHUNKED_END_LF,
+	BODY,
 	PARSING_DONE
 };
 
@@ -60,20 +71,24 @@ class HttpRequest
 {
 	private:
 		HttpMethod							_method;
-		std::map<int, std::string>			_method_str;
+		std::map<HttpMethod, std::string>	_method_str;
 		std::map<std::string, std::string>	_headers;
+		std::vector<unsigned char>			_body;
+		std::string							_body_str;
 		std::string							_path;
 		std::string							_query;
 		std::string							_fragment;
 		std::string							_conn;
-		std::string							_host;
+		std::string							_server_name;
+		std::string							_boundary;
 		bool								_fields_done;
 		bool								_body_exist;
 		bool								_chunked;
+		bool								_multiform;
+		size_t								_body_len;
 		int									_err_code;
-		int									_ver_maj;
-		int									_ver_min;
-		std::string							_tmp;
+		unsigned int						_ver_maj;
+		unsigned int						_ver_min;
 		ParsingState						_state;
 
 		void								_handleHeaders(void);
@@ -84,11 +99,25 @@ class HttpRequest
 		HttpRequest& operator=(const HttpRequest& src);
 		~HttpRequest();
 
-		HttpMethod	getMethod(void) const;
-		std::string	getPath(void) const;
+		HttpMethod							getMethod(void) const;
+		std::string							getMethodStr(void) const;
+		std::string							getPath(void) const;
+		std::string							getServerName(void) const;
+		std::string							getQuery(void) const;
+		std::string							getFragment(void) const;
+		std::string							getHeader(std::string const &name) const;
+		std::map<std::string, std::string>	getHeaders(void) const;
+		std::string							getBody(void) const;
+		std::string							getBoundary(void) const;
+		int									getErrorCode(void) const;
 
-		void		parse(char *data, size_t len);
-		void		setHeader(std::string key, std::string value);
+		bool	isMultiform(void) const;
+		bool	isParsingDone(void) const;
+		bool	keepAlive(void) const;
+
+		void	printMessage(void) const;
+		void	setHeader(std::string key, std::string value);
+		void	parse(char *data, size_t len);
 };
 
 #endif
