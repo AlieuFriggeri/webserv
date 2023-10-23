@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/10/23 13:52:14 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/10/23 15:21:37 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ HttpRequest::HttpRequest(const HttpRequest& src)
 		_ver_maj = src._ver_maj;
 		_ver_min = src._ver_min;
 		_state = src._state;
+		_boundary = src._boundary;
+		
 	}
 	return ;
 }
@@ -197,7 +199,7 @@ void	HttpRequest::printMessage(void) const
 	std::cout << "ServerName\t" << _server_name << std::endl;
 	std::cout << "ErrorCode\t" << _err_code << std::endl;
 	std::cout << "ParserState\t" << _state << std::endl;
-	std::cout << "Boundry\t" << _boundary << "\tMultiform\t" << _multiform << std::endl;
+	std::cout << "Boundary\t" << _boundary << "\tMultiform\t" << _multiform << std::endl;
 	
 	for (std::map<std::string, std::string>::const_iterator i = _headers.begin(); i != _headers.end(); i++)
         std::cout << i->first + ":" + i->second << std::endl;
@@ -546,10 +548,10 @@ void	HttpRequest::parse(char *data, size_t len)
 					_state = FIELDS_VALUE;
 					continue ;
 				}
-				else if (!isalpha(c) && c != '_')
+				else if (!isalpha(c) && c != '-')
 				{
 					_err_code = 400;
-					std::cerr << "Bad Request (FIELDS_KEY)" << std::endl;
+					std::cerr << "Bad Request (FIELDS_KEY) and char is " << c << std::endl;
 					return ;
 				}
 				break ;

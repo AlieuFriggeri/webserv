@@ -1,4 +1,5 @@
 #include "Socket.hpp"
+#include "HttpRequest.class.hpp"
 
 Socket::Socket()
 {
@@ -146,6 +147,10 @@ void Socket::handleConnection(std::list<Client> * clientlist)
 				else if (FD_ISSET(i, &readcpy) && i != _listening_socket)
 				{
 					rcv = read(i, _buffer, sizeof(_buffer));
+					std::cout << "REQUEST" << std::endl << _buffer << std::endl << std::endl;
+					HttpRequest test;
+					test.parse(_buffer, rcv);
+					test.printMessage();
 					readrequest(clientlist, i, rcv);
 				}
 				else if (FD_ISSET(i, &writecpy))
@@ -248,6 +253,7 @@ void Socket::checktimeout(std::list<Client> *clientlist)
 void Socket::readrequest(std::list<Client> *clientlist, int fd, long rcv)
 {
 	std::string str;
+
 
 	if (rcv < 0)
 	{
