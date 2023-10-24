@@ -11,10 +11,11 @@
 class ServerConfig{
 	public:
 
-	void parsefile(std::string filename);
-	void erasewhitespaceleft(std::string str);
-	void configservers(std::string file);
-	std::string splitserv(std::string content);
+	static std::map<std::string, ServerConfig> parsefile(std::string filename);
+	static void erasewhitespaceleft(std::string str);
+	//void configservers(std::string file);
+	static std::vector<std::string> splitserv(std::string content);
+	static std::map<std::string, std::map<std::string, std::string>> setupmap(std::vector<std::string> configs);
 	~ServerConfig();
 	ServerConfig();
 
