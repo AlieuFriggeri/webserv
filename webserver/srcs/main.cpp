@@ -17,7 +17,7 @@
 
 #define PORT 8002
 
-// int main( void ) {
+int main( void ) {
 
 	Socket serv;
 	std::list<Client> clientlist;

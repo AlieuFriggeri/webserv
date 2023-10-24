@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/10/23 17:23:15 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/10/24 17:08:02 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,7 @@ HttpRequest::HttpRequest(void)
 	_method_str[::POST] = "POST";
 	_method_str[::DELETE] = "DELETE";
 	_method_str[::NONE] = "NONE";
-	_body.clear();
-	_state = REQUEST_LINE;
-	_fields_done = false;
-	_chunked = false;
-	_body_exist = false;
-	_multiform = false;
+	resetRequest();
 	return ;
 }
 
@@ -33,25 +28,26 @@ HttpRequest::HttpRequest(const HttpRequest& src)
 	// std::cout << "HttpRequest Copy constructor called" << std::endl;
 	if (this != &src)
 	{
-		_method_str = src._method_str;
 		_method = src._method;
+		_method_str = src._method_str;
 		_headers = src._headers;
+		_body = src._body;
+		_body_str = src._body_str;
 		_path = src._path;
 		_query = src._query;
 		_fragment = src._fragment;
 		_conn = src._conn;
 		_server_name = src._server_name;
-		_server_name = src._server_name;
+		_boundary = src._boundary;
+		_fields_done = src._fields_done;
 		_body_exist = src._body_exist;
-		_body = src._body;
-		_body_str = src._body_str;
 		_chunked = src._chunked;
+		_multiform = src._multiform;
+		_body_len = src._body_len;
 		_err_code = src._err_code;
 		_ver_maj = src._ver_maj;
 		_ver_min = src._ver_min;
 		_state = src._state;
-		_boundary = src._boundary;
-		
 	}
 	return ;
 }
@@ -61,17 +57,22 @@ HttpRequest&	HttpRequest::operator=(const HttpRequest& src)
 	// std::cout << "HttpRequest Assignement constructor called" << std::endl;
 	if (this != &src)
 	{
-		_method_str = src._method_str;
 		_method = src._method;
+		_method_str = src._method_str;
 		_headers = src._headers;
+		_body = src._body;
+		_body_str = src._body_str;
 		_path = src._path;
 		_query = src._query;
 		_fragment = src._fragment;
 		_conn = src._conn;
 		_server_name = src._server_name;
-		_server_name = src._server_name;
+		_boundary = src._boundary;
+		_fields_done = src._fields_done;
 		_body_exist = src._body_exist;
 		_chunked = src._chunked;
+		_multiform = src._multiform;
+		_body_len = src._body_len;
 		_err_code = src._err_code;
 		_ver_maj = src._ver_maj;
 		_ver_min = src._ver_min;
@@ -83,6 +84,7 @@ HttpRequest&	HttpRequest::operator=(const HttpRequest& src)
 HttpRequest::~HttpRequest(void)
 {
 	// std::cout << "HttpRequest Destructor called" << std::endl;
+	resetRequest();
 }
 
 bool    allowedCharURI(char c)
@@ -231,6 +233,7 @@ void	HttpRequest::parse(char *data, size_t len)
 	std::string			temp;
 	std::string			tmp;
 
+	resetRequest();
 	for (size_t i = 0; i < len; i++)
 	{
 		c = data[i];
@@ -778,4 +781,27 @@ void	HttpRequest::_handleHeaders(void)
 			_boundary = _headers["content-type"].substr(pos + 9, _headers["content-type"].size());
 		_multiform = true;
 	}
+}
+
+void	HttpRequest::resetRequest(void)
+{
+	_method = NONE;
+	_headers.clear();
+	_body.clear();
+	_body_str.clear();
+	_path.clear();
+	_query.clear();
+	_fragment.clear();
+	_conn.clear();
+	_server_name.clear();
+	_boundary.clear();
+	_fields_done = false;
+	_body_exist = false;
+	_chunked = false;
+	_multiform = false;
+	_body_len = 0;
+	_err_code = 0;
+	_ver_maj = 0;
+	_ver_min = 0;
+	_state = REQUEST_LINE;
 }

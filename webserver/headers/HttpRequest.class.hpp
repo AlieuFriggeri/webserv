@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/10/23 17:23:41 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/10/24 16:47:21 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define HTTPREQUEST_CLASS_HPP
 
 # include <iostream>
-# include <string>
+# include <cstring>
 # include <sstream>
 # include <map>
 # include <vector>
@@ -118,6 +118,7 @@ class HttpRequest
 		void	printMessage(void) const;
 		void	setHeader(std::string key, std::string value);
 		void	parse(char *data, size_t len);
+		void	resetRequest(void);
 };
 
 #endif
