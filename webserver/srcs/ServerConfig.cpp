@@ -19,13 +19,13 @@ void ServerConfig::erasewhitespaceleft(std::string str)
 		str = str.erase(0);
 }
 
-std::map<std::string, ServerConfig> ServerConfig::parsefile(std::string filename)
+std::map<std::string, std::map<std::string, std::string> > ServerConfig::parsefile(std::string filename)
 {
 	std::ifstream file;
 	std::string content;
 	std::string line;
 	std::vector<std::string> configs;
-	std::map<std::string, ServerConfig> res;
+	std::map<std::string, std::map<std::string, std::string> > res;
 
 	file.open(filename);
 
@@ -69,7 +69,7 @@ std::map<std::string, ServerConfig> ServerConfig::parsefile(std::string filename
 	// 	std::cout << "-------------------------" << std::endl;
 	// }
 
-	res = setupservers(configs);
+	res = setupmap(configs);
 
 	return res;
 }
@@ -111,9 +111,9 @@ std::vector<std::string> ServerConfig::splitserv(std::string content)
 	return vector;
 }
 
-std::map<std::string, std::map<std::string, std::string>> ServerConfig::setupmap(std::vector<std::string> configs)
+std::map<std::string, std::map<std::string, std::string> > ServerConfig::setupmap(std::vector<std::string> configs)
 {
-	
+
 }
 
 // static void openfile_error(std::ifstream &file, const std::string &filename)
