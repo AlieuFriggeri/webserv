@@ -18,6 +18,7 @@
 #include <algorithm>
 #include <list>
 #include "Client.hpp"
+#include "ServerConfig.hpp"
 
 
 class Socket{
@@ -46,6 +47,10 @@ class Socket{
 	char _svc[NI_MAXSERV];
 	char _buffer[4096];
 	int _max_sock;
+	std::string _servername;
+	int _maxbodysize;
+	int _port;
+	std::string root;
 
 	private:
 

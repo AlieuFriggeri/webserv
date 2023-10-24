@@ -17,15 +17,17 @@
 
 #define PORT 8002
 
-int main( void ) {
+int main( int ac,char **av) {
+	(void)ac;
+	ServerConfig configuration;
+	configuration.parsefile(av[1]);
+	//Socket serv;
+	//std::list<Client> clientlist;
 
-	Socket serv;
-	std::list<Client> clientlist;
-
-	serv.setup(PORT);
-	clientlist.push_back(Client());
-	std::cout << "Launching WEBSERV listening on port " << PORT << std::endl;
-	serv.handleConnection(&clientlist);
+	//serv.setup(PORT);
+	//clientlist.push_back(Client());
+	//std::cout << "Launching WEBSERV listening on port " << PORT << std::endl;
+	//serv.handleConnection(&clientlist);
 	
 	return 0;
 }
