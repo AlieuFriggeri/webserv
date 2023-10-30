@@ -6,6 +6,7 @@ ServerConfig::ServerConfig()
 	_configmap["servername"] = "default";
 	_configmap["maxbodysize"] = "default";
 	_configmap["root"] = "default";
+	_nbserver = 0;
 }
 
 ServerConfig::~ServerConfig()
@@ -19,13 +20,13 @@ void ServerConfig::erasewhitespaceleft(std::string str)
 		str = str.erase(0);
 }
 
-std::map<std::string, std::map<std::string, std::string> > ServerConfig::parsefile(std::string filename)
+std::vector<std::map<std::string, std::string> > ServerConfig::parsefile(std::string filename)
 {
 	std::ifstream file;
 	std::string content;
 	std::string line;
 	std::vector<std::string> configs;
-	std::map<std::string, std::map<std::string, std::string> > res;
+	std::vector<std::map<std::string, std::string> > res;
 
 	file.open(filename);
 
@@ -70,7 +71,7 @@ std::map<std::string, std::map<std::string, std::string> > ServerConfig::parsefi
 	// }
 
 	res = setupmap(configs);
-
+	exit(0);
 	return res;
 }
 
@@ -111,11 +112,88 @@ std::vector<std::string> ServerConfig::splitserv(std::string content)
 	return vector;
 }
 
-std::map<std::string, std::map<std::string, std::string> > ServerConfig::setupmap(std::vector<std::string> configs)
+std::vector<std::map<std::string, std::string> > ServerConfig::setupmap(std::vector<std::string> configs)
 {
-
+	std::vector<std::map<std::string, std::string> > res;
+	std::map<std::string, std::string> maptmp;
+	std::string tmp;
+	size_t pos;
+	std::string i = "1";
+	for (std::vector<std::string>::iterator it = configs.begin(); it != configs.end(); it++)
+	{
+		pos = it->find("- server_name =");
+		if (pos == std::string::npos)
+		{
+			std::cerr << "Config file: server name not found, default name given" << std::endl;
+			tmp  = "default " + i;
+			std::cout << "default:" << tmp << std::endl;
+			maptmp["server_name"] = tmp;
+			i[0] ++;
+		}
+		else
+		{
+			tmp = it->substr(pos + 16, it->find(";") - 2);
+			if (tmp.find_first_of('\n') != tmp.find_last_of("\n") || tmp.find_first_of(";") != tmp.find_last_of(";"))
+			{
+				std::cerr << "Config file: server_name: bad syntax" << std::endl;
+				exit(1);
+			}
+			tmp.erase(tmp.find("\n"));
+			tmp.erase(tmp.find(";"));
+			if (checkdouble(tmp, "server_name", res) != 0)
+			{
+				std::cerr << "Config file: two server cannot have the same name" << std::endl;
+				exit(1);
+			}
+			maptmp["server_name"] = tmp;
+		}
+		pos = it->find("- listen =");
+		if (pos == std::string::npos)
+		{
+			std::cerr << "Config file: listening port not found, syntax is: - listen = [...];" << std::endl;
+			exit(1);
+		}
+		tmp = it->substr(pos + 11, it->find(";"));
+		if (tmp.find_first_of('\n') != tmp.find_last_of("\n") || tmp.find_first_of(";") != tmp.find_last_of(";"))
+		{
+			std::cerr << "Config file: port: bad syntax" << std::endl;
+			exit(1);
+		}
+		tmp.erase(tmp.find("\n"));
+		tmp.erase(tmp.find(";"));
+		if (checkdouble(tmp, "port", res) || atoi(tmp.c_str()) == 0)
+		{
+			std::cerr << "Config file: two server cannot listen on the same port" << std::endl;
+			exit(1);
+		}
+		maptmp["port"] = tmp;
+		pos = it->find("- clientbody =");
+		if (pos == std::string::npos)
+		{
+			std::cerr << "Config file: client max body size not found, syntax is: - clientbody = [...];" << std::endl;
+			exit(1);
+		}
+		tmp = it->substr(pos + 14, it->find(";"));
+		tmp.erase(tmp.find("\n"));
+		tmp.erase(tmp.find(";"));
+		maptmp["clientbody"] = tmp;
+		std::cout << "tmp = " << tmp << std::endl;
+		res.push_back(maptmp);
+		maptmp.clear();
+	}
+	return res;
 }
 
+
+int ServerConfig::checkdouble(std::string str, std::string tosearch, std::vector<std::map<std::string, std::string> > configs)
+{(void)str;
+	for (std::vector<std::map<std::string, std::string> >::iterator it = configs.begin(); it != configs.end(); it++)
+	{
+		if (it->at(tosearch) == str)
+			return 1;
+	}
+	return 0;
+}
 // static void openfile_error(std::ifstream &file, const std::string &filename)
 // {
 // 	file.open(filename.c_str());

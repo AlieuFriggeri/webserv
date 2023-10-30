@@ -3,7 +3,6 @@ servers:
     - listen = 80;
     - server_name = domain1.com;
     - clientbody = 2048;
-    - access_log = logs/domain1.access.log  main;
     - route{
         - / (
             methods = GET;
@@ -16,7 +15,7 @@ servers:
   ]
 
   @server[
-    - listen = 800;
+    - listen = 8002;
     - server_name = domain2.com;
     - clientbody = 4096;
     - route{

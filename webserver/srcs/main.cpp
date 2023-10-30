@@ -18,8 +18,12 @@
 #define PORT 8002
 
 int main( int ac,char **av) {
-	(void)ac;
 	ServerConfig configuration;
+	if (ac != 2)
+	{
+		std::cerr << "Usage: ./webserv CONFIG_FILE.UDC" << std::endl;
+		exit(1);
+	}
 	configuration.parsefile(av[1]);
 	//Socket serv;
 	//std::list<Client> clientlist;
