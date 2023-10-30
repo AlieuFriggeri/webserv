@@ -16,7 +16,7 @@ servers:
             root = ./;
             listing = false;
             index = ./index.html;
-            cgi = .cpp | /cgi/bin;
+            cgi = .mdr | /cgi/bin;
         )
     }
   ]
@@ -39,6 +39,13 @@ servers:
             listing = true;
             index = ./admin.html;
             cgi = .cpp | /cgi/bin/admin;
+        )
+        - /k2aris/ (
+            methods = GET DELETE;
+            root = /b2oba/;
+            listing = false;
+            index = ./92i.html;
+            cgi = .evry | /cgi/bin/admin;
         )
     }
   ]

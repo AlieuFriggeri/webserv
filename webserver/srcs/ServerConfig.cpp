@@ -201,39 +201,67 @@ std::vector<std::map<std::string, Route> > ServerConfig::setuproutes(std::vector
 			std::cerr << "Config file: route not found" << std::endl;
 			exit(1);
 		}
+		//std::cout << "it = " << *it << std::endl;
 		tmp = it->substr(pos + 8, it->find_first_of("}"));
-		if (tmp.find("-") == std::string::npos || tmp.find("(") == std::string::npos)
+		while (tmp.size() != 0)
 		{
-			std::cerr << "Config file: bad route syntax" << std::endl;
-			exit(1);
+			if (tmp.find("-") == std::string::npos || tmp.find("(") == std::string::npos)
+			{
+				std::cerr << "Config file: bad route syntax" << std::endl;
+				exit(1);
+			}
+			tmp2 = tmp.substr(tmp.find("-") + 1, tmp.find("("));
+			tmp2 = tmp2.substr(0, tmp2.find("("));
+			route = tmp.substr(0, tmp.find_first_of(")"));
+			if (route.find("methods =") == std::string::npos)
+			{
+				std::cerr << "Config file: route methods not found" << std::endl;
+				exit(1);
+			}
+			maptmp[tmp2]._methods = route.substr(route.find("methods =") + 9, route.find(";", route.find("methods =")) - route.find("methods ="));
+			if (route.find("root =") == std::string::npos)
+			{
+				std::cerr << "Config file: route root not found" << std::endl;
+				exit(1);
+			}
+			maptmp[tmp2]._root = route.substr(route.find("root =") + 6, route.find(";", route.find("root =")) - route.find("root ="));
+			if (route.find("listing = false;") == std::string::npos && route.find("listing = true;") == std::string::npos)
+			{
+				std::cerr << "Config file: listing not found" << std::endl;
+				exit(1);
+			}
+			if (route.find("listing = true;") != std::string::npos)
+				maptmp[tmp2]._listing = true;
+			else
+				maptmp[tmp2]._listing = false;
+			if (route.find("index =") == std::string::npos)
+			{
+				std::cerr << "Config file: index not found" << std::endl;
+				exit(1);
+			}
+			maptmp[tmp2]._index = route.substr(route.find("index =") + 7, route.find(";", route.find("index =")) - route.find("index ="));
+			if (route.find("cgi =") != std::string::npos)
+			{
+				//std::cerr << "Config file: cgi not found" << std::endl;
+				maptmp[tmp2]._cgi = route.substr(route.find("cgi =") + 5, route.find(";", route.find("cgi =") - route.find("cgi =")));
+				//exit(1);
+			}
+			std::cout << maptmp[tmp2]._methods << std::endl;
+			std::cout << maptmp[tmp2]._root << std::endl;
+			std::cout << maptmp[tmp2]._index << std::endl;
+			std::cout << maptmp[tmp2]._listing << std::endl;
+			std::cout << maptmp[tmp2]._cgi << std::endl;
+			std::cout << "---------------------------" << std::endl;
+			
+			//std::cout << "tmp before" << tmp << std::endl;
+			tmp.erase(0, tmp.find_first_of(")") + 1);
+			//std::cout << "tmp after" << tmp << std::endl;
+			if (tmp.find_first_of(")") == std::string::npos)
+			{
+				tmp.clear();
+				break;
+			}
 		}
-		tmp2 = tmp.substr(tmp.find("-") + 1, tmp.find("("));
-		tmp2 = tmp2.substr(0, tmp2.find("("));
-		route = tmp.substr(0, tmp.find_first_of(")"));
-		if (route.find("methods =") == std::string::npos)
-		{
-			std::cerr << "Config file: route methods not found" << std::endl;
-			exit(1);
-		}
-		maptmp[tmp2]._methods = route.substr(route.find("methods =") + 9, route.find(";", route.find("methods =")) - route.find("methods ="));
-		if (route.find("root =") == std::string::npos)
-		{
-			std::cerr << "Config file: route root not found" << std::endl;
-			exit(1);
-		}
-		maptmp[tmp2]._root = route.substr(route.find("root =") + 6, route.find(";", route.find("root =")) - route.find("root ="));
-		if (route.find("listing = false;") == std::string::npos && route.find("listing = true;") == std::string::npos)
-		{
-			std::cerr << "Config file: listing not found" << std::endl;
-			exit(1);
-		}
-		if (route.find("listing = true;") != std::string::npos)
-			maptmp[tmp2]._listing = true;
-		else
-			maptmp[tmp2]._listing = false;
-		std::cout << maptmp[tmp2]._listing << std::endl;
-
-		exit(1);
 	}
 	return res;
 }
