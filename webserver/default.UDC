@@ -4,7 +4,14 @@ servers:
     - server_name = domain1.com;
     - clientbody = 2048;
     - route{
-        - / (
+        - /lol/mdr/ (
+            methods = GET POST;
+            root = ./;
+            listing = false;
+            index = ./index.html;
+            cgi = .cpp | /cgi/bin;
+        )
+        - /super/jpp/ (
             methods = GET;
             root = ./;
             listing = false;
@@ -27,7 +34,7 @@ servers:
             cgi = .cpp | /cgi/bin;
         )
         - /admin/ (
-            methods = GET | POST | DELETE;
+            methods = GET POST DELETE;
             root = /admin/;
             listing = true;
             index = ./admin.html;

@@ -17,6 +17,7 @@
 #include <sys/select.h>
 #include <algorithm>
 #include <list>
+#include <map>
 #include "Client.hpp"
 #include "ServerConfig.hpp"
 
@@ -51,6 +52,8 @@ class Socket{
 	int _maxbodysize;
 	int _port;
 	std::string root;
+	std::map<std::string, std::string> route;
+	std::map<std::string, std::string> config;
 
 	private:
 

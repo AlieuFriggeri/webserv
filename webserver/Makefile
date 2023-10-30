@@ -6,7 +6,7 @@
 #    By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/30 10:58:16 by afrigger          #+#    #+#              #
-#    Updated: 2023/10/24 11:33:19 by afrigger         ###   ########.fr        #
+#    Updated: 2023/10/30 17:02:06 by afrigger         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ DIR_H = headers/
 DIR_S =	srcs/
 DIR_O =	objs/
 
-SRCS_LIST =	main.cpp Client.cpp Socket.cpp HttpRequest.class.cpp ServerConfig.cpp
+SRCS_LIST =	main.cpp Client.cpp Socket.cpp HttpRequest.class.cpp ServerConfig.cpp Route.cpp
 
 SRCS =		${addprefix ${DIR_S}, ${SRCS_LIST}}
 

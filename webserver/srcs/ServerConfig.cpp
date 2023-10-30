@@ -6,7 +6,6 @@ ServerConfig::ServerConfig()
 	_configmap["servername"] = "default";
 	_configmap["maxbodysize"] = "default";
 	_configmap["root"] = "default";
-	_nbserver = 0;
 }
 
 ServerConfig::~ServerConfig()
@@ -27,6 +26,7 @@ std::vector<std::map<std::string, std::string> > ServerConfig::parsefile(std::st
 	std::string line;
 	std::vector<std::string> configs;
 	std::vector<std::map<std::string, std::string> > res;
+	std::vector<std::map<std::string, Route> >routes;
 
 	file.open(filename);
 
@@ -63,7 +63,8 @@ std::vector<std::map<std::string, std::string> > ServerConfig::parsefile(std::st
 	content = content.erase(0, 9);
 
 	configs = splitserv(content);
-
+	//int nbserver = configs.size();
+	routes = setuproutes(configs);
 	// for (std::vector<std::string>::iterator i = configs.begin(); i != configs.end(); i++)
 	// {
 	// 	std::cout << *i << std::endl;
@@ -177,16 +178,68 @@ std::vector<std::map<std::string, std::string> > ServerConfig::setupmap(std::vec
 		tmp.erase(tmp.find("\n"));
 		tmp.erase(tmp.find(";"));
 		maptmp["clientbody"] = tmp;
-		std::cout << "tmp = " << tmp << std::endl;
+		//std::cout << "tmp = " << tmp << std::endl;
 		res.push_back(maptmp);
 		maptmp.clear();
 	}
 	return res;
 }
 
+std::vector<std::map<std::string, Route> > ServerConfig::setuproutes(std::vector<std::string> configs)
+{
+	size_t pos = 0;
+	std::string tmp;
+	std::string tmp2;
+	std::string route;
+	std::map<std::string, Route> maptmp;
+	std::vector<std::map<std::string, Route> > res;
+	for (std::vector<std::string>::iterator it = configs.begin(); it != configs.end(); it++)
+	{
+		pos = it->find("- route{");
+		if (pos == std::string::npos)
+		{
+			std::cerr << "Config file: route not found" << std::endl;
+			exit(1);
+		}
+		tmp = it->substr(pos + 8, it->find_first_of("}"));
+		if (tmp.find("-") == std::string::npos || tmp.find("(") == std::string::npos)
+		{
+			std::cerr << "Config file: bad route syntax" << std::endl;
+			exit(1);
+		}
+		tmp2 = tmp.substr(tmp.find("-") + 1, tmp.find("("));
+		tmp2 = tmp2.substr(0, tmp2.find("("));
+		route = tmp.substr(0, tmp.find_first_of(")"));
+		if (route.find("methods =") == std::string::npos)
+		{
+			std::cerr << "Config file: route methods not found" << std::endl;
+			exit(1);
+		}
+		maptmp[tmp2]._methods = route.substr(route.find("methods =") + 9, route.find(";", route.find("methods =")) - route.find("methods ="));
+		if (route.find("root =") == std::string::npos)
+		{
+			std::cerr << "Config file: route root not found" << std::endl;
+			exit(1);
+		}
+		maptmp[tmp2]._root = route.substr(route.find("root =") + 6, route.find(";", route.find("root =")) - route.find("root ="));
+		if (route.find("listing = false;") == std::string::npos && route.find("listing = true;") == std::string::npos)
+		{
+			std::cerr << "Config file: listing not found" << std::endl;
+			exit(1);
+		}
+		if (route.find("listing = true;") != std::string::npos)
+			maptmp[tmp2]._listing = true;
+		else
+			maptmp[tmp2]._listing = false;
+		std::cout << maptmp[tmp2]._listing << std::endl;
+
+		exit(1);
+	}
+	return res;
+}
 
 int ServerConfig::checkdouble(std::string str, std::string tosearch, std::vector<std::map<std::string, std::string> > configs)
-{(void)str;
+{
 	for (std::vector<std::map<std::string, std::string> >::iterator it = configs.begin(); it != configs.end(); it++)
 	{
 		if (it->at(tosearch) == str)
