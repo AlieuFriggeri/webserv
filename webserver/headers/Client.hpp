@@ -36,6 +36,7 @@ class Client{
 	char _host[NI_MAXHOST];
 	time_t _last_msg;
 	char _buff[4096];
+	int _serverindex;
 	
 	private:
 
