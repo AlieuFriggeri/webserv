@@ -20,7 +20,10 @@
 #include <map>
 #include "Client.hpp"
 #include "ServerConfig.hpp"
+#include "Route.hpp"
 
+
+class Route;
 
 class Socket{
 
@@ -51,9 +54,9 @@ class Socket{
 	std::string _servername;
 	int _maxbodysize;
 	int _port;
-	std::string root;
-	std::map<std::string, std::string> route;
-	std::map<std::string, std::string> config;
+	std::string _root;
+	std::map<std::string, Route> _route;
+	std::map<std::string, std::string> _config;
 
 	private:
 

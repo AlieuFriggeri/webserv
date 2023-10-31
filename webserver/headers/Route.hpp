@@ -13,6 +13,7 @@ public:
 	bool _listing;
 	std::string _index;
 	std::string _cgi;
+	std::string _path;
 private:
 
 };

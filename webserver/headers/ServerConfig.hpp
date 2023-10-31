@@ -13,6 +13,8 @@
 
 class Route;
 
+class Socket;
+
 class ServerConfig{
 	public:
 
@@ -23,6 +25,8 @@ class ServerConfig{
 	static std::vector<std::map<std::string, std::string> > setupmap(std::vector<std::string> configs);
 	static int checkdouble(std::string str, std::string tosearch, std::vector<std::map<std::string, std::string> > configs);
 	static std::vector<std::map<std::string, Route> > setuproutes(std::vector<std::string> configs);
+	static void configservers(std::vector<std::map<std::string, std::string> > configs, std::vector<std::map<std::string, Route> > routes, Socket *serverarray);
+
 	~ServerConfig();
 	ServerConfig();
 

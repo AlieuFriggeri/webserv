@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HttpRequest.class.hpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: kistod <kistod@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/10/23 13:36:43 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/10/31 08:25:37 by kistod           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <sstream>
 # include <map>
 # include <vector>
+# include <cstring>
+# include <string.h>
 
 # define URI_MAX_LEN 4096
 

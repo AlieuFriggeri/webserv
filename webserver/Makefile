@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+         #
+#    By: kistod <kistod@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/30 10:58:16 by afrigger          #+#    #+#              #
-#    Updated: 2023/10/30 17:02:06 by afrigger         ###   ########.fr        #
+#    Updated: 2023/10/31 08:26:21 by kistod           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ RESET = \033[0m
 NAME =     webserv
 
 CC =         c++
-CFLAGS =     -Wall -Wextra -Werror -std=c++98
+CFLAGS =     #-Wall -Wextra -Werror -std=c++98
 RM =         rm -rf
 
 DIR_H = headers/

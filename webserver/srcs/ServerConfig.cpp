@@ -63,7 +63,7 @@ std::vector<std::map<std::string, std::string> > ServerConfig::parsefile(std::st
 	content = content.erase(0, 9);
 
 	configs = splitserv(content);
-	//int nbserver = configs.size();
+	int nbserv = configs.size();
 	routes = setuproutes(configs);
 	// for (std::vector<std::string>::iterator i = configs.begin(); i != configs.end(); i++)
 	// {
@@ -72,8 +72,36 @@ std::vector<std::map<std::string, std::string> > ServerConfig::parsefile(std::st
 	// }
 
 	res = setupmap(configs);
+	Socket serverarray[nbserv];
+	configservers(res, routes, serverarray);
 	exit(0);
 	return res;
+}
+
+void ServerConfig::configservers(std::vector<std::map<std::string, std::string> > configs, std::vector<std::map<std::string, Route> > routes, Socket *serverarray)
+{
+	int i = 0;
+	for (std::vector<std::map<std::string, std::string> >::iterator it = configs.begin(); it != configs.end(); it++)
+	{
+		
+		std::map<std::string, std::string> maptmp = *it;
+		serverarray[i]._port = atoi(maptmp["port"].c_str());
+		serverarray[i]._maxbodysize = atoi(maptmp["clientbody"].c_str());
+		serverarray[i]._servername = maptmp["server_name"];
+		i++;
+		
+	}
+	i = 0;
+	for (std::vector<std::map<std::string, Route> >::iterator it = routes.begin(); it != routes.end(); it++)
+	{
+		std::map<std::string, Route> maptmp = *it;
+		for (std::map<std::string, Route>::iterator it2 = maptmp.begin(); it2 != maptmp.end(); it2++)
+		{
+			serverarray[i]._route[it2->first] = it2->second;
+		}
+		
+	}
+	
 }
 
 std::vector<std::string> ServerConfig::splitserv(std::string content)
@@ -129,7 +157,7 @@ std::vector<std::map<std::string, std::string> > ServerConfig::setupmap(std::vec
 			tmp  = "default " + i;
 			std::cout << "default:" << tmp << std::endl;
 			maptmp["server_name"] = tmp;
-			i[0] ++;
+			i[0]++;
 		}
 		else
 		{
@@ -212,6 +240,7 @@ std::vector<std::map<std::string, Route> > ServerConfig::setuproutes(std::vector
 			}
 			tmp2 = tmp.substr(tmp.find("-") + 1, tmp.find("("));
 			tmp2 = tmp2.substr(0, tmp2.find("("));
+			maptmp[tmp2]._path = tmp2;
 			route = tmp.substr(0, tmp.find_first_of(")"));
 			if (route.find("methods =") == std::string::npos)
 			{
@@ -219,12 +248,14 @@ std::vector<std::map<std::string, Route> > ServerConfig::setuproutes(std::vector
 				exit(1);
 			}
 			maptmp[tmp2]._methods = route.substr(route.find("methods =") + 9, route.find(";", route.find("methods =")) - route.find("methods ="));
+			maptmp[tmp2]._methods.erase(maptmp[tmp2]._methods.find(";"));
 			if (route.find("root =") == std::string::npos)
 			{
 				std::cerr << "Config file: route root not found" << std::endl;
 				exit(1);
 			}
 			maptmp[tmp2]._root = route.substr(route.find("root =") + 6, route.find(";", route.find("root =")) - route.find("root ="));
+			maptmp[tmp2]._root.erase(maptmp[tmp2]._root.find(";"));
 			if (route.find("listing = false;") == std::string::npos && route.find("listing = true;") == std::string::npos)
 			{
 				std::cerr << "Config file: listing not found" << std::endl;
@@ -240,12 +271,15 @@ std::vector<std::map<std::string, Route> > ServerConfig::setuproutes(std::vector
 				exit(1);
 			}
 			maptmp[tmp2]._index = route.substr(route.find("index =") + 7, route.find(";", route.find("index =")) - route.find("index ="));
+			maptmp[tmp2]._index.erase(maptmp[tmp2]._index.find(";"));
 			if (route.find("cgi =") != std::string::npos)
 			{
 				//std::cerr << "Config file: cgi not found" << std::endl;
 				maptmp[tmp2]._cgi = route.substr(route.find("cgi =") + 5, route.find(";", route.find("cgi =") - route.find("cgi =")));
+				maptmp[tmp2]._cgi.erase(maptmp[tmp2]._cgi.find(";"));
 				//exit(1);
 			}
+
 			std::cout << maptmp[tmp2]._methods << std::endl;
 			std::cout << maptmp[tmp2]._root << std::endl;
 			std::cout << maptmp[tmp2]._index << std::endl;
@@ -253,9 +287,9 @@ std::vector<std::map<std::string, Route> > ServerConfig::setuproutes(std::vector
 			std::cout << maptmp[tmp2]._cgi << std::endl;
 			std::cout << "---------------------------" << std::endl;
 			
-			//std::cout << "tmp before" << tmp << std::endl;
 			tmp.erase(0, tmp.find_first_of(")") + 1);
-			//std::cout << "tmp after" << tmp << std::endl;
+			res.push_back(maptmp);
+			maptmp.clear();
 			if (tmp.find_first_of(")") == std::string::npos)
 			{
 				tmp.clear();
