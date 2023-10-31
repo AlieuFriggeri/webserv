@@ -8,14 +8,14 @@ servers:
             methods = GET POST;
             root = ./;
             listing = false;
-            index = ./index.html;
+            index = ./lol.html;
             cgi = .cpp | /cgi/bin;
         )
         - /super/jpp/ (
             methods = GET;
             root = ./;
             listing = false;
-            index = ./index.html;
+            index = ./jpp.html;
             cgi = .mdr | /cgi/bin;
         )
     }

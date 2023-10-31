@@ -78,6 +78,19 @@ std::vector<std::map<std::string, std::string> > ServerConfig::parsefile(std::st
 	return res;
 }
 
+std::string removespace(std::string key)
+{
+	int i = 0;
+	std::string res;
+	while (i < key.size())
+	{
+		if (isspace(key[i]) == false)
+			res += key[i];
+		i++;
+	}
+	return res;
+}
+
 void ServerConfig::configservers(std::vector<std::map<std::string, std::string> > configs, std::vector<std::map<std::string, Route> > routes, Socket *serverarray)
 {
 	int i = 0;
@@ -92,17 +105,44 @@ void ServerConfig::configservers(std::vector<std::map<std::string, std::string> 
 		
 	}
 	i = 0;
-	for (std::vector<std::map<std::string, Route> >::iterator it = routes.begin(); it != routes.end(); it++)
+	for (std::vector<std::map<std::string, Route> >::iterator it = routes.begin(); it != routes.end() && i < 2; it++)
 	{
 		std::map<std::string, Route> maptmp = *it;
+		std::string key;
 		for (std::map<std::string, Route>::iterator it2 = maptmp.begin(); it2 != maptmp.end(); it2++)
 		{
-			serverarray[i]._route[it2->first] = it2->second;
+			if (it2->first == "NEXT" && it2->second._path == "true")
+			{
+				i++;
+				break;
+			}
+			key = it2->first;
+			key = removespace(key);
+			serverarray[i]._route[key] = it2->second;
 		}
-		
 	}
-	
+	i = 0;
+	while (i < configs.size())
+	{
+		std::cout << "PORT: "<< serverarray[i]._port << std::endl;
+		std::cout << "SERVERNAME: "<< serverarray[i]._servername << std::endl;
+		std::cout << "MAXBODYSIZE: " << serverarray[i]._maxbodysize << std::endl;
+		std::cout << "---------------------ROUTE FOR SERVER " << i << "-----------------------" << std::endl;
+		for ( std::map<std::string, Route>::iterator it = serverarray[i]._route.begin(); it != serverarray[i]._route.end(); it++)
+		{
+			std::cout << it->first << " = " << it->second._cgi << std::endl;
+			std::cout << it->first << " = " << it->second._index << std::endl;
+			std::cout << it->first << " = " << it->second._listing << std::endl;
+			std::cout << it->first << " = " << it->second._methods << std::endl;
+			std::cout << it->first << " = " << it->second._path << std::endl;
+			std::cout << it->first << " = " << it->second._root << std::endl;
+		}
+		std::cout << "-------------------------------------------------------------------------" << std::endl;
+		i++;
+	}
+	exit(1);
 }
+
 
 std::vector<std::string> ServerConfig::splitserv(std::string content)
 {
@@ -280,12 +320,12 @@ std::vector<std::map<std::string, Route> > ServerConfig::setuproutes(std::vector
 				//exit(1);
 			}
 
-			std::cout << maptmp[tmp2]._methods << std::endl;
-			std::cout << maptmp[tmp2]._root << std::endl;
-			std::cout << maptmp[tmp2]._index << std::endl;
-			std::cout << maptmp[tmp2]._listing << std::endl;
-			std::cout << maptmp[tmp2]._cgi << std::endl;
-			std::cout << "---------------------------" << std::endl;
+			// std::cout << maptmp[tmp2]._methods << std::endl;
+			// std::cout << maptmp[tmp2]._root << std::endl;
+			// std::cout << maptmp[tmp2]._index << std::endl;
+			// std::cout << maptmp[tmp2]._listing << std::endl;
+			// std::cout << maptmp[tmp2]._cgi << std::endl;
+			// std::cout << "---------------------------" << std::endl;
 			
 			tmp.erase(0, tmp.find_first_of(")") + 1);
 			res.push_back(maptmp);
@@ -296,6 +336,9 @@ std::vector<std::map<std::string, Route> > ServerConfig::setuproutes(std::vector
 				break;
 			}
 		}
+		maptmp["NEXT"]._path = "true";
+		res.push_back(maptmp);
+		maptmp.clear();
 	}
 	return res;
 }
