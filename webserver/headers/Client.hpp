@@ -24,7 +24,7 @@ class Client{
 	Client();
 	~Client();
 
-	void acceptConnection(int listeningsocket, int nbclient, fd_set *readset, std::list<Client> *clientlist);
+	void acceptConnection(int listeningsocket, int nbclient, fd_set *readset, std::list<Client> *clientlist, int port);
 	void checknewconnection(std::list<Client> * clientlist);
 
 
@@ -36,7 +36,8 @@ class Client{
 	char _host[NI_MAXHOST];
 	time_t _last_msg;
 	char _buff[4096];
-	int _serverindex;
+	int _serversocket;
+	int _port;
 	
 	private:
 

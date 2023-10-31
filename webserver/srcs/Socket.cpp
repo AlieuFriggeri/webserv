@@ -102,12 +102,22 @@ int	Socket::initsets(std::list<Client> * clientlist, fd_set *_read, fd_set *_wri
 	return res;
 }
 
+int checkport(int i, Socket *servers)
+{
+	for (int j = 0; j < servers[0]._totalserv; j++)
+	{
+		if (servers[j]._listening_socket == i)
+			return servers[j]._port;
+	}
+	return -1;
+}
+
 int checklisteningsock(int i, Socket *servers)
 {
 	for (int j = 0; j < servers[0]._totalserv; j++)
 	{
-		if (servers[i]._listening_socket == i)
-			return servers[i]._listening_socket;
+		if (servers[j]._listening_socket == i)
+			return i;
 	}
 	return -1;
 }
@@ -122,7 +132,6 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 	fd_set readset;
 	fd_set writeset;
 	timeval timeout;
-	//int max_sock;
 	std::list<Client>::iterator tmp;
 	initsets(clientlist, &readset, &writeset, servers);
 
@@ -163,18 +172,16 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 		}
 		else if (rcv == 0)
 		{
-			//std::cout << "rcv = 0" << std::endl;
-			//return;
+			std::cout << "max_sock = " << max_sock << std::endl;
 		}
 		else
-		{	//std::cout << "for loop" << std::endl;
+		{
 			bzero(buffer, sizeof(buffer));
 			for (int i = 0; i <= max_sock; i++)
 			{
-
 				if(FD_ISSET(i, &readcpy) && checklisteningsock(i, servers) == i)
 				{
-					clientlist->back().acceptConnection(checklisteningsock(i, servers), clientlist->size() - 1, &readset, clientlist);
+					clientlist->back().acceptConnection(checklisteningsock(i, servers), clientlist->size() - 1, &readset, clientlist, checkport(i, servers));
 					if (clientlist->back()._client_socket != -1)
 						max_sock = addfdtoset(clientlist->back()._client_socket, &readset, max_sock);
 					clientlist->back().checknewconnection(clientlist);
@@ -182,10 +189,6 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 				else if (FD_ISSET(i, &readcpy) && i != checklisteningsock(i, servers))
 				{
 					rcv = read(i, buffer, sizeof(buffer));
-					std::cout << "REQUEST" << std::endl << buffer << std::endl << std::endl;
-					HttpRequest test;
-					// test.parse(buffer, rcv);
-					// test.printMessage();
 					readrequest(clientlist, i, rcv, &readset, &writeset);
 				}
 				else if (FD_ISSET(i, &writecpy))
@@ -200,23 +203,9 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 							read(index, buffer2, sizeof(buffer2));
 							close(index);
 							write(i, buffer2, sizeof(buffer2));
-							//std::cout << "Response sent to Client[" << it->_clientnumber << "]" << std::endl;
 							str = buffer;
-//							if (str.find("close") == true)
 							closeconnection(clientlist, i, &readset, &writeset);
 							std::cout << i << std::endl;
-							// else
-							// {
-							// 	rmfdfromset(i, &writeset);
-							// 	addfdtoset(i, &readset);
-							// 	setMaxSock(clientlist);
-							// }
-							
-							// if(close(i) != 0)
-							// {
-							// 	perror("close");
-							// 	exit(3);
-							// }
 							break;
 						}
 					}
@@ -297,7 +286,8 @@ void Socket::readrequest(std::list<Client> *clientlist, int fd, long rcv, fd_set
 	{
 		closeconnection(clientlist, fd, readset, writeset);
 		setMaxSock(clientlist);
-		std::cout << "Error in recv" << std::endl;
+		perror("recv");
+		exit(1);
 	}
 	else if (rcv == 0)
 	{
@@ -316,7 +306,7 @@ void Socket::readrequest(std::list<Client> *clientlist, int fd, long rcv, fd_set
 				max_sock = addfdtoset(fd, writeset, max_sock);
 				max_sock = rmfdfromset(fd, readset, max_sock);
 
-				//std::cout << "Request received from Client " << it->_clientnumber << std::endl;
+				std::cout << "Request received from Client " << it->_clientnumber << std::endl;
 				//str = buffer;
 				break;
 			}

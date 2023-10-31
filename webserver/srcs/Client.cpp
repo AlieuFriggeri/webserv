@@ -15,7 +15,7 @@ Client::~Client()
 
 }
 
-void Client::acceptConnection(int listeningsocket, int nbclient, fd_set *readset, std::list<Client> *clientlist)
+void Client::acceptConnection(int listeningsocket, int nbclient, fd_set *readset, std::list<Client> *clientlist, int port)
 {
 	bzero(&_client, sizeof(_client));
 	_clientsize = sizeof(_client);
@@ -37,6 +37,8 @@ void Client::acceptConnection(int listeningsocket, int nbclient, fd_set *readset
 		_client_socket = -1;
 		return;
 	}
+	_serversocket = listeningsocket;
+	_port = port;
 	(void)clientlist;
 	// for(std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
 	// {
@@ -56,7 +58,7 @@ void Client::checknewconnection(std::list<Client> * clientlist)
 	if (clientlist->back()._client_socket != -1)
 	{
 		clientlist->back()._clientnumber = ++i;
-		//std::cout << "Client [" << clientlist->back()._clientnumber << "] has been connected" << std::endl;
+		std::cout << "Client [" << clientlist->back()._clientnumber << "] has been connected on port " << clientlist->back()._port << std::endl;
 		std::cout << clientlist->size() << " Client actually connected with socket: " << clientlist->back()._client_socket << std::endl;
 		clientlist->push_back(Client());
 	}
