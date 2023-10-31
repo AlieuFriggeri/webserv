@@ -31,7 +31,7 @@ class Socket{
 	public:
 	Socket();
 	~Socket();
-	void setup(int port);
+	static void setup(Socket *servers);
 	//void handleConnection(int clientsocket);
 	//void prepareConnection(int clientsocket);
 	void handleConnection(std::list<Client> *clientlist);
@@ -57,6 +57,7 @@ class Socket{
 	std::string _root;
 	std::map<std::string, Route> _route;
 	std::map<std::string, std::string> _config;
+	int _totalserv;
 
 	private:
 

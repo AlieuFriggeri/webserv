@@ -12,6 +12,7 @@
 #include <list>
 #include "Socket.hpp"
 #include "Client.hpp"
+#include "ServerConfig.hpp"
 #include <sys/select.h>
 #include "HttpRequest.class.hpp"
 
@@ -24,14 +25,10 @@ int main( int ac,char **av) {
 		std::cerr << "Usage: ./webserv CONFIG_FILE.UDC" << std::endl;
 		exit(1);
 	}
-	configuration.parsefile(av[1]);
-	//Socket serv;
-	//std::list<Client> clientlist;
+	Socket *serverarray = NULL;
+	serverarray = ServerConfig::parsefile(av[1]);
+	Socket::setup(serverarray);
 
-	//serv.setup(PORT);
-	//clientlist.push_back(Client());
-	//std::cout << "Launching WEBSERV listening on port " << PORT << std::endl;
-	//serv.handleConnection(&clientlist);
-	
+	delete [] serverarray;
 	return 0;
 }

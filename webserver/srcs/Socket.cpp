@@ -18,41 +18,50 @@ Socket::~Socket()
 
 }
 
-void Socket::setup(int port)
+void Socket::setup(Socket *servers)
 {
-	int yes = 1;
-
-	_listening_socket = socket(AF_INET, SOCK_STREAM, 0);
+	for (int i = 0; i < servers[0]._totalserv; i++)
+	{
+//		servers[i]._listening_socket = socket(AF_INET, SOCK_STREAM, 0);
 	
-	if (_listening_socket < 0)
-	{
-		std::cerr << "Socket creation impossible" << std::endl;
-		exit(1);
+		int yes = 1;
+
+		servers[i]._listening_socket = socket(AF_INET, SOCK_STREAM, 0);
+		
+		if (servers[i]._listening_socket < 0)
+		{
+			std::cerr << "Socket creation impossible" << std::endl;
+			exit(1);
+		}
+
+		servers[i]._server.sin_family = AF_INET;
+		servers[i]._server.sin_port = htons(servers[i]._port);
+		servers[i]._server.sin_addr.s_addr = INADDR_ANY;
+
+		if (setsockopt(servers[i]._listening_socket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) == -1)
+		{
+			std::cout << "setsockopt error cheh" << std::endl;
+			exit(-9);
+		}
+
+		if (bind(servers[i]._listening_socket, (sockaddr *)&servers[i]._server, (socklen_t)sizeof(servers[i]._server)) < 0)
+		{
+			std::cerr << "Error during socket binding" << std::endl;
+			exit(2);
+		}
+
+		if (listen(servers[i]._listening_socket, 128) < 0)
+		{
+			std::cerr << "Error while listening on socket" << std::endl;
+			exit(3);
+		}
+
+		if (fcntl(servers[i]._listening_socket, F_SETFL, O_NONBLOCK) < 0)
+		{
+			std::cerr << "Error with fcntl" << std::endl;
+			exit(4);
+		}
 	}
-
-	_server.sin_family = AF_INET;
-	_server.sin_port = htons(port);
-	_server.sin_addr.s_addr = INADDR_ANY;
-
-	if (setsockopt(_listening_socket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) == -1)
-	{
-		std::cout << "setsockopt error cheh" << std::endl;
-		exit(-9);
-	}
-
-	if (bind(_listening_socket, (sockaddr *)&_server, (socklen_t)sizeof(_server)) < 0)
-	{
-		std::cerr << "Error during socket binding" << std::endl;
-		exit(2);
-	}
-
-	if (listen(_listening_socket, 128) < 0)
-	{
-		std::cerr << "Error while listening on socket" << std::endl;
-		exit(3);
-	}
-
-	fcntl(_listening_socket, F_SETFL, O_NONBLOCK);
 	
 }
 

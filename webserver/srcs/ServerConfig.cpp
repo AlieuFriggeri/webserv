@@ -19,7 +19,7 @@ void ServerConfig::erasewhitespaceleft(std::string str)
 		str = str.erase(0);
 }
 
-std::vector<std::map<std::string, std::string> > ServerConfig::parsefile(std::string filename)
+Socket *ServerConfig::parsefile(std::string filename)
 {
 	std::ifstream file;
 	std::string content;
@@ -72,15 +72,15 @@ std::vector<std::map<std::string, std::string> > ServerConfig::parsefile(std::st
 	// }
 
 	res = setupmap(configs);
-	Socket serverarray[nbserv];
+	Socket *serverarray = new Socket[nbserv];
 	configservers(res, routes, serverarray);
-	exit(0);
-	return res;
+	serverarray[0]._totalserv = nbserv;
+	return serverarray;
 }
 
 std::string removespace(std::string key)
 {
-	int i = 0;
+	size_t i = 0;
 	std::string res;
 	while (i < key.size())
 	{
@@ -93,7 +93,7 @@ std::string removespace(std::string key)
 
 void ServerConfig::configservers(std::vector<std::map<std::string, std::string> > configs, std::vector<std::map<std::string, Route> > routes, Socket *serverarray)
 {
-	int i = 0;
+	size_t i = 0;
 	for (std::vector<std::map<std::string, std::string> >::iterator it = configs.begin(); it != configs.end(); it++)
 	{
 		
@@ -122,25 +122,24 @@ void ServerConfig::configservers(std::vector<std::map<std::string, std::string> 
 		}
 	}
 	i = 0;
-	while (i < configs.size())
-	{
-		std::cout << "PORT: "<< serverarray[i]._port << std::endl;
-		std::cout << "SERVERNAME: "<< serverarray[i]._servername << std::endl;
-		std::cout << "MAXBODYSIZE: " << serverarray[i]._maxbodysize << std::endl;
-		std::cout << "---------------------ROUTE FOR SERVER " << i << "-----------------------" << std::endl;
-		for ( std::map<std::string, Route>::iterator it = serverarray[i]._route.begin(); it != serverarray[i]._route.end(); it++)
-		{
-			std::cout << it->first << " = " << it->second._cgi << std::endl;
-			std::cout << it->first << " = " << it->second._index << std::endl;
-			std::cout << it->first << " = " << it->second._listing << std::endl;
-			std::cout << it->first << " = " << it->second._methods << std::endl;
-			std::cout << it->first << " = " << it->second._path << std::endl;
-			std::cout << it->first << " = " << it->second._root << std::endl;
-		}
-		std::cout << "-------------------------------------------------------------------------" << std::endl;
-		i++;
-	}
-	exit(1);
+	// while (i < configs.size())
+	// {
+	// 	std::cout << "PORT: "<< serverarray[i]._port << std::endl;
+	// 	std::cout << "SERVERNAME: "<< serverarray[i]._servername << std::endl;
+	// 	std::cout << "MAXBODYSIZE: " << serverarray[i]._maxbodysize << std::endl;
+	// 	std::cout << "---------------------ROUTE FOR SERVER " << i << "-----------------------" << std::endl;
+	// 	for ( std::map<std::string, Route>::iterator it = serverarray[i]._route.begin(); it != serverarray[i]._route.end(); it++)
+	// 	{
+	// 		std::cout << it->first << " cgi = " << it->second._cgi << std::endl;
+	// 		std::cout << it->first << " index = " << it->second._index << std::endl;
+	// 		std::cout << it->first << " listing = " << it->second._listing << std::endl;
+	// 		std::cout << it->first << " methods = " << it->second._methods << std::endl;
+	// 		std::cout << it->first << " path = " << it->second._path << std::endl;
+	// 		std::cout << it->first << " root = " << it->second._root << std::endl;
+	// 	}
+	// 	std::cout << "-------------------------------------------------------------------------" << std::endl;
+	// 	i++;
+	// }
 }
 
 
