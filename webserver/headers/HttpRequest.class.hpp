@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/10/24 16:47:21 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/02 10:46:34 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@
 # include <map>
 # include <vector>
 
-# define URI_MAX_LEN 4096
+# ifndef URI_MAX_LEN
+#  define URI_MAX_LEN 4096
+# endif
 
 enum HttpMethod
 {
