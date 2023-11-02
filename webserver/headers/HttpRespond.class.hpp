@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:55:44 by vgroux            #+#    #+#             */
-/*   Updated: 2023/10/23 17:19:56 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/02 10:52:06 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ class HttpRespond
 	public:
 		HttpRespond(void);
 		~HttpRespond(void);
-		
 };
 
 #endif

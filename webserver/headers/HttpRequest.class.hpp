@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HttpRequest.class.hpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kistod <kistod@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/10/31 08:25:37 by kistod           ###   ########.fr       */
+/*   Updated: 2023/11/02 10:54:23 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,16 @@
 # define HTTPREQUEST_CLASS_HPP
 
 # include <iostream>
-# include <string>
+# include <cstring>
 # include <sstream>
 # include <map>
 # include <vector>
 # include <cstring>
 # include <string.h>
 
-# define URI_MAX_LEN 4096
+# ifndef URI_MAX_LEN
+#  define URI_MAX_LEN 4096
+# endif
 
 enum HttpMethod
 {
@@ -120,6 +122,7 @@ class HttpRequest
 		void	printMessage(void) const;
 		void	setHeader(std::string key, std::string value);
 		void	parse(char *data, size_t len);
+		void	resetRequest(void);
 };
 
 #endif
