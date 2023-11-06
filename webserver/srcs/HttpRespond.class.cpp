@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:11:18 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/06 18:26:39 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/06 18:30:41 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,19 +65,19 @@ bool HttpRespond::build(HttpRequest req)
 	setHeader("Connection", req.getHeader("connection"));
 	if (_status_code == 0)
 	{
-		setHeader("Server", req.getServerName());
 		
+
 		/*
 		
 		GERER LA REQUETE, L'APPEL ET RETOUR DU CGI, ETC...
 		
 		*/
-		_resp = generateStatusLine();
-		_resp += generateHeaders();
-		_resp += _body + CRLN;
+
+		
 	}
-	else // Erreur lors du parsing (status == 400 / 501)
-		_resp = generateStatusLine() + generateHeaders() + CRLN;
+	_resp = generateStatusLine();
+	_resp += generateHeaders();
+	_resp += _body + CRLN;
 	_isBuilt = true;
 	return (true);
 }

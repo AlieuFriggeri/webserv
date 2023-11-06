@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:08:04 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/06 18:21:43 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/06 18:33:08 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,13 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest req)
 
 	if (req.isParsingDone() == false)
 		std::cerr << "Le parsing de la requete a rencontre une erreur" << std::endl;
-	if (req.getQuery() != "" && req.getFragment() != "")
+	else
 	{
-		resp.setBody(""/* CGI */);
+		if (req.getQuery() != "" && req.getFragment() != "")
+		{
+			resp.setBody(""/* CGI */);
+		}
+
 	}
 	resp.build(req);
 	return (resp);
