@@ -1,29 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   GetRequestHandler.class.hpp                        :+:      :+:    :+:   */
+/*   RequestHandler.class.cpp                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/23 16:58:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/06 14:18:03 by vgroux           ###   ########.fr       */
+/*   Created: 2023/11/02 11:02:28 by vgroux            #+#    #+#             */
+/*   Updated: 2023/11/02 11:04:53 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_REQUEST_HANDLER_CLASS_HPP
-# define GET_REQUEST_HANDLER_CLASS_HPP
+#include "RequestHandler.class.hpp"
 
-# include "RequestHandler.class.hpp"
-
-class GetRequestHandler: public RequestHandler
+RequestHandler::RequestHandler(void)
 {
-	private:
-		
-	public:
-		GetRequestHandler(void);
-		~GetRequestHandler(void);
+	// std::cout << "RequestHandler default constructor called" << std::endl;
+}
 
-		HttpRespond	handleRequest(HttpRequest req);
-};
-
-#endif
+RequestHandler::~RequestHandler(void)
+{
+	// std::cout << "RequestHandler destructor called" << std::endl;
+}

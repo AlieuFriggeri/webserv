@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   GetRequestHandler.class.hpp                        :+:      :+:    :+:   */
+/*   PostRequestHandler.class.hpp                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/23 16:58:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/06 14:18:03 by vgroux           ###   ########.fr       */
+/*   Created: 2023/11/02 10:14:16 by vgroux            #+#    #+#             */
+/*   Updated: 2023/11/02 10:48:24 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_REQUEST_HANDLER_CLASS_HPP
-# define GET_REQUEST_HANDLER_CLASS_HPP
+#ifndef POST_REQUEST_HANDLER_CLASS_HPP
+# define POST_REQUEST_HANDLER_CLASS_HPP
 
-# include "RequestHandler.class.hpp"
+#include "RequestHandler.class.hpp"
 
-class GetRequestHandler: public RequestHandler
+class PostRequestHandler: public RequestHandler
 {
 	private:
-		
+		PostRequestHandler(void);
+
 	public:
-		GetRequestHandler(void);
-		~GetRequestHandler(void);
+		PostRequestHandler(HttpRequest req);
+		~PostRequestHandler(void);
 
 		HttpRespond	handleRequest(HttpRequest req);
 };

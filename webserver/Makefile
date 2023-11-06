@@ -6,7 +6,7 @@
 #    By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/30 10:58:16 by afrigger          #+#    #+#              #
-#    Updated: 2023/11/02 10:54:36 by vgroux           ###   ########.fr        #
+#    Updated: 2023/11/06 16:46:32 by vgroux           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,11 @@ DIR_H = headers/
 DIR_S =	srcs/
 DIR_O =	objs/
 
-SRCS_LIST =	main.cpp Client.cpp Socket.cpp HttpRequest.class.cpp ServerConfig.cpp Route.cpp
+SRCS_LIST =	main.cpp utils.cpp \
+			Client.cpp Socket.cpp ServerConfig.cpp Route.cpp \
+			HttpRequest.class.cpp HttpRespond.class.cpp \
+			RequestHandler.class.cpp GetRequestHandler.class.cpp PostRequestHandler.class.cpp DeleteRequestHandler.class.cpp \
+
 
 SRCS =		${addprefix ${DIR_S}, ${SRCS_LIST}}
 
