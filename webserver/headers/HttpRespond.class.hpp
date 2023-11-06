@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:55:44 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/06 17:30:07 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/06 18:25:16 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <string>
 # include <sstream>
 # include <map>
-
+# include <ctime>
 
 class HttpRespond
 {
@@ -30,18 +30,25 @@ class HttpRespond
 		std::string							_resp;
 		bool								_isBuilt;
 
-		std::string	generateRequestLine(void);
+		std::string	generateStatusLine(void);
 		std::string	generateHeaders(void);
 
 	public:
 		HttpRespond(void);
 		~HttpRespond(void);
 
-		bool	addHeader(std::string key, std::string value);
-		bool	built(HttpRequest req);
-		bool	isBuilt(void);
-		
-		std::string	getResp(void);
+		bool	build(HttpRequest req);
+		bool	isBuild(void);
+
+		int									getStatus(void);
+		std::string							getHeader(std::string key);
+		std::map<std::string, std::string>	getHeaders(void);
+		std::string							getBody(void);
+		std::string							getResp(void);
+
+		void	setStatus(int status);
+		void	setHeader(std::string key, std::string value);
+		void	setBody(std::string body);
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/10/24 17:08:02 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/06 17:50:57 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +89,10 @@ HttpRequest::~HttpRequest(void)
 
 bool    allowedCharURI(char c)
 {
-    if ((c >= '#' && c <= ';') || (c >= '?' && c <= '[') || (c >= 'a' && c <= 'z') ||
-       c == '!' || c == '=' || c == ']' || c == '_' || c == '~')
-        return (true);
-    return (false);
+	if ((c >= '#' && c <= ';') || (c >= '?' && c <= '[') || (c >= 'a' && c <= 'z') ||
+	   c == '!' || c == '=' || c == ']' || c == '_' || c == '~')
+		return (true);
+	return (false);
 }
 
 bool	checkUriPath(std::string _path)
@@ -184,11 +184,11 @@ bool HttpRequest::isParsingDone(void) const
 bool	HttpRequest::keepAlive(void) const
 {
 	if (_headers.count("connection"))
-    {
-        if (_headers.at("connection").find_first_of("close") != std::string::npos)
-            return (false);
-    }
-    return (true);
+	{
+		if (_headers.at("connection").find_first_of("close") != std::string::npos)
+			return (false);
+	}
+	return (true);
 }
 
 void	HttpRequest::printMessage(void) const
@@ -204,11 +204,11 @@ void	HttpRequest::printMessage(void) const
 	std::cout << "Boundary\t" << _boundary << "\tMultiform\t" << _multiform << std::endl;
 	
 	for (std::map<std::string, std::string>::const_iterator i = _headers.begin(); i != _headers.end(); i++)
-        std::cout << i->first + ":" + i->second << std::endl;
+		std::cout << i->first + ":" + i->second << std::endl;
 
-    for (std::vector<unsigned char>::const_iterator i = _body.begin(); i != _body.end(); i++)
-        std::cout << *i;
-    std::cout << std::endl;
+	for (std::vector<unsigned char>::const_iterator i = _body.begin(); i != _body.end(); i++)
+		std::cout << *i;
+	std::cout << std::endl;
 }
 
 void	HttpRequest::setHeader(std::string key, std::string value)
