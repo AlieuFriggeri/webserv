@@ -75,6 +75,7 @@ Socket *ServerConfig::parsefile(std::string filename)
 	Socket *serverarray = new Socket[nbserv];
 	configservers(res, routes, serverarray);
 	serverarray[0]._totalserv = nbserv;
+	//exit(1);
 	return serverarray;
 }
 
@@ -318,14 +319,14 @@ std::vector<std::map<std::string, Route> > ServerConfig::setuproutes(std::vector
 				maptmp[tmp2]._cgi.erase(maptmp[tmp2]._cgi.find(";"));
 				//exit(1);
 			}
-
+			// RAJOUTER LES METHODE DANS HTTPMETHODE DE LA CLASSE ROUTE
 			// std::cout << maptmp[tmp2]._methods << std::endl;
 			// std::cout << maptmp[tmp2]._root << std::endl;
 			// std::cout << maptmp[tmp2]._index << std::endl;
 			// std::cout << maptmp[tmp2]._listing << std::endl;
 			// std::cout << maptmp[tmp2]._cgi << std::endl;
 			// std::cout << "---------------------------" << std::endl;
-			
+
 			tmp.erase(0, tmp.find_first_of(")") + 1);
 			res.push_back(maptmp);
 			maptmp.clear();

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   GetRequestHandler.class.hpp                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:58:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/06 14:18:03 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/07 15:06:45 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ class GetRequestHandler: public RequestHandler
 		GetRequestHandler(void);
 		~GetRequestHandler(void);
 
-		HttpRespond	handleRequest(HttpRequest req);
+		static HttpRespond	handleRequest(HttpRequest req);
 };
 
 #endif
