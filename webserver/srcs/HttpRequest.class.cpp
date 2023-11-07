@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HttpRequest.class.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/07 15:14:58 by afrigger         ###   ########.fr       */
+/*   Updated: 2023/11/07 16:27:22 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -599,6 +599,12 @@ void	HttpRequest::parse(const char *data, size_t len)
 						return ;
 					}
 					_handleHeaders();
+					if (_server_name == "")
+					{
+						_err_code = 400;
+						std::cerr << "Bad Request (Doesn't have the Host header)" << std::endl;
+						return ;
+					}
 					if (_body_exist)
 					{
 						if (_chunked)
