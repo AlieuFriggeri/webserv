@@ -16,6 +16,8 @@
 #include <sys/select.h>
 #include <fcntl.h>
 #include <list>
+#include "HttpRequest.class.hpp"
+#include "HttpRespond.class.hpp"
 
 
 class Client{
@@ -35,10 +37,12 @@ class Client{
 	socklen_t _clientsize;
 	char _host[NI_MAXHOST];
 	time_t _last_msg;
-	char _buff[4096];
+	std::string _buff;
 	int _serversocket;
 	int _port;
-	
+	HttpRequest _req;
+	HttpRespond _resp;
+
 	private:
 
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   DeleteRequestHandler.class.hpp                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:44:20 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/02 10:48:42 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/07 15:11:27 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ class DeleteRequestHandler: public RequestHandler
 		DeleteRequestHandler(void);
 		~DeleteRequestHandler(void);
 
-		HttpRespond	handleRequest(HttpRequest req);		
+		static HttpRespond	handleRequest(HttpRequest req);		
 };
 
 #endif

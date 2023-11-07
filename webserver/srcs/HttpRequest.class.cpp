@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HttpRequest.class.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/06 17:50:57 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/07 15:14:58 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,7 +224,7 @@ void	HttpRequest::setHeader(std::string key, std::string value)
 	_headers[key] = value;
 }
 
-void	HttpRequest::parse(char *data, size_t len)
+void	HttpRequest::parse(const char *data, size_t len)
 {
 	char				c;
 	short				mi = 1;

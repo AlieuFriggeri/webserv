@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   RequestHandler.class.hpp                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:52:34 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/02 11:02:12 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/07 15:12:13 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ class RequestHandler
 		RequestHandler(void);
 		~RequestHandler(void);
 
-		virtual HttpRespond	handleRequest(HttpRequest req) = 0;
+		//virtual static HttpRespond	handleRequest(HttpRequest req) = 0;
 };
 
 #endif

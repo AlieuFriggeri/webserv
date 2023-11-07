@@ -18,10 +18,13 @@
 #include <algorithm>
 #include <list>
 #include <map>
+#include <fstream>
 #include "Client.hpp"
 #include "ServerConfig.hpp"
 #include "Route.hpp"
-
+#include "GetRequestHandler.class.hpp"
+#include "PostRequestHandler.class.hpp"
+#include "DeleteRequestHandler.class.hpp"
 
 class Route;
 
@@ -40,9 +43,10 @@ class Socket{
 	static int addfdtoset(int fd, fd_set *set, int max_sock);
 	static void closeconnection(std::list<Client> *clientlist, int i, fd_set *readset, fd_set *writeset);
 	void checktimeout(std::list<Client> *clientlist, fd_set *readset, fd_set *writeset);
-	static void readrequest(std::list<Client> *clientlist, int fd, long rcv, fd_set *readset, fd_set *writeset);
+	static void readrequest(std::list<Client> *clientlist, int fd, long rcv, fd_set *readset, fd_set *writeset, char *buffer);
 	int findclient(std::list<Client> *clientlist, int fd);
 	static void setMaxSock(std::list<Client> *clientlist);
+	static void sendresponse(std::list<Client> *clientlist, int fd);
 
 	sockaddr_in _server;
 	fd_set _read, _write, _except, _main;
