@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:06:16 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/06 18:22:00 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/07 17:43:15 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,29 @@
 DeleteRequestHandler::DeleteRequestHandler(void)
 {
 	// std::cout << "DeleteRequestHandler default constructor called" << std::endl;
+}
+
+// DeleteRequestHandler::DeleteRequestHandler( CONFIG DU SERVER )
+// {
+// 	// std::cout << "DeleteRequestHandler constructor called" << std::endl;
+// 	// _conf = config;
+// }
+
+DeleteRequestHandler::DeleteRequestHandler(const DeleteRequestHandler &src)
+{
+	// std::cout << "Copy DeleteRequestHandler constructor called" << std::endl;
+	if (this != &src)
+	{
+		// _conf = src._conf;
+	}
+}
+
+DeleteRequestHandler&	DeleteRequestHandler::operator=(const DeleteRequestHandler &src)
+{
+	// std::cout << "Assignement DeleteRequestHandler constructor called" << std::endl;
+	// _conf = src._conf;
+	(void)src;
+	return (*this);
 }
 
 DeleteRequestHandler::~DeleteRequestHandler(void)

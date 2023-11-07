@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   GetRequestHandler.class.hpp                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:58:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/07 15:06:45 by afrigger         ###   ########.fr       */
+/*   Updated: 2023/11/07 17:40:50 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,15 @@
 class GetRequestHandler: public RequestHandler
 {
 	private:
-		
+
 	public:
 		GetRequestHandler(void);
+		// GetRequestHandler( CONFIG DU SERVER );
+		GetRequestHandler(const GetRequestHandler &src);
+		GetRequestHandler&	operator=(const GetRequestHandler &src);
 		~GetRequestHandler(void);
 
-		static HttpRespond	handleRequest(HttpRequest req);
+		HttpRespond	handleRequest(HttpRequest req);
 };
 
 #endif

@@ -357,19 +357,23 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd)
 			}
 			switch(it->_req.getMethod())
 			{
+				//	METTRE LES CONFIG DANS LES CREATIONS DES methodHandler
 				case GET: 
 				{
-					it->_resp = GetRequestHandler::handleRequest(it->_req);
+					GetRequestHandler	methodHandler;
+					it->_resp = methodHandler.handleRequest(it->_req);
 					break;
 				}
 				case POST: 
 				{
-					it->_resp = PostRequestHandler::handleRequest(it->_req);
+					PostRequestHandler	methodHandler;
+					it->_resp = methodHandler.handleRequest(it->_req);
 					break;
 				}
 				case DELETE: 
 				{
-					it->_resp = DeleteRequestHandler::handleRequest(it->_req);
+					DeleteRequestHandler	methodHandler;
+					it->_resp = methodHandler.handleRequest(it->_req);
 					break;
 				}
 				case NONE:

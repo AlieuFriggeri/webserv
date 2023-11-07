@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:10:16 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/06 18:22:07 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/07 17:43:29 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,29 @@
 PostRequestHandler::PostRequestHandler(void)
 {
 	// std::cout << "PostRequestHandler default constructor called" << std::endl;
+}
+
+// PostRequestHandler::PostRequestHandler( CONFIG DU SERVER )
+// {
+// 	// std::cout << "PostRequestHandler default constructor called" << std::endl;
+// 	// _conf = src._conf;
+// }
+
+PostRequestHandler::PostRequestHandler(const PostRequestHandler &src)
+{
+	// std::cout << "Copy PostRequestHandler constructor called" << std::endl;
+	if (this != &src)
+	{
+		// _conf = src._conf;
+	}
+}
+
+PostRequestHandler&	PostRequestHandler::operator=(const PostRequestHandler &src)
+{
+	// std::cout << "Assignement PostRequestHandler constructor called" << std::endl;
+	// _conf = src._conf;
+	(void)src;
+	return (*this);
 }
 
 PostRequestHandler::~PostRequestHandler(void)
