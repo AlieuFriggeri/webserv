@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:11:18 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/06 18:30:41 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/07 16:46:03 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ std::string	HttpRespond::generateHeaders(void)
 {
 	std::string	heads;
 	
+	setHeader("Content-Lenght", toString(_body.length()));
 	if (_body.length() != 0)
 	{
-		setHeader("Content-Lenght", toString(_body.length()));
 		//setHeader("Content-Type", "QQCH");
 	}
 	for (std::map<std::string, std::string>::const_iterator i = _headers.begin(); i != _headers.end(); i++)
@@ -60,20 +60,16 @@ std::string	getDate(void)
 bool HttpRespond::build(HttpRequest req)
 {
 	_isBuilt = false;
-	_status_code = req.getErrorCode();
 	setHeader("Date", getDate());
 	setHeader("Connection", req.getHeader("connection"));
-	if (_status_code == 0)
+	if (req.getErrorCode() == 0)
 	{
-		
-
-		/*
-		
-		GERER LA REQUETE, L'APPEL ET RETOUR DU CGI, ETC...
-		
-		*/
-
-		
+		// PARSING OK
+	}
+	else
+	{
+		_status_code = req.getErrorCode();
+		_body = getStatusStr(_status_code);
 	}
 	_resp = generateStatusLine();
 	_resp += generateHeaders();
