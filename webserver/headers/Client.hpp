@@ -42,7 +42,7 @@ class Client{
 	int _port;
 	HttpRequest _req;
 	HttpRespond _resp;
-
+	
 	private:
 
 

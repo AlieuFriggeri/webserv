@@ -6,7 +6,7 @@
 /*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/07 15:14:30 by afrigger         ###   ########.fr       */
+/*   Updated: 2023/11/08 15:29:31 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ class HttpRequest
 		unsigned int						_ver_maj;
 		unsigned int						_ver_min;
 		ParsingState						_state;
+		std::string							_path_relative;
 
 		void								_handleHeaders(void);
 	
@@ -113,8 +114,9 @@ class HttpRequest
 		std::map<std::string, std::string>	getHeaders(void) const;
 		std::string							getBody(void) const;
 		std::string							getBoundary(void) const;
+		std::string							getPathRelative(void) const;
 		int									getErrorCode(void) const;
-
+		void								setPathRelative(std::string &str);
 		bool	isMultiform(void) const;
 		bool	isParsingDone(void) const;
 		bool	keepAlive(void) const;

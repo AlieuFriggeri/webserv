@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HttpRequest.class.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/08 14:27:36 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/08 15:29:31 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,16 @@ std::string HttpRequest::getBody(void) const
 std::string	HttpRequest::getBoundary(void) const
 {
 	return _boundary;
+}
+
+std::string HttpRequest::getPathRelative(void) const
+{
+	return this->_path_relative;
+}
+
+void HttpRequest::setPathRelative(std::string &str)
+{
+	this->_path_relative = str;
 }
 
 bool HttpRequest::isMultiform(void) const

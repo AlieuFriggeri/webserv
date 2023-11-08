@@ -206,7 +206,7 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 							// str = buffer;
 							// closeconnection(clientlist, i, &readset, &writeset);
 							// std::cout << i << std::endl;
-							sendresponse(clientlist, i);
+							sendresponse(clientlist, i, servers);
 							closeconnection(clientlist, i, &readset, &writeset);
 							break;
 						}
@@ -338,7 +338,7 @@ void Socket::setMaxSock(std::list<Client> *clientlist)
 	//std::cout << "max sock is: " << max_sock << std::endl;
 }
 
-void Socket::sendresponse(std::list<Client> *clientlist, int fd)
+void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers)
 {
 	std::string response;
 	std::ifstream file;
@@ -351,7 +351,8 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd)
 		{
 			std::cout << "req is: " << it->_buff << std::endl;
 			it->_req.parse(it->_buff.c_str(), it->_bytesrcv);
-			it->_req.printMessage();
+			checkroute(&*it, servers);
+			//it->_req.printMessage();
 			if (!it->_req.isParsingDone())
 			{
 				std::cerr<< "Bad request in sendreponse" << std::endl;
@@ -382,7 +383,45 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd)
 					break;
 			}
 		}
-		std::cout << "resp is: " << it->_resp.getResp() << std::endl;
+		std::cout << "RELATIVE PATH IS: " << it->_req.getPathRelative() << std::endl;
 		exit(1);
 	}
+}
+
+std::string trimspace(std::string str)
+{
+	std::string res;
+	for (size_t i = 0; i < str.size(); i++)
+	{
+		if (isspace(str[i]) != true)
+			res += str[i];
+	}
+	return res;
+}
+
+void	Socket::checkroute(Client *client, Socket *server)
+{
+	int i = 0;
+	std::string filepath;
+	while (server[i]._listening_socket != client->_serversocket)
+		i++;
+	for (std::map<std::string, Route>::iterator it = server[i]._route.begin(); it != server[i]._route.end(); it++)
+	{
+		filepath = "." + it->second._path + client->_req.getPath().substr(1);
+		while(filepath.find_first_of(" ") != std::string::npos)
+			filepath.erase(filepath.find_first_of(" "), 1);
+		if (access(filepath.c_str(), F_OK | R_OK) == 0)
+		{
+			client->_req.setPathRelative(filepath);
+			break;
+		}
+		else if (opendir(filepath.c_str()) != NULL)
+		{
+			client->_req.setPathRelative(filepath);
+			break;
+		}
+		else
+			filepath.clear();
+	}
+
 }

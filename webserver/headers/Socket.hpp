@@ -18,6 +18,8 @@
 #include <algorithm>
 #include <list>
 #include <map>
+#include <sys/types.h>
+#include <dirent.h>
 #include <fstream>
 #include "Client.hpp"
 #include "ServerConfig.hpp"
@@ -46,7 +48,8 @@ class Socket{
 	static void readrequest(std::list<Client> *clientlist, int fd, long rcv, fd_set *readset, fd_set *writeset, char *buffer);
 	int findclient(std::list<Client> *clientlist, int fd);
 	static void setMaxSock(std::list<Client> *clientlist);
-	static void sendresponse(std::list<Client> *clientlist, int fd);
+	static void sendresponse(std::list<Client> *clientlist, int fd, Socket *servers);
+	static void checkroute(Client *client, Socket *server);
 
 	sockaddr_in _server;
 	fd_set _read, _write, _except, _main;
