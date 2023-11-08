@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 16:45:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/06 16:58:12 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/08 17:08:11 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,4 +128,27 @@ std::string	toString(int i)
 	std::stringstream ss;
     ss << i;
     return (ss.str());
+}
+
+std::string openReadFile(std::string relative_path)
+{
+	std::ifstream	file;
+	std::string		result;
+	std::string		line;
+
+	(void)relative_path;
+
+	result.clear();
+	file.open(relative_path);
+	if (file.is_open())
+	{
+		std::cout << "File open" << std::endl;
+		while (std::getline(file, line))
+		{
+			std::cout << line;
+			result += line;
+		}
+		file.close();
+	}
+	return result;
 }

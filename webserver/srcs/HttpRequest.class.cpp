@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HttpRequest.class.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/08 15:29:31 by afrigger         ###   ########.fr       */
+/*   Updated: 2023/11/08 17:12:25 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,9 +173,27 @@ std::string HttpRequest::getPathRelative(void) const
 	return this->_path_relative;
 }
 
+bool	HttpRequest::isDirectory(void) const
+{
+	return _isDir;
+}
+
+void	HttpRequest::setDirectory(bool b)
+{
+	_isDir = b;
+}
+
 void HttpRequest::setPathRelative(std::string &str)
 {
 	this->_path_relative = str;
+}
+
+void HttpRequest::setErrorCode(int x)
+{
+	if (x < 0 || x > 600)
+		_err_code = 0;
+	else
+		_err_code = x;
 }
 
 bool HttpRequest::isMultiform(void) const
@@ -814,10 +832,12 @@ void	HttpRequest::resetRequest(void)
 	_conn.clear();
 	_server_name.clear();
 	_boundary.clear();
+	_path_relative.clear();
 	_fields_done = false;
 	_body_exist = false;
 	_chunked = false;
 	_multiform = false;
+	_isDir = false;
 	_body_len = 0;
 	_err_code = 0;
 	_ver_maj = 0;

@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:08:04 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/07 17:42:40 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/08 17:22:02 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,21 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest req)
 
 	if (req.isParsingDone() == false)
 		std::cerr << "Le parsing de la requete a rencontre une erreur" << std::endl;
+	else if (req.getPathRelative().empty())
+	{
+		std::cerr << "Le fichier/dossier n'existe pas ou les droits ne sont pas corrects" << std::endl;
+		req.setErrorCode(404);
+	}
 	else
 	{
-		if (req.getQuery() != "" && req.getFragment() != "")
+		if (req.isDirectory() == false)
 		{
-			resp.setBody(""/* CGI */);
+			resp.setBody(openReadFile(req.getPathRelative()));
+			if (req.getQuery() != "" && req.getFragment() != "")
+			{
+			}
+			resp.setStatus(200);
 		}
-
 	}
 	resp.build(req);
 	return (resp);

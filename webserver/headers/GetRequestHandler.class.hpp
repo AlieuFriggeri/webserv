@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:58:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/07 17:40:50 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/08 16:27:24 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define GET_REQUEST_HANDLER_CLASS_HPP
 
 # include "RequestHandler.class.hpp"
+# include "utils.hpp"
 
 class GetRequestHandler: public RequestHandler
 {

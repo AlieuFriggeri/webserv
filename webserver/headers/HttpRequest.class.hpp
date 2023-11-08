@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HttpRequest.class.hpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/08 15:29:31 by afrigger         ###   ########.fr       */
+/*   Updated: 2023/11/08 17:11:01 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ class HttpRequest
 		std::string							_conn;
 		std::string							_server_name;
 		std::string							_boundary;
+		std::string							_path_relative;
+		bool								_isDir;
 		bool								_fields_done;
 		bool								_body_exist;
 		bool								_chunked;
@@ -94,7 +96,6 @@ class HttpRequest
 		unsigned int						_ver_maj;
 		unsigned int						_ver_min;
 		ParsingState						_state;
-		std::string							_path_relative;
 
 		void								_handleHeaders(void);
 	
@@ -116,13 +117,17 @@ class HttpRequest
 		std::string							getBoundary(void) const;
 		std::string							getPathRelative(void) const;
 		int									getErrorCode(void) const;
-		void								setPathRelative(std::string &str);
+
+		bool	isDirectory(void) const;
 		bool	isMultiform(void) const;
 		bool	isParsingDone(void) const;
 		bool	keepAlive(void) const;
 
 		void	printMessage(void) const;
+		void	setPathRelative(std::string &str);
 		void	setHeader(std::string key, std::string value);
+		void	setDirectory(bool b);
+		void	setErrorCode(int x);
 		void	parse(const char *data, size_t len);
 		void	resetRequest(void);
 };

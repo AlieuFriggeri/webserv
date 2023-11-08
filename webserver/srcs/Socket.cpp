@@ -349,7 +349,6 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 	{
 		if (it->_client_socket == fd)
 		{
-			std::cout << "req is: " << it->_buff << std::endl;
 			it->_req.parse(it->_buff.c_str(), it->_bytesrcv);
 			checkroute(&*it, servers);
 			//it->_req.printMessage();
@@ -357,6 +356,11 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			{
 				std::cerr<< "Bad request in sendreponse" << std::endl;
 				//exit(1);
+			}
+			else if ((it->_req.getPathRelative()).empty())
+			{
+				it->_req.setErrorCode(404);
+				std::cerr << "Req status code = 404"	 << std::endl;
 			}
 			switch(it->_req.getMethod())
 			{
@@ -382,9 +386,9 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				case NONE:
 					break;
 			}
+			std::cout << it->_resp.getResp();
+			send(it->_client_socket, (it->_resp.getResp()).c_str(), (it->_resp.getResp()).size(), 0);
 		}
-		std::cout << "RELATIVE PATH IS: " << it->_req.getPathRelative() << std::endl;
-		exit(1);
 	}
 }
 
@@ -412,11 +416,13 @@ void	Socket::checkroute(Client *client, Socket *server)
 			filepath.erase(filepath.find_first_of(" "), 1);
 		if (access(filepath.c_str(), F_OK | R_OK) == 0)
 		{
+			client->_req.setDirectory(false);
 			client->_req.setPathRelative(filepath);
 			break;
 		}
 		else if (opendir(filepath.c_str()) != NULL)
 		{
+			client->_req.setDirectory(true);
 			client->_req.setPathRelative(filepath);
 			break;
 		}

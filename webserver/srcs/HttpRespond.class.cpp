@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:11:18 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/08 14:30:27 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/08 17:22:33 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ HttpRespond::~HttpRespond(void)
 std::string	HttpRespond::generateStatusLine(void)
 {
 	std::string	resp;
-	resp = "HTTP/1.1 " + toString(_status_code) + " " + getStatusStr(_status_code) + CRLN;
+	resp = "HTTP/1.1 " + toString(_status_code) + " " + getStatusStr(_status_code) + "\r\n";
 	return (resp);
 }
 
@@ -42,8 +42,8 @@ std::string	HttpRespond::generateHeaders(void)
 		// setHeader("Content-Type", "QQCH");
 	}
 	for (std::map<std::string, std::string>::const_iterator i = _headers.begin(); i != _headers.end(); i++)
-		heads += i->first + ": " + i->second + CRLN;
-	heads += CRLN;
+		heads += i->first + ": " + i->second + "\r\n";
+	heads += "\r\n";
 	return (heads);
 }
 
@@ -73,7 +73,7 @@ bool HttpRespond::build(HttpRequest req)
 	}
 	_resp = generateStatusLine();
 	_resp += generateHeaders();
-	_resp += _body + CRLN;
+	_resp += "\r\n" + _body + "\r\n";
 	_isBuilt = true;
 	return (true);
 }
