@@ -349,10 +349,12 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd)
 	{
 		if (it->_client_socket == fd)
 		{
+			std::cout << "req is: " << it->_buff << std::endl;
 			it->_req.parse(it->_buff.c_str(), it->_bytesrcv);
+			it->_req.printMessage();
 			if (!it->_req.isParsingDone())
 			{
-				std::cerr<< "Bad request" << std::endl;
+				std::cerr<< "Bad request in sendreponse" << std::endl;
 				//exit(1);
 			}
 			switch(it->_req.getMethod())
@@ -380,6 +382,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd)
 					break;
 			}
 		}
-		std::cout << it->_resp.getResp() << std::endl;
+		std::cout << "resp is: " << it->_resp.getResp() << std::endl;
+		exit(1);
 	}
 }

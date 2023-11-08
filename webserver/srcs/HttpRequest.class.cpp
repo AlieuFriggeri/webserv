@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HttpRequest.class.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/07 16:27:22 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/08 14:07:41 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,7 @@ void	HttpRequest::printMessage(void) const
 	std::cout << "Boundary\t" << _boundary << "\tMultiform\t" << _multiform << std::endl;
 	
 	for (std::map<std::string, std::string>::const_iterator i = _headers.begin(); i != _headers.end(); i++)
-		std::cout << i->first + ":" + i->second << std::endl;
+		std::cout << i->first + "\t:\t" + i->second << std::endl;
 
 	for (std::vector<unsigned char>::const_iterator i = _body.begin(); i != _body.end(); i++)
 		std::cout << *i;
