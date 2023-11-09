@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/09 14:32:23 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/09 16:17:14 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ class HttpRequest
 		void	setHeader(std::string key, std::string value);
 		void	setDirectory(bool b);
 		void	setErrorCode(int x);
+		void	setKeepAlive(bool b);
 		void	parse(const char *data, size_t len);
 		void	resetRequest(void);
 };

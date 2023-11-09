@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/09 14:50:00 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/09 16:31:19 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,6 +260,7 @@ void	HttpRequest::parse(const char *data, size_t len)
 	std::string			tmp;
 
 	resetRequest();
+	// std::cout << "[Parsing beginning] Request received: \"" << data << "\"" << std::endl;
 	for (size_t i = 0; i < len; i++)
 	{
 		c = data[i];
@@ -817,11 +818,10 @@ void	HttpRequest::_handleHeaders(void)
 	}
 	if (_headers.count("connection"))
 	{
-		std::cerr << std::endl << "\'" << _headers["connection"] << "\'" << std::endl;
 		if (_headers["connection"] == "keep-alive")
 			_keep_alive = true;
 		else
-			std::cerr << "NOT KEEP ALIVE" << std::endl;
+			std::cerr << "DO NOT KEEP THE CONNECTION ALIVE" << std::endl;
 	}
 }
 
@@ -849,4 +849,9 @@ void	HttpRequest::resetRequest(void)
 	_ver_maj = 0;
 	_ver_min = 0;
 	_state = REQUEST_LINE;
+}
+
+void	HttpRequest::setKeepAlive(bool b)
+{
+	_keep_alive = b;
 }

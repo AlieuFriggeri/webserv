@@ -215,7 +215,7 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 							else
 							{
 								std::cout << std::endl << "keep the connection with the client" << std::endl;
-								std::cout << "ON CLOSE POUR PAS INFINIT LOOP\t";closeconnection(clientlist, i, &readset, &writeset);
+								// std::cout << "ON CLOSE POUR PAS INFINIT LOOP\t";closeconnection(clientlist, i, &readset, &writeset);
 							}
 							it->_req.resetRequest();
 							break;
@@ -399,6 +399,14 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			}
 			// std::cout << it->_resp.getResp();
 			send(it->_client_socket, (it->_resp.getResp()).c_str(), (it->_resp.getResp()).size(), 0);
+			std::cout << "Respond sended to Client " << it->_clientnumber << std::endl;
+			if (it->_req.keepAlive() == true)
+			{
+				it->_req.resetRequest();
+				it->_req.setKeepAlive(true);
+			}
+			it->_buff.erase();
+			it->_bytesrcv = -1;
 		}
 	}
 }

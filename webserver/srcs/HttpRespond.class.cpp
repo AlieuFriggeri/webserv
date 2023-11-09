@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:11:18 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/09 14:22:44 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/09 16:25:14 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ std::string	HttpRespond::generateHeaders(void)
 {
 	std::string	heads;
 	
-	setHeader("Content-Lenght", toString(_body.size() + 2));
+	setHeader("Content-Lenght", toString(_body.length() + 2));
 	if (_body.length() != 0)
 	{
 		// setHeader("Content-Type", "QQCH");
