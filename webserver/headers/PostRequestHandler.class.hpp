@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:14:16 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/07 17:37:55 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/09 14:02:52 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ class PostRequestHandler: public RequestHandler
 		PostRequestHandler&	operator=(const PostRequestHandler &src);
 		~PostRequestHandler(void);
 
-		HttpRespond	handleRequest(HttpRequest req);
+		HttpRespond	handleRequest(HttpRequest *req);
 };
 
 #endif

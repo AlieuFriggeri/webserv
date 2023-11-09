@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:11:18 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/08 17:22:33 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/09 14:22:44 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ std::string	HttpRespond::generateHeaders(void)
 {
 	std::string	heads;
 	
-	setHeader("Content-Lenght", toString(_body.length()));
+	setHeader("Content-Lenght", toString(_body.size() + 2));
 	if (_body.length() != 0)
 	{
 		// setHeader("Content-Type", "QQCH");
@@ -62,6 +62,7 @@ bool HttpRespond::build(HttpRequest req)
 	_isBuilt = false;
 	setHeader("Date", getDate());
 	setHeader("Connection", req.getHeader("connection"));
+	_body += "\r\n";
 	if (req.getErrorCode() == 0)
 	{
 		// PARSING OK
@@ -73,7 +74,7 @@ bool HttpRespond::build(HttpRequest req)
 	}
 	_resp = generateStatusLine();
 	_resp += generateHeaders();
-	_resp += "\r\n" + _body + "\r\n";
+	_resp += "\r\n" + _body;
 	_isBuilt = true;
 	return (true);
 }

@@ -360,7 +360,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			else if ((it->_req.getPathRelative()).empty())
 			{
 				it->_req.setErrorCode(404);
-				std::cerr << "Req status code = 404"	 << std::endl;
+				std::cerr << "Relative path not found" << std::endl;
 			}
 			switch(it->_req.getMethod())
 			{
@@ -368,25 +368,26 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				case GET: 
 				{
 					GetRequestHandler	methodHandler;
-					it->_resp = methodHandler.handleRequest(it->_req);
+					// it->_req.printMessage();
+					it->_resp = methodHandler.handleRequest(&(it->_req));
 					break;
 				}
 				case POST: 
 				{
 					PostRequestHandler	methodHandler;
-					it->_resp = methodHandler.handleRequest(it->_req);
+					it->_resp = methodHandler.handleRequest(&(it->_req));
 					break;
 				}
 				case DELETE: 
 				{
 					DeleteRequestHandler	methodHandler;
-					it->_resp = methodHandler.handleRequest(it->_req);
+					it->_resp = methodHandler.handleRequest(&(it->_req));
 					break;
 				}
 				case NONE:
 					break;
 			}
-			std::cout << it->_resp.getResp();
+			// std::cout << it->_resp.getResp();
 			send(it->_client_socket, (it->_resp.getResp()).c_str(), (it->_resp.getResp()).size(), 0);
 		}
 	}
@@ -427,7 +428,9 @@ void	Socket::checkroute(Client *client, Socket *server)
 			break;
 		}
 		else
+		{
 			filepath.clear();
+		}
 	}
-
+	// std::cout << "File found here " << filepath << std::endl << std::endl;
 }

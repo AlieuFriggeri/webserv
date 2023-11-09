@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/09 12:25:36 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/09 14:01:24 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,6 +224,7 @@ void	HttpRequest::printMessage(void) const
 	std::cout << "HttpRequest with:" << std::endl;
 	std::cout << "Method\t" << _method_str.at(_method) << "\tHTTP/" << _ver_maj << "." << _ver_min << std::endl;
 	std::cout << "Path\t\t" << _path << std::endl;
+	std::cout << "Rel_Path\t" << _path_relative << std::endl;
 	std::cout << "Query\t\t" << _query << std::endl;
 	std::cout << "Fragment\t" << _fragment << std::endl;
 	std::cout << "ServerName\t" << _server_name << std::endl;

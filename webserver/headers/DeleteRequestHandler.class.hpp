@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:44:20 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/07 17:38:39 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/09 14:03:02 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ class DeleteRequestHandler: public RequestHandler
 		DeleteRequestHandler&	operator=(const DeleteRequestHandler &src);
 		~DeleteRequestHandler(void);
 
-		HttpRespond	handleRequest(HttpRequest req);		
+		HttpRespond	handleRequest(HttpRequest *req);		
 };
 
 #endif

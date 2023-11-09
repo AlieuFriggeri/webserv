@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:52:34 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/08 14:31:00 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/09 14:02:56 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ class RequestHandler
 		RequestHandler& operator=(const RequestHandler& src);
 		~RequestHandler(void);
 
-		virtual HttpRespond	handleRequest(HttpRequest req) = 0;
+		virtual HttpRespond	handleRequest(HttpRequest *req) = 0;
 };
 
 #endif

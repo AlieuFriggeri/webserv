@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:06:16 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/09 12:29:43 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/09 14:05:40 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,13 @@ DeleteRequestHandler::~DeleteRequestHandler(void)
 	// std::cout << "DeleteRequestHandler destructor called" << std::endl;
 }
 
-HttpRespond	DeleteRequestHandler::handleRequest(HttpRequest req)
+HttpRespond	DeleteRequestHandler::handleRequest(HttpRequest *req)
 {
 	HttpRespond	resp;
 
-	if (req.isParsingDone() == false)
+	if (req->isParsingDone() == false)
 		std::cerr << "Le parsing de la requete a rencontre une erreur" << std::endl;
 	
-	resp.build(req);
+	resp.build(*req);
 	return (resp);
 }

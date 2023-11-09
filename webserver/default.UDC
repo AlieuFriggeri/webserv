@@ -4,6 +4,13 @@ servers:
     - server_name = domain1.com;
     - clientbody = 2048;
     - route{
+		- / (
+            methods = GET;
+            root = ./;
+            listing = false;
+            index = ./index.html;
+            cgi = .cpp | /cgi/bin;
+        )
         - /lol/mdr/ (
             methods = GET POST;
             root = ./;
