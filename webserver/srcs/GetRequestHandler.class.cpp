@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:08:04 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/09 14:13:42 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/09 16:45:52 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,20 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req)
 	{
 		if (req->isDirectory() == false)
 		{
-			resp.setBody(openReadFile(req->getPathRelative()));
-			if (req->getQuery() != "" && req->getFragment() != "")
+			if (req->getQuery().empty())
 			{
+				resp.setBody(openReadFile(req->getPathRelative()));
+				resp.setStatus(200);
 			}
-			resp.setStatus(200);
+			else
+			{
+				/* THIS REQUEST WILL BE HANDLE BY THE CGI 		*/
+				/*		This is because there are some queries	*/
+			}
+		}
+		else
+		{
+			/* THIS WILL BE FOR DIRECTORY */
 		}
 	}
 	resp.build(*req);
