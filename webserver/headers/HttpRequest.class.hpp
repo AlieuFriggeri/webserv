@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/08 17:11:01 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/09 14:32:23 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ class HttpRequest
 		bool								_body_exist;
 		bool								_chunked;
 		bool								_multiform;
+		bool								_keep_alive;
 		size_t								_body_len;
 		int									_err_code;
 		unsigned int						_ver_maj;

@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/09 14:01:24 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/09 14:50:00 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,12 +211,7 @@ bool HttpRequest::isParsingDone(void) const
 
 bool	HttpRequest::keepAlive(void) const
 {
-	if (_headers.count("connection"))
-	{
-		if (_headers.at("connection").find_first_of("close") != std::string::npos)
-			return (false);
-	}
-	return (true);
+	return (_keep_alive);
 }
 
 void	HttpRequest::printMessage(void) const
@@ -820,6 +815,14 @@ void	HttpRequest::_handleHeaders(void)
 			_boundary = _headers["content-type"].substr(pos + 9, _headers["content-type"].size());
 		_multiform = true;
 	}
+	if (_headers.count("connection"))
+	{
+		std::cerr << std::endl << "\'" << _headers["connection"] << "\'" << std::endl;
+		if (_headers["connection"] == "keep-alive")
+			_keep_alive = true;
+		else
+			std::cerr << "NOT KEEP ALIVE" << std::endl;
+	}
 }
 
 void	HttpRequest::resetRequest(void)
@@ -840,6 +843,7 @@ void	HttpRequest::resetRequest(void)
 	_chunked = false;
 	_multiform = false;
 	_isDir = false;
+	_keep_alive = false;
 	_body_len = 0;
 	_err_code = 0;
 	_ver_maj = 0;
