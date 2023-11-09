@@ -42,25 +42,25 @@ void Socket::setup(Socket *servers)
 
 		if (setsockopt(servers[i]._listening_socket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) == -1)
 		{
-			std::cout << "setsockopt error cheh" << std::endl;
+			std::cout << "setsockopt error cheh (" << strerror(errno) << ")" << std::endl;
 			exit(-9);
 		}
 
 		if (bind(servers[i]._listening_socket, (sockaddr *)&servers[i]._server, (socklen_t)sizeof(servers[i]._server)) < 0)
 		{
-			std::cerr << "Error during socket binding" << std::endl;
+			std::cerr << "Error during socket binding (" << strerror(errno) << ")" << std::endl;
 			exit(2);
 		}
 
 		if (listen(servers[i]._listening_socket, 128) < 0)
 		{
-			std::cerr << "Error while listening on socket" << std::endl;
+			std::cerr << "Error while listening on socket (" << strerror(errno) << ")" << std::endl;
 			exit(3);
 		}
 
 		if (fcntl(servers[i]._listening_socket, F_SETFL, O_NONBLOCK) < 0)
 		{
-			std::cerr << "Error with fcntl" << std::endl;
+			std::cerr << "Error with fcntl (" << strerror(errno) << ")" << std::endl;
 			exit(4);
 		}
 	}
