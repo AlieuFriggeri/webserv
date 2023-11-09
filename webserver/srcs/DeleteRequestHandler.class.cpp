@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:06:16 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/07 17:43:15 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/09 12:29:43 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ DeleteRequestHandler::DeleteRequestHandler(void)
 // 	// _conf = config;
 // }
 
-DeleteRequestHandler::DeleteRequestHandler(const DeleteRequestHandler &src)
+DeleteRequestHandler::DeleteRequestHandler(const DeleteRequestHandler &src): RequestHandler(src)
 {
 	// std::cout << "Copy DeleteRequestHandler constructor called" << std::endl;
 	if (this != &src)

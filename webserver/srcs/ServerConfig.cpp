@@ -28,7 +28,7 @@ Socket *ServerConfig::parsefile(std::string filename)
 	std::vector<std::map<std::string, std::string> > res;
 	std::vector<std::map<std::string, Route> >routes;
 
-	file.open(filename);
+	file.open(filename.c_str());
 
 	if (!file.is_open())
 	{

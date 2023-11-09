@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/08 17:12:25 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/09 12:25:36 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -426,6 +426,7 @@ void	HttpRequest::parse(const char *data, size_t len)
 					std::cerr << "Bad Request (REQUEST_LINE_SPACE_AFTER_URI" << std::endl;
 					return ;
 				}
+				break ;
 			}
 			case REQUEST_LINE_H:
 			{

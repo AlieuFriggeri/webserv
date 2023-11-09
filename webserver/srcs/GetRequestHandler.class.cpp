@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:08:04 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/08 17:22:02 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/09 12:28:52 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ GetRequestHandler::GetRequestHandler(void)
 // 	// _conf = config;
 // }
 
-GetRequestHandler::GetRequestHandler(const GetRequestHandler &src)
+GetRequestHandler::GetRequestHandler(const GetRequestHandler &src): RequestHandler(src)
 {
 	// std::cout << "Copy GetRequestHandler constructor called" << std::endl;
 	if (this != &src)

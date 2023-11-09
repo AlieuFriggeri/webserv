@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:10:16 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/07 17:43:29 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/09 12:29:36 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ PostRequestHandler::PostRequestHandler(void)
 // 	// _conf = src._conf;
 // }
 
-PostRequestHandler::PostRequestHandler(const PostRequestHandler &src)
+PostRequestHandler::PostRequestHandler(const PostRequestHandler &src): RequestHandler(src)
 {
 	// std::cout << "Copy PostRequestHandler constructor called" << std::endl;
 	if (this != &src)
