@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 16:45:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/09 16:30:40 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/10 16:05:15 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,4 +151,34 @@ std::string openReadFile(std::string relative_path)
 	else
 		std::cerr << "Erreur lors de l'ouverture du fichier" << std::endl;
 	return result;
+}
+
+std::string	openReadCloseDir(std::string path, std::string uri)
+{
+	std::vector<std::string>	files;
+	std::string					html;
+	struct dirent	*ent;
+
+	DIR *dir = opendir(path.c_str());
+	if (dir != NULL)
+	{
+		while ((ent = readdir(dir)) != NULL)
+			files.push_back(ent->d_name);
+		closedir(dir);
+
+		html = "<html><head><title>Index of " + path + "</title></head><body><h1>Index of " + uri + "</h1><hr>\n";
+		for (std::vector<std::string>::iterator it = files.begin(); it < files.end(); it++)
+		{
+			if (uri.rfind('/') == uri.length() - 1)
+			{
+				html += "<a href=\"" + uri + *it + "\">" + *it + "</a><br>\n";
+			}
+			else
+			{
+				html += "<a href=\"" + uri + "/" + *it + "\">" + *it + "</a><br>\n";
+			}
+		}
+		html += "</hr>\n</body>\r</html>";
+	}
+	return (html);
 }

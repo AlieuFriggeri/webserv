@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:11:18 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/09 16:25:14 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/10 14:11:47 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ bool HttpRespond::build(HttpRequest req)
 	_isBuilt = false;
 	setHeader("Date", getDate());
 	setHeader("Connection", req.getHeader("connection"));
-	_body += "\r\n";
 	if (req.getErrorCode() == 0)
 	{
 		// PARSING OK
@@ -72,6 +71,7 @@ bool HttpRespond::build(HttpRequest req)
 		_status_code = req.getErrorCode();
 		_body = getStatusStr(_status_code);
 	}
+	_body += "\r\n";
 	_resp = generateStatusLine();
 	_resp += generateHeaders();
 	_resp += "\r\n" + _body;

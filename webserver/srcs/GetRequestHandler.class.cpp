@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:08:04 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/09 16:45:52 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/10 15:48:12 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req)
 		else
 		{
 			/* THIS WILL BE FOR DIRECTORY */
+			resp.setBody(openReadCloseDir(req->getPathRelative(), req->getPath()));
 		}
 	}
 	resp.build(*req);

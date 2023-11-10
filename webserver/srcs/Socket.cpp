@@ -157,7 +157,7 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 		}
 		for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
 		{
-				max_sock = std::max(max_sock, it->_client_socket);
+			max_sock = std::max(max_sock, it->_client_socket);
 		}
 		//std::cout << "max_sock: " << max_sock << std::endl;
 		rcv = select(max_sock + 1, &readcpy, &writecpy, NULL, &timeout);
@@ -199,33 +199,25 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 					{
 						if (it->_client_socket == i)
 						{
-							// int index = open("./index.html", O_RDONLY);
-							// char buffer2[4096];
-							// bzero(buffer2, sizeof(buffer2));
-							// read(index, buffer2, sizeof(buffer2));
-							// close(index);
-							// write(i, buffer2, sizeof(buffer2));
-							// str = buffer;
-							// closeconnection(clientlist, i, &readset, &writeset);
-							// std::cout << i << std::endl;
 							sendresponse(clientlist, i, servers);
-							if (it->_req.keepAlive() == false)
-							{
-								std::cout << std::endl << "close the connection with the client" << std::endl;
+							// if (it->_req.keepAlive() == false)
+							// {
+							// 	std::cout << std::endl << "close the connection with the client" << std::endl;
 								closeconnection(clientlist, i, &readset, &writeset);
-							}
-							else
-							{
-								std::cout << std::endl << "keep the connection with the client" << std::endl;
-								rmfdfromset(i, &writeset, max_sock);
-								addfdtoset(i, &readset, max_sock);
-								//std::cout << "ON CLOSE POUR PAS INFINIT LOOP\t";closeconnection(clientlist, i, &readset, &writeset);
-							}
-							it->_req.resetRequest();
+							// }
+							// else
+							// {
+							// 	std::cout << std::endl << "keep the connection with the client" << std::endl;
+							// 	rmfdfromset(i, &writeset, max_sock);
+							// 	addfdtoset(i, &readset, max_sock);
+							// 	//std::cout << "ON CLOSE POUR PAS INFINIT LOOP\t";closeconnection(clientlist, i, &readset, &writeset);
+							// }
+							// it->_req.resetRequest();
 							break;
 						}
 					}
 				}
+				rcv = 0;
 			}
 		}
 		checktimeout(clientlist, &readset, &writeset);
@@ -268,8 +260,7 @@ void Socket::closeconnection(std::list<Client> *clientlist, int i, fd_set *reads
 				perror("close");
 				exit(3);
 			}
-			std::cout << i << std::endl;
-			i = 17;
+			// std::cout << i << std::endl;
 			close(it->_client_socket);
 			it->_client_socket = -2;
 			//clientlist->erase(it);
@@ -284,7 +275,7 @@ void Socket::checktimeout(std::list<Client> *clientlist, fd_set *readset, fd_set
 {
 	for ( std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
 	{
-			if (time(NULL) - it->_last_msg > 10 && it->_client_socket != -1)
+			if (time(NULL) - it->_last_msg > 5 && it->_client_socket != -1)
 			{
 				std::cout << "Client number {" << it->_clientnumber << "} has timed out" << std::endl;
 				closeconnection(clientlist, it->_client_socket, readset, writeset);
@@ -402,7 +393,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 					break;
 			}
 			std::cout << "REPONSE= " << it->_resp.getResp();
-			send(it->_client_socket, (it->_resp.getResp()).c_str(), (it->_resp.getResp()).size(), 0);
+			send(it->_client_socket, (it->_resp.getResp()).c_str(), strlen((it->_resp.getResp().c_str())), 0);
 			std::cout << "Respond sended to Client " << it->_clientnumber << std::endl;
 			if (it->_req.keepAlive() == true)
 			{
@@ -430,27 +421,31 @@ void	Socket::checkroute(Client *client, Socket *server)
 {
 	int i = 0;
 	std::string filepath;
+	DIR*	dir;
 	while (server[i]._listening_socket != client->_serversocket)
 		i++;
 	for (std::map<std::string, Route>::iterator it = server[i]._route.begin(); it != server[i]._route.end(); it++)
 	{
 		if (client->_req.getPath().empty())
 		{
-			std::cout <<"oups" <<std::endl;
+			std::cout << "Path from request empty" <<std::endl;
 			return ;
 		}
 		filepath = "." + it->second._path + client->_req.getPath().substr(1);
 		while(filepath.find_first_of(" ") != std::string::npos)
 			filepath.erase(filepath.find_first_of(" "), 1);
-		if (access(filepath.c_str(), F_OK | R_OK) == 0)
+		if ((dir = opendir(filepath.c_str())) != NULL)
 		{
-			client->_req.setDirectory(false);
+			std::cout << "Path is a directory: " << filepath << std::endl;
+			client->_req.setDirectory(true);
 			client->_req.setPathRelative(filepath);
+			closedir(dir);
 			break;
 		}
-		else if (opendir(filepath.c_str()) != NULL)
+		else if (access(filepath.c_str(), F_OK | R_OK) == 0)
 		{
-			client->_req.setDirectory(true);
+			std::cout << "Path is a file: " << filepath << std::endl;
+			client->_req.setDirectory(false);
 			client->_req.setPathRelative(filepath);
 			break;
 		}
