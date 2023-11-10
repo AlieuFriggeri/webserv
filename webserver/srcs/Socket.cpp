@@ -188,6 +188,8 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 				}
 				else if (FD_ISSET(i, &readcpy) && i != checklisteningsock(i, servers))
 				{
+					std::cout << "READING FROM SOCKET" << std::endl;
+					bzero(buffer, sizeof(buffer));
 					rcv = read(i, buffer, sizeof(buffer));
 					readrequest(clientlist, i, rcv, &readset, &writeset, buffer);
 				}
@@ -215,7 +217,9 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 							else
 							{
 								std::cout << std::endl << "keep the connection with the client" << std::endl;
-								// std::cout << "ON CLOSE POUR PAS INFINIT LOOP\t";closeconnection(clientlist, i, &readset, &writeset);
+								rmfdfromset(i, &writeset, max_sock);
+								addfdtoset(i, &readset, max_sock);
+								//std::cout << "ON CLOSE POUR PAS INFINIT LOOP\t";closeconnection(clientlist, i, &readset, &writeset);
 							}
 							it->_req.resetRequest();
 							break;
@@ -224,7 +228,7 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 				}
 			}
 		}
-		//checktimeout(clientlist);
+		checktimeout(clientlist, &readset, &writeset);
 	}
 }
 
@@ -282,7 +286,7 @@ void Socket::checktimeout(std::list<Client> *clientlist, fd_set *readset, fd_set
 	{
 			if (time(NULL) - it->_last_msg > 10 && it->_client_socket != -1)
 			{
-				//std::cout << "Client number {" << it->_clientnumber << "} has timed out" << std::endl;
+				std::cout << "Client number {" << it->_clientnumber << "} has timed out" << std::endl;
 				closeconnection(clientlist, it->_client_socket, readset, writeset);
 				setMaxSock(clientlist);
 			}
@@ -357,7 +361,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 
 	for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
 	{
-		if (it->_client_socket == fd)
+		if (it->_client_socket == fd && it->_bytesrcv > 0)
 		{
 			it->_req.parse(it->_buff.c_str(), it->_bytesrcv);
 			checkroute(&*it, servers);
@@ -365,7 +369,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			if (!it->_req.isParsingDone())
 			{
 				std::cerr<< "Bad request in sendreponse" << std::endl;
-				//exit(1);
+				
 			}
 			else if ((it->_req.getPathRelative()).empty())
 			{
@@ -397,7 +401,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				case NONE:
 					break;
 			}
-			// std::cout << it->_resp.getResp();
+			std::cout << "REPONSE= " << it->_resp.getResp();
 			send(it->_client_socket, (it->_resp.getResp()).c_str(), (it->_resp.getResp()).size(), 0);
 			std::cout << "Respond sended to Client " << it->_clientnumber << std::endl;
 			if (it->_req.keepAlive() == true)
@@ -405,8 +409,8 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				it->_req.resetRequest();
 				it->_req.setKeepAlive(true);
 			}
-			it->_buff.erase();
-			it->_bytesrcv = -1;
+			// it->_buff.erase();
+			// it->_bytesrcv = 0;
 		}
 	}
 }
@@ -430,6 +434,11 @@ void	Socket::checkroute(Client *client, Socket *server)
 		i++;
 	for (std::map<std::string, Route>::iterator it = server[i]._route.begin(); it != server[i]._route.end(); it++)
 	{
+		if (client->_req.getPath().empty())
+		{
+			std::cout <<"oups" <<std::endl;
+			return ;
+		}
 		filepath = "." + it->second._path + client->_req.getPath().substr(1);
 		while(filepath.find_first_of(" ") != std::string::npos)
 			filepath.erase(filepath.find_first_of(" "), 1);
