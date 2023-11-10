@@ -44,7 +44,7 @@ class Socket{
 	static int rmfdfromset(int fd, fd_set *set, int max_sock);
 	static int addfdtoset(int fd, fd_set *set, int max_sock);
 	static void closeconnection(std::list<Client> *clientlist, int i, fd_set *readset, fd_set *writeset);
-	void checktimeout(std::list<Client> *clientlist, fd_set *readset, fd_set *writeset);
+	static void checktimeout(std::list<Client> *clientlist, fd_set *readset, fd_set *writeset);
 	static void readrequest(std::list<Client> *clientlist, int fd, long rcv, fd_set *readset, fd_set *writeset, char *buffer);
 	int findclient(std::list<Client> *clientlist, int fd);
 	static void setMaxSock(std::list<Client> *clientlist);

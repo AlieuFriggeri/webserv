@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/09 16:31:19 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/10 12:24:29 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,6 +260,11 @@ void	HttpRequest::parse(const char *data, size_t len)
 	std::string			tmp;
 
 	resetRequest();
+	if (strlen(data) == 0)
+	{
+		std::cerr << "data buff emtpy" << std::endl;
+		return ;
+	}
 	// std::cout << "[Parsing beginning] Request received: \"" << data << "\"" << std::endl;
 	for (size_t i = 0; i < len; i++)
 	{
