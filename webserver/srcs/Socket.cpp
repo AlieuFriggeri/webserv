@@ -188,7 +188,7 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 				}
 				else if (FD_ISSET(i, &readcpy) && i != checklisteningsock(i, servers))
 				{
-					std::cout << "READING FROM SOCKET" << std::endl;
+					// std::cout << "READING FROM SOCKET" << std::endl;
 					bzero(buffer, sizeof(buffer));
 					rcv = read(i, buffer, sizeof(buffer));
 					readrequest(clientlist, i, rcv, &readset, &writeset, buffer);
@@ -355,13 +355,11 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 		if (it->_client_socket == fd && it->_bytesrcv > 0)
 		{
 			it->_req.parse(it->_buff.c_str(), it->_bytesrcv);
+			std::cout << "path\t" << it->_req.getPath() << std::endl;
 			checkroute(&*it, servers);
 			//it->_req.printMessage();
 			if (!it->_req.isParsingDone())
-			{
 				std::cerr<< "Bad request in sendreponse" << std::endl;
-				
-			}
 			else if ((it->_req.getPathRelative()).empty())
 			{
 				it->_req.setErrorCode(404);
@@ -392,7 +390,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				case NONE:
 					break;
 			}
-			std::cout << "REPONSE= " << it->_resp.getResp();
+			// std::cout << "REPONSE= " << it->_resp.getResp();
 			send(it->_client_socket, (it->_resp.getResp()).c_str(), strlen((it->_resp.getResp().c_str())), 0);
 			std::cout << "Respond sended to Client " << it->_clientnumber << std::endl;
 			if (it->_req.keepAlive() == true)
@@ -436,15 +434,13 @@ void	Socket::checkroute(Client *client, Socket *server)
 			filepath.erase(filepath.find_first_of(" "), 1);
 		if ((dir = opendir(filepath.c_str())) != NULL)
 		{
-			std::cout << "Path is a directory: " << filepath << std::endl;
+			closedir(dir);
 			client->_req.setDirectory(true);
 			client->_req.setPathRelative(filepath);
-			closedir(dir);
 			break;
 		}
 		else if (access(filepath.c_str(), F_OK | R_OK) == 0)
 		{
-			std::cout << "Path is a file: " << filepath << std::endl;
 			client->_req.setDirectory(false);
 			client->_req.setPathRelative(filepath);
 			break;
