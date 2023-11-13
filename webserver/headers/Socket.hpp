@@ -51,22 +51,37 @@ class Socket{
 	static void sendresponse(std::list<Client> *clientlist, int fd, Socket *servers);
 	static void checkroute(Client *client, Socket *server);
 
-	sockaddr_in _server;
-	fd_set _read, _write, _except, _main;
-	timeval _timeout;
-	int _listening_socket, _r, _w, _e;
-	char _svc[NI_MAXSERV];
-	char *_buffer;
-	int _max_sock;
-	std::string _servername;
-	int _maxbodysize;
-	int _port;
-	std::string _root;
-	std::map<std::string, Route> _route;
-	std::map<std::string, std::string> _config;
-	int _totalserv;
+	sockaddr_in getSockaddr(void);
+	void setSockaddr(sockaddr_in &server);
+	int getListening(void);
+	void setListening(int &socket);
+	char *getSvc(void);
+	std::string getServerName(void);
+	void setServerName(std::string &name);
+	int getMaxBodySize(void);
+	void setMaxBodySize(int max);
+	int getPort(void);
+	void setPort(int port);
+	std::string getRoot(void);
+	void setRoot(std::string root);
+	std::map<std::string, Route> getRouteMap(void);
+	void setRouteMap(std::string key, Route value);
+	std::map<std::string, std::string> getConfigMap(void);
+	void setConfigMap(std::map<std::string, std::string> map);
+	int getTotalServ(void);
+	void setTotalServ(int total);
 
 	private:
+		sockaddr_in _server;
+		int _listening_socket;
+		char _svc[NI_MAXSERV];
+		std::string _servername;
+		int _maxbodysize;
+		int _port;
+		std::string _root;
+		std::map<std::string, Route> _route;
+		std::map<std::string, std::string> _config;
+		int _totalserv;
 
 
 };

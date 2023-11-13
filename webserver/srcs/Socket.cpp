@@ -3,16 +3,107 @@
 
 int max_sock;
 
+sockaddr_in Socket::getSockaddr(void)
+{
+	return this->_server;
+}
+
+void Socket::setSockaddr(sockaddr_in &server)
+{
+	this->_server = server;
+}
+
+int Socket::getListening(void)
+{
+	return this->_listening_socket;
+}
+
+void Socket::setListening(int &socket)
+{
+	this->_listening_socket = socket;
+}
+
+char *Socket::getSvc(void)
+{
+	return this->_svc;
+}
+
+std::string Socket::getServerName(void)
+{
+	return this->_servername;
+}
+
+void Socket::setServerName(std::string &name)
+{
+	this->_servername = name;
+}
+
+int Socket::getMaxBodySize(void)
+{
+	return this->_maxbodysize;
+}
+
+void Socket::setMaxBodySize(int max)
+{
+	this->_maxbodysize = max;
+}
+
+int Socket::getPort(void)
+{
+	return this->_port;
+}
+
+void Socket::setPort(int port)
+{
+	this->_port = port;
+}
+
+std::string Socket::getRoot(void)
+{
+	return this->_root;
+}
+
+void Socket::setRoot(std::string root)
+{
+	this->_root = root;
+}
+
+std::map<std::string, Route> Socket::getRouteMap(void)
+{
+	return this->_route;
+}
+
+void Socket::setRouteMap(std::string key, Route value)
+{
+	this->_route[key] = value;
+}
+
+std::map<std::string, std::string> Socket::getConfigMap(void)
+{
+	return this->_config;
+}
+
+void Socket::setConfigMap(std::map<std::string, std::string> map)
+{
+	this->_config = map;
+}
+
+int Socket::getTotalServ(void)
+{
+	return this->_totalserv;
+}
+
+void Socket::setTotalServ(int total)
+{
+	this->_totalserv = total;
+}
+
+
+
+
 Socket::Socket()
 {
-
-	FD_ZERO(&_write);
-	FD_ZERO(&_read);
-	FD_ZERO(&_except);
-	_timeout.tv_sec = 1;
-	_timeout.tv_usec = 0;
 	bzero(&_svc, sizeof(_svc));
-	_max_sock = 0;
 }
 
 Socket::~Socket()
@@ -104,19 +195,19 @@ int	Socket::initsets(std::list<Client> * clientlist, fd_set *_read, fd_set *_wri
 
 int checkport(int i, Socket *servers)
 {
-	for (int j = 0; j < servers[0]._totalserv; j++)
+	for (int j = 0; j < servers[0].getTotalServ(); j++)
 	{
-		if (servers[j]._listening_socket == i)
-			return servers[j]._port;
+		if (servers[j].getListening() == i)
+			return servers[j].getPort();
 	}
 	return -1;
 }
 
 int checklisteningsock(int i, Socket *servers)
 {
-	for (int j = 0; j < servers[0]._totalserv; j++)
+	for (int j = 0; j < servers[0].getTotalServ(); j++)
 	{
-		if (servers[j]._listening_socket == i)
+		if (servers[j].getListening() == i)
 			return i;
 	}
 	return -1;
