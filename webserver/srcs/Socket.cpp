@@ -155,7 +155,6 @@ void Socket::setup(Socket *servers)
 			exit(4);
 		}
 	}
-	
 }
 
 int	Socket::initsets(std::list<Client> * clientlist, fd_set *_read, fd_set *_write, Socket *servers)
@@ -463,6 +462,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				{
 					GetRequestHandler	methodHandler;
 					// it->_req.printMessage();
+					CgiExecutor::execute(&*it, servers[0], "./php_cgi.php");
 					it->_resp = methodHandler.handleRequest(&(it->_req));
 					break;
 				}
