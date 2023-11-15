@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HttpRespond.class.hpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:55:44 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/06 18:30:50 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/15 14:09:11 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,8 @@ class HttpRespond
 		int									_status_code;
 		std::map<std::string, std::string>	_headers;
 		std::string							_body;
-		std::string							_resp;
 		bool								_isBuilt;
-
+		std::string							_resp;
 		std::string	generateStatusLine(void);
 		std::string	generateHeaders(void);
 

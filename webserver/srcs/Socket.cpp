@@ -290,16 +290,16 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 						if (it->_client_socket == i)
 						{
 							sendresponse(clientlist, i, servers);
+							closeconnection(clientlist, i, &readset, &writeset);
 							// if (it->_req.keepAlive() == false)
 							// {
 							// 	std::cout << std::endl << "close the connection with the client" << std::endl;
-								closeconnection(clientlist, i, &readset, &writeset);
 							// }
 							// else
 							// {
 							// 	std::cout << std::endl << "keep the connection with the client" << std::endl;
-							// 	rmfdfromset(i, &writeset, max_sock);
-							// 	addfdtoset(i, &readset, max_sock);
+							// max_sock = rmfdfromset(i, &writeset, max_sock);
+							// max_sock = addfdtoset(i, &readset, max_sock);
 							// 	//std::cout << "ON CLOSE POUR PAS INFINIT LOOP\t";closeconnection(clientlist, i, &readset, &writeset);
 							// }
 							// it->_req.resetRequest();
@@ -343,7 +343,7 @@ void Socket::closeconnection(std::list<Client> *clientlist, int i, fd_set *reads
 			max_sock = rmfdfromset(i, readset, max_sock);
 			//if (FD_ISSET(i, &writeset))
 			max_sock = rmfdfromset(i, writeset, max_sock);
-			std::cout << i << std::endl;
+			//std::cout << i << std::endl;
 			//close(it->_client_socket);
 			if(close(i) != 0)
 			{
@@ -439,6 +439,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 	std::ifstream file;
 	std::string filename = ".";
 	std::string line;
+	std::string cgiresp;
 
 	for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
 	{
@@ -461,8 +462,12 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				case GET: 
 				{
 					GetRequestHandler	methodHandler;
-					// it->_req.printMessage();
-					CgiExecutor::execute(&*it, servers[0], "./php_cgi.php");
+					if (it->_req.getPath().find(".php") == it->_req.getPath().size() - 4)
+					{
+						std::cout << "entering cgi" << std::endl;
+						cgiresp = CgiExecutor::execute(&*it, servers[0], "/usr/bin/php");
+						std::cout << "CGI resp is : " << cgiresp << std::endl;
+					}
 					it->_resp = methodHandler.handleRequest(&(it->_req));
 					break;
 				}
@@ -481,16 +486,16 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				case NONE:
 					break;
 			}
-			// std::cout << "REPONSE= " << it->_resp.getResp();
-			send(it->_client_socket, (it->_resp.getResp()).c_str(), strlen((it->_resp.getResp().c_str())), 0);
-			std::cout << "Respond sended to Client " << it->_clientnumber << std::endl;
+			std::cout << "REPONSE= " << it->_resp.getResp();
+			write(it->_client_socket, (it->_resp.getResp()).c_str(), strlen((it->_resp.getResp().c_str())));
+			std::cout << "Respond sended to Client " << it->_clientnumber << " on socket : " << it->_client_socket << std::endl;
 			if (it->_req.keepAlive() == true)
 			{
 				it->_req.resetRequest();
 				it->_req.setKeepAlive(true);
 			}
-			// it->_buff.erase();
-			// it->_bytesrcv = 0;
+			it->_buff.erase();
+			it->_bytesrcv = 0;
 		}
 	}
 }

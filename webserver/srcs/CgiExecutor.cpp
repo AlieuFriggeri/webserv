@@ -43,9 +43,9 @@ static std::map<std::string, std::string> get_env(Client *client, Socket server)
 	env["FILEPATH_INFO"] = client->_req.getPath();
 	env["PATH_INFO"] = "\\";
 	env["SCRIPT_NAME"] = "./php_cgi.php";
-	env["REMOTE_HOST"] = headers["host"];
-	env["REMOTE_USER"] = headers["host"];
-	env["CONTENT_TYPE"] = headers["content-type"];
+	env["REMOTE_HOST"] = headers.count("host") ? headers["host"] : "";
+	env["REMOTE_USER"] = headers.count("host") ? headers["host"] : "";
+	env["CONTENT_TYPE"] = headers.count("content-length") ? headers["content-type"] : "";
 	env["CONTENT_LENGTH"] = headers.count("content-length") ? headers["content-length"] : "";
 	env["HTTP_ACCEPT"] = headers.count("Accept") ? headers["Accept"] : "";
 	env["HTTP_ACCEPT_LANGUAGE"] = headers.count("Accept-Language") ? headers["Accept-Language"] : "";
@@ -104,7 +104,7 @@ CgiExecutor::execute(Client *client, Socket server, std::string cgi_path)
 	std::map<std::string, std::string> env = get_env(client, server);
 	char **envp = map_to_env(env);
 	/// Make argv
-	std::string request_path = client->_req.getPath();
+	std::string request_path = "." + client->_req.getPath();
 	char *const argv[] = {
 			new char[cgi_path.size() + 1],
 			new char[request_path.size() + 1],
@@ -114,12 +114,12 @@ CgiExecutor::execute(Client *client, Socket server, std::string cgi_path)
 	strcpy(argv[0], cgi_path.c_str());
 	argv[0][cgi_path.size()] = '\0';
 	strcpy(argv[1], request_path.c_str());
+	std::cout << argv[1] << std::endl;
 	argv[1][request_path.size()] = '\0';
 	if (access(argv[1], F_OK) == -1)
 		throw std::runtime_error("file not found");
 	if (access(argv[0], X_OK) == -1)
 		throw std::runtime_error("file not executable");
-
 	/// Make pipes
 	int fd_std[2];
 	if (pipe(fd_std))
@@ -140,7 +140,7 @@ CgiExecutor::execute(Client *client, Socket server, std::string cgi_path)
 		dup2(fd_std[STDOUT_FILENO], STDOUT_FILENO);
 		close(fd_std[STDOUT_FILENO]);
 		execve(cgi_path.c_str(), argv, envp);
-		perror("execvpe: ");
+		perror("execve: ");
 		free_env(envp);
 		exit(1);
 	}
@@ -184,5 +184,6 @@ CgiExecutor::execute(Client *client, Socket server, std::string cgi_path)
 	/// Read from stdout
     std::string result = readAll(fd_std[STDIN_FILENO], NULL);
 	close(fd_std[STDIN_FILENO]);
+	std::cout << "Out of CGI" << std::endl;
 	return result;
 }

@@ -25,7 +25,7 @@
             exit();
         }
     } elseif ($_SERVER['REQUEST_METHOD'] == 'GET') {
-        $file = './www/user_data.txt';
+        $file = './user_data.txt';
 
         // If the file exists, display its contents
         if (file_exists($file)) {

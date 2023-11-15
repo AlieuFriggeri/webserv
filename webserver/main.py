@@ -11,7 +11,7 @@ ERROR_404 = "<!DOCTYPE html><html><head><title>Error Page</title></head><body>" 
             "<h1 style=\"text-align:center;\">404 Not Found</h1><p style=\"text-align:center;\">" \
             "42_webserv</p></body></html>"
 
-HOST = "http://localhost:8080"
+HOST = "http://localhost:8002"
 
 
 def color_print(text, color):
