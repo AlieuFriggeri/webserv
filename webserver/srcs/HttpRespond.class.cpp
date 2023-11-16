@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HttpRespond.class.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:11:18 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/10 14:11:47 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/16 10:57:42 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ std::string	HttpRespond::generateHeaders(void)
 {
 	std::string	heads;
 	
-	setHeader("Content-Lenght", toString(_body.length() + 2));
+	setHeader("Content-Length", toString(_body.length() + 2));
 	if (_body.length() != 0)
 	{
-		// setHeader("Content-Type", "QQCH");
+		setHeader("Content-Type", "text/html; charset=UTF-8");
 	}
 	for (std::map<std::string, std::string>::const_iterator i = _headers.begin(); i != _headers.end(); i++)
 		heads += i->first + ": " + i->second + "\r\n";

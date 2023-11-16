@@ -32,7 +32,7 @@
 			$contents = file_get_contents($file);
             echo "<html>\n<body>\n<h1>User Data:</h1>\n<p>";
             echo nl2br($contents);
-            echo '<button onclick="window.location.href=\'index.html\';">Go Back</button>';
+            echo '<br><button onclick="window.location.href=\'index.html\';">Go Back</button>';
             echo "</p>\n</body>\n</html>";
         }
     } elseif ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
