@@ -468,7 +468,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 					GetRequestHandler	methodHandler;
 					if (rt._methods.find("GET") == std::string::npos)
 						it->_req.setErrorCode(405);
-					it->_resp = methodHandler.handleRequest(&(it->_req), *it, servers[i]);
+					it->_resp = methodHandler.handleRequest(&(it->_req), &*it, servers[i]);
 					break;
 				}
 				case POST: 
@@ -476,7 +476,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 					PostRequestHandler	methodHandler;
 					if (rt._methods.find("POST") == std::string::npos)
 						it->_req.setErrorCode(405);
-					it->_resp = methodHandler.handleRequest(&(it->_req), *it, servers[i]);
+					it->_resp = methodHandler.handleRequest(&(it->_req), &*it, servers[i]);
 					break;
 				}
 				case DELETE: 
@@ -484,7 +484,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 					DeleteRequestHandler	methodHandler;
 					if (rt._methods.find("DELETE") == std::string::npos)
 						it->_req.setErrorCode(405);
-					it->_resp = methodHandler.handleRequest(&(it->_req), *it, servers[i]);
+					it->_resp = methodHandler.handleRequest(&(it->_req), &*it, servers[i]);
 					break;
 				}
 				case NONE:

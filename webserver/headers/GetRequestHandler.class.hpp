@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:58:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/20 18:39:40 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/20 19:22:33 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ class GetRequestHandler: public RequestHandler
 		GetRequestHandler&	operator=(const GetRequestHandler &src);
 		~GetRequestHandler(void);
 
-		HttpRespond	handleRequest(HttpRequest *req, Client clt, Socket srv);
+		HttpRespond	handleRequest(HttpRequest *req, Client *clt, Socket srv);
 };
 
 #endif

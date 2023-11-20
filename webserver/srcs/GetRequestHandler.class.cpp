@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:08:04 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/20 18:39:15 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/20 19:22:26 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ GetRequestHandler::~GetRequestHandler(void)
 	// std::cout << "GetRequestHandler destructor called" << std::endl;
 }
 
-HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client clt, Socket srv)
+HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Socket srv)
 {
 	// req->printMessage();
 	HttpRespond	resp;

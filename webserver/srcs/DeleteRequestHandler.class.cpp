@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:06:16 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/20 18:39:50 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/20 19:22:56 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ DeleteRequestHandler::~DeleteRequestHandler(void)
 	// std::cout << "DeleteRequestHandler destructor called" << std::endl;
 }
 
-HttpRespond	DeleteRequestHandler::handleRequest(HttpRequest *req, Client clt, Socket srv)
+HttpRespond	DeleteRequestHandler::handleRequest(HttpRequest *req, Client *clt, Socket srv)
 {
 	HttpRespond	resp;
 
