@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:08:04 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/20 19:22:26 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/20 19:50:52 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Sock
 {
 	// req->printMessage();
 	HttpRespond	resp;
-
 	if (req->isParsingDone() == false)
 		std::cerr << "Le parsing de la requete a rencontre une erreur" << std::endl;
 	else if (req->getPathRelative().empty())
@@ -58,7 +57,7 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Sock
 		std::cerr << "Le fichier/dossier n'existe pas ou les droits ne sont pas corrects" << std::endl;
 		req->setErrorCode(404);
 	}
-	else
+	if (req->getErrorCode() == 0)
 	{
 		if (req->isDirectory() == false)
 		{
@@ -85,6 +84,14 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Sock
 			/* THIS WILL BE FOR DIRECTORY */
 			resp.setBody(openReadCloseDir(req->getPathRelative(), req->getPath()));
 		}
+	}
+	else
+	{
+		/* GESTION ERREUR */
+		std::string errFile = "errfile/";
+		errFile.append(toString(req->getErrorCode()));
+		errFile.append(".html");
+		resp.setBody(openReadFile(errFile));
 	}
 	resp.build(*req);
 	return (resp);
