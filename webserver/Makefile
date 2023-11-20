@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kistod <kistod@student.42.fr>              +#+  +:+       +#+         #
+#    By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/30 10:58:16 by afrigger          #+#    #+#              #
-#    Updated: 2023/11/14 11:26:10 by kistod           ###   ########.fr        #
+#    Updated: 2023/11/20 17:46:29 by vgroux           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,18 +18,19 @@ RESET = \033[0m
 NAME =     webserv
 
 CC =         c++
-CFLAGS =     -Wall -Wextra -Werror -std=c++98 -g
+CFLAGS =     -Wall -Wextra -Werror -std=c++98 -pedantic -g
 RM =         rm -rf
 
 DIR_H = headers/
 DIR_S =	srcs/
 DIR_O =	objs/
 
-SRCS_LIST =	main.cpp utils.cpp \
+SRCS_LIST =	utils.cpp \
 			Client.cpp Socket.cpp ServerConfig.cpp Route.cpp \
 			HttpRequest.class.cpp HttpRespond.class.cpp \
 			RequestHandler.class.cpp GetRequestHandler.class.cpp PostRequestHandler.class.cpp DeleteRequestHandler.class.cpp \
-			CgiExecutor.cpp
+			CgiExecutor.cpp \
+			main.cpp 
 
 
 SRCS =		${addprefix ${DIR_S}, ${SRCS_LIST}}

@@ -41,7 +41,7 @@ servers:
             cgi = .cpp | /cgi/bin;
         )
         - /admin/ (
-            methods = GET POST DELETE;
+            methods = POST;
             root = /admin/;
             listing = true;
             index = ./admin.html;
