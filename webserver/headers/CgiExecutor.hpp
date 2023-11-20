@@ -2,8 +2,9 @@
 #define CGIEXECUTOR_HPP
 
 #include <string>
-#include "../headers/Socket.hpp"
-#include "../headers/Client.hpp"
+// #include "../headers/Socket.hpp"
+// #include "../headers/Client.hpp"
+
 class Socket;
 
 class CgiExecutor

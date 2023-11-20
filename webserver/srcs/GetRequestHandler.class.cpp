@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:08:04 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/20 16:01:39 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/20 18:39:15 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ GetRequestHandler::~GetRequestHandler(void)
 	// std::cout << "GetRequestHandler destructor called" << std::endl;
 }
 
-HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req)
+HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client clt, Socket srv)
 {
 	// req->printMessage();
 	HttpRespond	resp;
@@ -71,12 +71,13 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req)
 			{
 				/* THIS REQUEST WILL BE HANDLE BY THE CGI 		*/
 				/*		This is because there are some queries	*/
-				// if (it->_req.getPath().find(".php") == it->_req.getPath().size() - 4)
-				// {
-				// 	std::cout << "entering cgi" << std::endl;
-				// 	cgiresp = CgiExecutor::execute(&*it, servers[0], "/usr/bin/php");
-				// 	std::cout << "CGI resp is : " << cgiresp << std::endl;
-				// }
+				if (req->getPath().find(".php") == req->getPath().size() - 4)
+				{
+					std::string cgiresp;
+					std::cout << "entering cgi" << std::endl;
+					cgiresp = CgiExecutor::execute(clt, srv, "/usr/bin/php");
+					std::cout << "CGI resp is : " << std::endl << cgiresp << std::endl;
+				}
 			}
 		}
 		else

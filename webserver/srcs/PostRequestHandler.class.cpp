@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:10:16 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/09 14:05:30 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/20 18:39:58 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ PostRequestHandler::~PostRequestHandler(void)
 	// std::cout << "PostRequestHandler destructor called" << std::endl;
 }
 
-HttpRespond	PostRequestHandler::handleRequest(HttpRequest *req)
+HttpRespond	PostRequestHandler::handleRequest(HttpRequest *req, Client clt, Socket srv)
 {
 	HttpRespond	resp;
 
