@@ -462,12 +462,6 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				case GET: 
 				{
 					GetRequestHandler	methodHandler;
-					if (it->_req.getPath().find(".php") == it->_req.getPath().size() - 4)
-					{
-						std::cout << "entering cgi" << std::endl;
-						cgiresp = CgiExecutor::execute(&*it, servers[0], "/usr/bin/php");
-						std::cout << "CGI resp is : " << cgiresp << std::endl;
-					}
 					it->_resp = methodHandler.handleRequest(&(it->_req));
 					break;
 				}
@@ -526,11 +520,31 @@ std::string trimspace(std::string str)
 
 void	Socket::checkroute(Client *client, Socket *server)
 {
+	//Route	rt;
 	int i = 0;
-	std::string filepath;
-	DIR*	dir;
+
 	while (server[i]._listening_socket != client->_serversocket)
 		i++;
+	std::string filepath = client->_req.getPath();
+	std::string route = filepath.substr(0, filepath.find_last_of("/") + 1);
+	std::cout << "FILEPATH= " << route << std::endl;
+	exit(1);
+	
+	
+	
+	
+	
+	
+	//rt = 
+
+
+
+	
+
+
+
+
+	DIR*	dir;
 	for (std::map<std::string, Route>::iterator it = server[i]._route.begin(); it != server[i]._route.end(); it++)
 	{
 		if (client->_req.getPath().empty())
@@ -539,6 +553,8 @@ void	Socket::checkroute(Client *client, Socket *server)
 			return ;
 		}
 		filepath = "." + it->second._path + client->_req.getPath().substr(1);
+		
+//		exit(0);
 		while(filepath.find_first_of(" ") != std::string::npos)
 			filepath.erase(filepath.find_first_of(" "), 1);
 		if ((dir = opendir(filepath.c_str())) != NULL)
