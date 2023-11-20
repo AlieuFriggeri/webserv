@@ -445,9 +445,10 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 	{
 		if (it->_client_socket == fd && it->_bytesrcv > 0)
 		{
+			Route	rt;
 			it->_req.parse(it->_buff.c_str(), it->_bytesrcv);
 			std::cout << "path\t" << it->_req.getPath() << std::endl;
-			checkroute(&*it, servers);
+			rt = checkroute(&*it, servers);
 			//it->_req.printMessage();
 			if (!it->_req.isParsingDone())
 				std::cerr<< "Bad request in sendreponse" << std::endl;
@@ -462,18 +463,24 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				case GET: 
 				{
 					GetRequestHandler	methodHandler;
+					if (rt._methods.find("GET") == std::string::npos)
+						it->_req.setErrorCode(405);
 					it->_resp = methodHandler.handleRequest(&(it->_req));
 					break;
 				}
 				case POST: 
 				{
 					PostRequestHandler	methodHandler;
+					if (rt._methods.find("POST") != std::string::npos)
+						it->_req.setErrorCode(405);
 					it->_resp = methodHandler.handleRequest(&(it->_req));
 					break;
 				}
 				case DELETE: 
 				{
 					DeleteRequestHandler	methodHandler;
+					if (rt._methods.find("DELETE") != std::string::npos)
+						it->_req.setErrorCode(405);
 					it->_resp = methodHandler.handleRequest(&(it->_req));
 					break;
 				}
@@ -518,62 +525,65 @@ std::string trimspace(std::string str)
 	return res;
 }
 
-void	Socket::checkroute(Client *client, Socket *server)
+Route	Socket::checkroute(Client *client, Socket *server)
 {
-	//Route	rt;
+	Route	rt;
 	int i = 0;
 
 	while (server[i]._listening_socket != client->_serversocket)
 		i++;
 	std::string filepath = client->_req.getPath();
 	std::string route = filepath.substr(0, filepath.find_last_of("/") + 1);
-	std::cout << "FILEPATH= " << route << std::endl;
-	exit(1);
+	std::cout << "ROUTE= " << route << std::endl;
+	if (server[i]._route.count(route) == 0)
+	{
+		std::cerr << "Route pas accessible avec le port du client" << std::endl;
+		filepath.clear();
+		return rt;
+	}
+	rt = server[i]._route[route];
 	
-	
-	
-	
-	
-	
-	//rt = 
-
-
-
-	
-
-
 
 
 	DIR*	dir;
-	for (std::map<std::string, Route>::iterator it = server[i]._route.begin(); it != server[i]._route.end(); it++)
+	if (client->_req.getPath().empty())
 	{
-		if (client->_req.getPath().empty())
-		{
-			std::cout << "Path from request empty" <<std::endl;
-			return ;
-		}
-		filepath = "." + it->second._path + client->_req.getPath().substr(1);
-		
-//		exit(0);
-		while(filepath.find_first_of(" ") != std::string::npos)
-			filepath.erase(filepath.find_first_of(" "), 1);
-		if ((dir = opendir(filepath.c_str())) != NULL)
+		std::cout << "Path from request empty" <<std::endl;
+		return rt;
+	}
+	filepath = "." + filepath;
+	while(filepath.find_first_of(" ") != std::string::npos)
+		filepath.erase(filepath.find_first_of(" "), 1);
+
+	std::cout << filepath << std::endl;
+	if ((dir = opendir(filepath.c_str())) != NULL)
+	{
+		if (rt._listing)
 		{
 			closedir(dir);
 			client->_req.setDirectory(true);
 			client->_req.setPathRelative(filepath);
-			break;
-		}
-		else if (access(filepath.c_str(), F_OK | R_OK) == 0)
-		{
-			client->_req.setDirectory(false);
-			client->_req.setPathRelative(filepath);
-			break;
 		}
 		else
 		{
-			filepath.clear();
+			filepath += rt._index;
+			if (access(filepath.c_str(), F_OK | R_OK) == 0)
+			{
+				client->_req.setDirectory(false);
+				client->_req.setPathRelative(filepath);
+			}
 		}
 	}
+	else if (access(filepath.c_str(), F_OK | R_OK) == 0)
+	{
+		client->_req.setDirectory(false);
+		client->_req.setPathRelative(filepath);
+	}
+	else
+	{
+		filepath.clear();
+		std::cerr << "Dir and File not accessible" << std::endl;
+	}
+	return rt;
 	// std::cout << "File found here " << filepath << std::endl << std::endl;
 }

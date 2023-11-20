@@ -50,7 +50,7 @@ class Socket{
 	int findclient(std::list<Client> *clientlist, int fd);
 	static void setMaxSock(std::list<Client> *clientlist);
 	static void sendresponse(std::list<Client> *clientlist, int fd, Socket *servers);
-	static void checkroute(Client *client, Socket *server);
+	static Route checkroute(Client *client, Socket *server);
 
 	sockaddr_in getSockaddr(void);
 	void setSockaddr(sockaddr_in &server);
