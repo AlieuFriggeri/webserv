@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:08:04 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/20 16:01:39 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/21 13:52:18 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,9 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req)
 		std::cerr << "Le fichier/dossier n'existe pas ou les droits ne sont pas corrects" << std::endl;
 		req->setErrorCode(404);
 	}
-	else
+	std::cout << req->getErrorCode() << std::endl;
+	std::cout << req->getPathRelative() << std::endl;
+	if (req->getErrorCode() == 0)
 	{
 		if (req->isDirectory() == false)
 		{
@@ -71,11 +73,12 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req)
 			{
 				/* THIS REQUEST WILL BE HANDLE BY THE CGI 		*/
 				/*		This is because there are some queries	*/
-				// if (it->_req.getPath().find(".php") == it->_req.getPath().size() - 4)
+				// if (req->getPath().find(".php") == req->getPath().size() - 4)
 				// {
+				// 	std::string cgiresp;
 				// 	std::cout << "entering cgi" << std::endl;
-				// 	cgiresp = CgiExecutor::execute(&*it, servers[0], "/usr/bin/php");
-				// 	std::cout << "CGI resp is : " << cgiresp << std::endl;
+				// 	cgiresp = CgiExecutor::execute(clt, srv, "/usr/bin/php");
+				// 	std::cout << "CGI resp is : " << std::endl << cgiresp << std::endl;
 				// }
 			}
 		}
@@ -84,6 +87,13 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req)
 			/* THIS WILL BE FOR DIRECTORY */
 			resp.setBody(openReadCloseDir(req->getPathRelative(), req->getPath()));
 		}
+	}
+	else
+	{
+		/* GESTION ERREUR */
+		std::string errFile = "./errfile/" + toString(req->getErrorCode()) + ".html";
+		std::cout << errFile << std::endl;
+		resp.setBody(openReadFile(errFile));
 	}
 	resp.build(*req);
 	return (resp);

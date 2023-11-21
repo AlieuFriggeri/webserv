@@ -487,21 +487,22 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				case NONE:
 					break;
 			}
-			std::cout << "IT->_RESP BEFORE = " << it->_resp.getResp() << std::endl;
-			if (cgiresp != "")
-			{
-				response = it->_resp.getResp().substr(0, it->_resp.getResp().find("GMT", 0) + 5);
-				response += '\n';
-				response += cgiresp;
-				std::cout << "RESPONSE HEADR = " << response << std::endl;
-				//std::cout << "headr index = " << it->_resp.getResp().find("GMT", 0) << std::endl;
-				//exit(1);
-			}
-			else
+			// std::cout << "IT->_RESP BEFORE = " << it->_resp.getResp() << std::endl;
+			// if (cgiresp != "")
+			// {
+			// 	response = it->_resp.getResp().substr(0, it->_resp.getResp().find("GMT", 0) + 5);
+			// 	response += '\n';
+			// 	response += cgiresp;
+			// 	std::cout << "RESPONSE HEADR = " << response << std::endl;
+			// 	//std::cout << "headr index = " << it->_resp.getResp().find("GMT", 0) << std::endl;
+			// 	//exit(1);
+			// }
+			// else
 				response = it->_resp.getResp();
 			//std::cout << "REPONSE = '" << response << "'" << std::endl;
 			//std::cout << "IT->_RESP = " << it->_resp.getResp() << std::endl;
 			write(it->_client_socket, response.c_str(), strlen(response.c_str()));
+			exit(1);
 			std::cout << "Respond sended to Client " << it->_clientnumber << " on socket : " << it->_client_socket << std::endl;
 			if (it->_req.keepAlive() == true)
 			{
