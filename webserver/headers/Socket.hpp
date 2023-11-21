@@ -24,9 +24,9 @@
 #include "Client.hpp"
 #include "ServerConfig.hpp"
 #include "Route.hpp"
-#include "GetRequestHandler.class.hpp"
-#include "PostRequestHandler.class.hpp"
-#include "DeleteRequestHandler.class.hpp"
+// #include "GetRequestHandler.class.hpp"
+// #include "PostRequestHandler.class.hpp"
+// #include "DeleteRequestHandler.class.hpp"
 #include "CgiExecutor.hpp"
 
 class Route;

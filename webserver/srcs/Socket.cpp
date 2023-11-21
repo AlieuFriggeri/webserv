@@ -1,5 +1,8 @@
 #include "Socket.hpp"
 #include "HttpRequest.class.hpp"
+#include "GetRequestHandler.class.hpp"
+#include "PostRequestHandler.class.hpp"
+#include "DeleteRequestHandler.class.hpp"
 
 int max_sock;
 
