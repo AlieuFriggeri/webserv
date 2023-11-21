@@ -507,9 +507,9 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			// 	response = it->_resp.getResp();
 			// //std::cout << "REPONSE = '" << response << "'" << std::endl;
 			// //std::cout << "IT->_RESP = " << it->_resp.getResp() << std::endl;
-			write(it->_client_socket, response.c_str(), strlen(response.c_str()));
-			exit(1);
+			write(it->_client_socket, it->_resp.getResp().c_str(), strlen(it->_resp.getResp().c_str()));
 			std::cout << "Respond sended to Client " << it->_clientnumber << " on socket : " << it->_client_socket << std::endl;
+			exit(1);
 			if (it->_req.keepAlive() == true)
 			{
 				it->_req.resetRequest();
@@ -541,7 +541,8 @@ Route	Socket::checkroute(Client *client, Socket *server)
 		i++;
 	std::string filepath = client->_req.getPath();
 	std::string route = filepath.substr(0, filepath.find_last_of("/") + 1);
-	std::cout << "ROUTE= " << route << std::endl;
+	route.erase(0, 5);
+	std::cout << "ROUTE= \'" << route << "\'" << std::endl;
 	if (server[i]._route.count(route) == 0)
 	{
 		std::cerr << "Route pas accessible avec le port du client" << std::endl;
@@ -558,7 +559,6 @@ Route	Socket::checkroute(Client *client, Socket *server)
 		std::cout << "Path from request empty" <<std::endl;
 		return rt;
 	}
-	filepath = "." + filepath;
 	while(filepath.find_first_of(" ") != std::string::npos)
 		filepath.erase(filepath.find_first_of(" "), 1);
 

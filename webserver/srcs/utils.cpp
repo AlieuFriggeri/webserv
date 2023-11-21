@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 16:45:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/10 16:05:15 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/21 14:12:01 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,15 +138,13 @@ std::string openReadFile(std::string relative_path)
 
 	result.clear();
 	if (relative_path.c_str()[0] == '.' && relative_path.c_str()[1] == '/')
-	relative_path.erase(0, 2);
-	// std::cout << relative_path << std::endl;
+		relative_path.erase(0, 2);
 	file.open(relative_path.c_str());
 	if (file.is_open())
 	{
 		while (std::getline(file, line))
 			result += line;
 		file.close();
-		// std::cout << result;
 	}
 	else
 		std::cerr << "Erreur lors de l'ouverture du fichier" << std::endl;

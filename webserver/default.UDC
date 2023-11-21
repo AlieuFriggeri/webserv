@@ -3,6 +3,7 @@ servers:
     - listen = 80;
     - server_name = domain1.com;
     - clientbody = 2048;
+	- error = ./error/;
     - route{
 		- / (
             methods = GET;
@@ -41,7 +42,7 @@ servers:
             cgi = .cpp | /cgi/bin;
         )
         - /admin/ (
-            methods = POST;
+            methods = GET POST;
             root = /admin/;
             listing = true;
             index = ./admin.html;

@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:02:28 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/09 12:27:09 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/21 15:05:19 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,3 +44,8 @@ RequestHandler::~RequestHandler(void)
 {
 	// std::cout << "RequestHandler destructor called" << std::endl;
 }
+
+// std::string RequestHandler::handleErrorPage(Route rt, int errCode)
+// {
+
+// }

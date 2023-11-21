@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/10 12:24:29 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/21 15:20:24 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -837,6 +837,7 @@ void	HttpRequest::resetRequest(void)
 	_body.clear();
 	_body_str.clear();
 	_path.clear();
+	_path = "./www";
 	_query.clear();
 	_fragment.clear();
 	_conn.clear();

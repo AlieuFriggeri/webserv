@@ -245,7 +245,21 @@ std::vector<std::map<std::string, std::string> > ServerConfig::setupmap(std::vec
 		tmp.erase(tmp.find("\n"));
 		tmp.erase(tmp.find(";"));
 		maptmp["clientbody"] = tmp;
-		//std::cout << "tmp = " << tmp << std::endl;
+
+		if (it->find("- error =") != std::string::npos)
+		{	std::string ntm;
+			ntm = it->substr(it->find("- error =") + 10, it->find_first_of(";"));
+			ntm.erase(ntm.find(";"), ntm.size());
+			
+			maptmp["error"] = ntm;
+			// maptmp["error"].erase(maptmp["error"].find(";"));
+			// maptmp["error"].erase(maptmp["error"].find("\n"));
+		}
+		else
+		{
+			maptmp["error"] = "./errfile/";
+		}
+		//std::cout << "error = \'" << maptmp["error"] << "\'" << std::endl;
 		res.push_back(maptmp);
 		maptmp.clear();
 	}
