@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HttpRespond.class.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:11:18 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/16 10:57:42 by afrigger         ###   ########.fr       */
+/*   Updated: 2023/11/21 13:52:06 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,15 @@ bool HttpRespond::build(HttpRequest req)
 	_isBuilt = false;
 	setHeader("Date", getDate());
 	setHeader("Connection", req.getHeader("connection"));
-	if (req.getErrorCode() == 0)
-	{
-		// PARSING OK
-	}
-	else
-	{
-		_status_code = req.getErrorCode();
-		_body = getStatusStr(_status_code);
-	}
+	// if (req.getErrorCode() == 0)
+	// {
+	// 	// PARSING OK
+	// }
+	// else
+	// {
+	// 	_status_code = req.getErrorCode();
+	// 	_body = getStatusStr(_status_code);
+	// }
 	_body += "\r\n";
 	_resp = generateStatusLine();
 	_resp += generateHeaders();

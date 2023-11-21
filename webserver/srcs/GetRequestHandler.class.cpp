@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:08:04 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/20 19:50:52 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/21 13:54:03 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,13 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Sock
 			{
 				/* THIS REQUEST WILL BE HANDLE BY THE CGI 		*/
 				/*		This is because there are some queries	*/
-				if (req->getPath().find(".php") == req->getPath().size() - 4)
-				{
-					std::string cgiresp;
-					std::cout << "entering cgi" << std::endl;
-					cgiresp = CgiExecutor::execute(clt, srv, "/usr/bin/php");
-					std::cout << "CGI resp is : " << std::endl << cgiresp << std::endl;
-				}
+				// if (req->getPath().find(".php") == req->getPath().size() - 4)
+				// {
+				// 	std::string cgiresp;
+				// 	std::cout << "entering cgi" << std::endl;
+				// 	cgiresp = CgiExecutor::execute(clt, srv, "/usr/bin/php");
+				// 	std::cout << "CGI resp is : " << std::endl << cgiresp << std::endl;
+				// }
 			}
 		}
 		else
@@ -88,9 +88,8 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Sock
 	else
 	{
 		/* GESTION ERREUR */
-		std::string errFile = "errfile/";
-		errFile.append(toString(req->getErrorCode()));
-		errFile.append(".html");
+		std::string errFile = "./errfile/" + toString(req->getErrorCode()) + ".html";
+		std::cout << errFile << std::endl;
 		resp.setBody(openReadFile(errFile));
 	}
 	resp.build(*req);

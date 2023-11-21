@@ -508,6 +508,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			// //std::cout << "REPONSE = '" << response << "'" << std::endl;
 			// //std::cout << "IT->_RESP = " << it->_resp.getResp() << std::endl;
 			write(it->_client_socket, response.c_str(), strlen(response.c_str()));
+			exit(1);
 			std::cout << "Respond sended to Client " << it->_clientnumber << " on socket : " << it->_client_socket << std::endl;
 			if (it->_req.keepAlive() == true)
 			{
