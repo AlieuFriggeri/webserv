@@ -444,6 +444,8 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 	std::string line;
 	std::string cgiresp = "";
 
+	std::cout << servers[0]._error << std::endl;
+	std::cout << servers[1]._error << std::endl;
 	for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
 	{
 		if (it->_client_socket == fd && it->_bytesrcv > 0)
@@ -509,7 +511,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			// //std::cout << "IT->_RESP = " << it->_resp.getResp() << std::endl;
 			write(it->_client_socket, it->_resp.getResp().c_str(), strlen(it->_resp.getResp().c_str()));
 			std::cout << "Respond sended to Client " << it->_clientnumber << " on socket : " << it->_client_socket << std::endl;
-			exit(1);
+			// exit(1);
 			if (it->_req.keepAlive() == true)
 			{
 				it->_req.resetRequest();
@@ -550,7 +552,7 @@ Route	Socket::checkroute(Client *client, Socket *server)
 		return rt;
 	}
 	rt = server[i]._route[route];
-	
+	//std::cout << server[i].g << std::endl;
 
 
 	DIR*	dir;

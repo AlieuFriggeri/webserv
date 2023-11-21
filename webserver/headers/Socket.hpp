@@ -71,7 +71,7 @@ class Socket{
 	void setConfigMap(std::map<std::string, std::string> map);
 	int getTotalServ(void);
 	void setTotalServ(int total);
-
+	std::string _error;
 	private:
 		sockaddr_in _server;
 		int _listening_socket;

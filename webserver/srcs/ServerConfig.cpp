@@ -101,8 +101,8 @@ void ServerConfig::configservers(std::vector<std::map<std::string, std::string> 
 		serverarray[i].setPort(atoi(maptmp["port"].c_str()));
 		serverarray[i].setMaxBodySize(atoi(maptmp["clientbody"].c_str()));
 		serverarray[i].setServerName(maptmp["server_name"]);
+		serverarray[i]._error = maptmp["error"];
 		i++;
-		
 	}
 	i = 0;
 	for (std::vector<std::map<std::string, Route> >::iterator it = routes.begin(); it != routes.end() && i < 2; it++)

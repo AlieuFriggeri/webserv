@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:08:04 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/21 14:01:58 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/21 15:39:54 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,10 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Sock
 	else
 	{
 		/* GESTION ERREUR */
-		std::string errFile = "./errfile/" + toString(req->getErrorCode()) + ".html";
-		std::cout << errFile << std::endl;
-		resp.setBody(openReadFile(errFile));
+		resp.setBody(handleErrorPage(srv, req->getErrorCode()));
+		// std::string errFile = "./errfile/" + toString(req->getErrorCode()) + ".html";
+		// std::cout << errFile << std::endl;
+		// resp.setBody(openReadFile(errFile));
 	}
 	resp.build(*req);
 	return (resp);
