@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:08:04 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/21 15:39:54 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/22 14:54:22 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Sock
 		std::cerr << "Le fichier/dossier n'existe pas ou les droits ne sont pas corrects" << std::endl;
 		req->setErrorCode(404);
 	}
+	std::cout << "Status code = " << req->getErrorCode() << std::endl;
 	if (req->getErrorCode() == 0)
 	{
 		if (req->isDirectory() == false)
@@ -76,6 +77,7 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Sock
 					std::cout << "entering cgi" << std::endl;
 					cgiresp = CgiExecutor::execute(clt, srv, "/usr/bin/php");
 					std::cout << "CGI resp is : " << std::endl << cgiresp << std::endl;
+					resp.setBody(cgiresp);
 				}
 			}
 		}

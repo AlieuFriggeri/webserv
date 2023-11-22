@@ -329,7 +329,7 @@ std::vector<std::map<std::string, Route> > ServerConfig::setuproutes(std::vector
 			// maptmp[tmp2]._index.erase(maptmp[tmp2]._index.find("/"));
 			// maptmp[tmp2]._index.erase(maptmp[tmp2]._index.find_first_of("."));
 			// maptmp[tmp2]._index.erase(maptmp[tmp2]._index.find(" "));
-			std::cout << "MAPTMP index: \"" << maptmp[tmp2]._index << "\"" << std::endl;
+			// std::cout << "MAPTMP index: \"" << maptmp[tmp2]._index << "\"" << std::endl;
 			if (route.find("cgi =") != std::string::npos)
 			{
 				//std::cerr << "Config file: cgi not found" << std::endl;

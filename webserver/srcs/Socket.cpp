@@ -588,6 +588,12 @@ Route	Socket::checkroute(Client *client, Socket *server)
 		client->_req.setDirectory(false);
 		client->_req.setPathRelative(filepath);
 	}
+	else if (access(filepath.c_str(), F_OK) == 0)
+	{
+		client->_req.setPathRelative(filepath);
+		client->_req.setDirectory(false);
+		client->_req.setErrorCode(403);
+	}
 	else
 	{
 		filepath.clear();
