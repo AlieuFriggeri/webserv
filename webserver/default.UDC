@@ -13,9 +13,9 @@ servers:
             cgi = .cpp | /cgi/bin;
         )
 		- /admin/ (
-            methods = POST;
+            methods = GET POST;
             root = /admin/;
-            listing = true;
+            listing = false;
             index = ./admin.html;
             cgi = .cpp | /cgi/bin/admin;
         )

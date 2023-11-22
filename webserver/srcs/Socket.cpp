@@ -563,7 +563,6 @@ Route	Socket::checkroute(Client *client, Socket *server)
 	}
 	while(filepath.find_first_of(" ") != std::string::npos)
 		filepath.erase(filepath.find_first_of(" "), 1);
-
 	std::cout << filepath << std::endl;
 	if ((dir = opendir(filepath.c_str())) != NULL)
 	{
@@ -581,6 +580,7 @@ Route	Socket::checkroute(Client *client, Socket *server)
 				client->_req.setDirectory(false);
 				client->_req.setPathRelative(filepath);
 			}
+			std::cout << "Path + index: \"" << filepath << "\"" << std::endl;
 		}
 	}
 	else if (access(filepath.c_str(), F_OK | R_OK) == 0)

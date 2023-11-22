@@ -87,12 +87,7 @@ class Socket{
 
 };
 
-
-
-
-
-
-
+std::string trimspace(std::string str);
 
 
 
