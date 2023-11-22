@@ -313,7 +313,7 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 				rcv = 0;
 			}
 		}
-		checktimeout(clientlist, &readset, &writeset);
+		checktimeout(clientlist, &readset, &writeset, servers);
 	}
 }
 
@@ -364,13 +364,33 @@ void Socket::closeconnection(std::list<Client> *clientlist, int i, fd_set *reads
 	}
 }
 
-void Socket::checktimeout(std::list<Client> *clientlist, fd_set *readset, fd_set *writeset)
+void Socket::checktimeout(std::list<Client> *clientlist, fd_set *readset, fd_set *writeset, Socket *sockets)
 {
+	(void)sockets;
 	for ( std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
 	{
 			if (time(NULL) - it->_last_msg > 5 && it->_client_socket != -1)
 			{
 				std::cout << "Client number {" << it->_clientnumber << "} has timed out" << std::endl;
+				// sendresponse(clientlist, it->_client_socket, sockets);
+
+
+				//	PERMET DE NOTIFIER LE CLIENT D'UN TIMEOUT
+				//	MAIS SI LE CLIENT NE FAIS PAS DE REQUETE PENDANT 5s
+				//	LE TIMEOUT SERA ENVOYER A LA PROCHAINE CONNEXION
+
+				// int	i = 0;
+				// while (sockets[i]._listening_socket != it->_serversocket)
+				// 	i++;
+				// GetRequestHandler	methodHandler;
+				// std::string	tmp = ".";
+				// it->_req.setParsing(PARSING_DONE);
+				// it->_req.setErrorCode(408);
+				// it->_req.setPathRelative(tmp);
+				// it->_resp = methodHandler.handleRequest(&(it->_req), &*it, sockets[i]);
+
+				// write(it->_client_socket, it->_resp.getResp().c_str(), strlen(it->_resp.getResp().c_str()));
+
 				closeconnection(clientlist, it->_client_socket, readset, writeset);
 				setMaxSock(clientlist);
 			}
@@ -460,6 +480,8 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			//it->_req.printMessage();
 			if (!it->_req.isParsingDone())
 				std::cerr<< "Bad request in sendreponse" << std::endl;
+			else if (it->_req.getPath().empty())
+				it->_req.setErrorCode(400);
 			else if ((it->_req.getPathRelative()).empty())
 			{
 				it->_req.setErrorCode(404);
@@ -554,11 +576,10 @@ Route	Socket::checkroute(Client *client, Socket *server)
 	rt = server[i]._route[route];
 	//std::cout << server[i].g << std::endl;
 
-
 	DIR*	dir;
 	if (client->_req.getPath().empty())
 	{
-		std::cout << "Path from request empty" <<std::endl;
+		std::cerr << "Path from request empty" <<std::endl;
 		return rt;
 	}
 	while(filepath.find_first_of(" ") != std::string::npos)

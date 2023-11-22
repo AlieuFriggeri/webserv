@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:08:04 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/22 14:54:22 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/22 17:30:45 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ GetRequestHandler::~GetRequestHandler(void)
 
 HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Socket srv)
 {
-	// req->printMessage();
 	HttpRespond	resp;
 	if (req->isParsingDone() == false)
 		std::cerr << "Le parsing de la requete a rencontre une erreur" << std::endl;
@@ -90,11 +89,14 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Sock
 	else
 	{
 		/* GESTION ERREUR */
+		resp.setStatus(req->getErrorCode());
 		resp.setBody(handleErrorPage(srv, req->getErrorCode()));
 		// std::string errFile = "./errfile/" + toString(req->getErrorCode()) + ".html";
 		// std::cout << errFile << std::endl;
 		// resp.setBody(openReadFile(errFile));
 	}
+	std::cout << req->getErrorCode() << std::endl;
 	resp.build(*req);
+	std::cout << resp.getResp() << std::endl;
 	return (resp);
 }

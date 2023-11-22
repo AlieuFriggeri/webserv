@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:11:18 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/22 14:54:45 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/22 17:22:41 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,15 @@ bool HttpRespond::build(HttpRequest req)
 {
 	_isBuilt = false;
 	setHeader("Date", getDate());
+	std::cerr << "1" << std::endl;
 	setHeader("Connection", req.getHeader("connection"));
+	std::cerr << "2" << std::endl;
 	if (req.getErrorCode() == 0)
 		_status_code = 200;
+	else if (req.getErrorCode() == 408)
+	{
+		setHeader("Connection", "close");
+	}
 	else
 	{
 		_status_code = req.getErrorCode();
