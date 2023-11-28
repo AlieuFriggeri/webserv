@@ -549,12 +549,12 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 	{
 		if (it->_client_socket == fd && it->_bytesrcv > 0)
 		{
-			Route	rt;
-			rt = checkroute(&*it, servers);
 			int	i = 0;
 			while (servers[i]._listening_socket != it->_serversocket)
 				i++;
 			it->_req.parse(it->_buff.c_str(), it->_bytesrcv, servers[i].getMaxBodySize());
+			Route	rt;
+			rt = checkroute(&*it, servers);
 			std::cout << "path\t" << it->_req.getPath() << std::endl;
 			//it->_req.printMessage();
 			if (!it->_req.isParsingDone())
@@ -648,8 +648,8 @@ Route	Socket::checkroute(Client *client, Socket *server)
 		i++;
 	std::string filepath = client->_req.getPath();
 	std::string route = filepath.substr(0, filepath.find_last_of("/") + 1);
-	route.erase(0, 5);
 	std::cout << "ROUTE= \'" << route << "\'" << std::endl;
+	route.erase(0, 5);
 	if (server[i]._route.count(route) == 0)
 	{
 		std::cerr << "Route pas accessible avec le port du client" << std::endl;
