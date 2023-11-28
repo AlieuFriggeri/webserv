@@ -102,8 +102,6 @@ void Socket::setTotalServ(int total)
 }
 
 
-
-
 Socket::Socket()
 {
 	bzero(&_svc, sizeof(_svc));
@@ -596,7 +594,11 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 					break;
 				}
 				case NONE:
+				{
+					GetRequestHandler	methodHandler;
+					it->_resp = methodHandler.handleRequest(&(it->_req), &*it, servers[i]);
 					break;
+				}
 			}
 			// std::cout << "IT->_RESP BEFORE = " << it->_resp.getResp() << std::endl;
 			// if (cgiresp != "")

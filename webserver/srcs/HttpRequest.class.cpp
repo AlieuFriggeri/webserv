@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/28 14:35:28 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/28 15:03:39 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -785,7 +785,12 @@ void	HttpRequest::parse(const char *data, size_t len, int maxBody)
 			}
 			case BODY:
 			{
-				if (_body.size() < (unsigned long)maxBody && _body.size() < _body_len)
+				if (_body.size() > (unsigned long)maxBody)
+				{
+					_err_code = 413;
+					return ;
+				}
+				if (_body.size() < _body_len)
 					_body.push_back(c);
 				if (_body.size() == _body_len)
 					_state = PARSING_DONE;
