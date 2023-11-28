@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:02:28 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/21 16:25:16 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/21 16:32:45 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@ std::string RequestHandler::handleErrorPage(Socket srv, int errCode)
 	std::string	errfile;
 	
 	errfile = srv._error + toString(errCode) + ".html";
-	std::cout << "errfile avant test: " << errfile << std::endl;
+	// std::cout << "errfile avant test: " << errfile << std::endl;
 	if (openReadFile(errfile).empty())
 	{
 		errfile = "./errfile/" + toString(errCode) + ".html";
 	}
-	std::cout << "errfile apres test: " << errfile << std::endl;
+	// std::cout << "errfile apres test: " << errfile << std::endl;
 	return (openReadFile(errfile));
 }
