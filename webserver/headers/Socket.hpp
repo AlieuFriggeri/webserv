@@ -33,7 +33,6 @@ class Route;
 
 class Socket{
 
-
 	public:
 	Socket();
 	~Socket();
@@ -55,7 +54,7 @@ class Socket{
 	sockaddr_in getSockaddr(void);
 	void setSockaddr(sockaddr_in &server);
 	int getListening(void);
-	void setListening(int &socket);
+	void setListening(int socket);
 	char *getSvc(void);
 	std::string getServerName(void);
 	void setServerName(std::string &name);
@@ -71,7 +70,12 @@ class Socket{
 	void setConfigMap(std::map<std::string, std::string> map);
 	int getTotalServ(void);
 	void setTotalServ(int total);
+	static void fillservInfo(struct addrinfo **serverInfo, std::map<std::string, std::string> config);
+	static int bindSocket(struct addrinfo *serverInfo);
+	static int getListenSock(std::map<std::string, std::string> config);
+
 	std::string _error;
+	std::map<std::string, std::string> _config;
 	private:
 		sockaddr_in _server;
 		int _listening_socket;
@@ -81,7 +85,6 @@ class Socket{
 		int _port;
 		std::string _root;
 		std::map<std::string, Route> _route;
-		std::map<std::string, std::string> _config;
 		int _totalserv;
 
 

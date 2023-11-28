@@ -21,7 +21,7 @@ int Socket::getListening(void)
 	return this->_listening_socket;
 }
 
-void Socket::setListening(int &socket)
+void Socket::setListening(int socket)
 {
 	this->_listening_socket = socket;
 }
@@ -114,6 +114,85 @@ Socket::~Socket()
 
 }
 
+void Socket::fillservInfo(struct addrinfo **serverInfo, std::map<std::string, std::string> config)
+{
+	struct addrinfo hints;
+	memset(&hints, 0, sizeof(hints));
+
+	hints.ai_family = AF_INET;
+	hints.ai_socktype = SOCK_STREAM;
+	hints.ai_flags = AI_PASSIVE;
+
+	if (int retval = getaddrinfo(NULL, config["port"].c_str(), &hints, serverInfo) != 0)
+	{
+		std::cout << "GetAddrInfo error: " << gai_strerror(retval) << std::endl;
+		exit(123);
+	}
+	return;
+}
+
+int Socket::bindSocket(struct addrinfo *serverInfo)
+{
+	int listenSockFd;
+	int yes = 1;
+
+	struct addrinfo *infoPtr = NULL;
+	for (infoPtr = serverInfo; infoPtr != NULL; infoPtr = infoPtr->ai_next)
+	{
+		listenSockFd = socket(infoPtr->ai_family, infoPtr->ai_socktype, infoPtr->ai_protocol);
+		if (listenSockFd == -1)
+		{
+			perror("socket: ");
+			continue;
+		}
+
+		if (setsockopt(listenSockFd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) == -1){
+			perror("setsockopt: ");
+			close(listenSockFd);
+			continue;
+		}
+
+		if (bind(listenSockFd, infoPtr->ai_addr, infoPtr->ai_addrlen) == -1)
+		{
+			perror("bind: ");
+			close(listenSockFd);
+			continue;
+		}
+		else
+			break;
+	}
+	if (infoPtr == NULL)
+		return -1;
+	return (listenSockFd);
+}
+
+int Socket::getListenSock(std::map<std::string, std::string> config)
+{
+	int listenSockFd;
+	struct addrinfo* serverInfo;
+
+	fillservInfo(&serverInfo, config);
+	listenSockFd = bindSocket(serverInfo);
+	freeaddrinfo(serverInfo);
+
+	if (listenSockFd == -1)
+	{
+		perror("listening socket == -1: ");
+		exit(1);
+	}
+	if (listen(listenSockFd, 128) == -1)
+	{
+		perror("listen == -1: ");
+		exit(1);
+	}
+	if (fcntl(listenSockFd, F_SETFL, O_NONBLOCK) == -1)
+	{
+		perror("fcntl == -1: ");
+		exit(1);
+	}
+	return listenSockFd;
+}
+
 void Socket::setup(Socket *servers)
 {
 	for (int i = 0; i < servers[0]._totalserv; i++)
@@ -146,6 +225,7 @@ void Socket::setup(Socket *servers)
 			exit(2);
 		}
 
+
 		if (listen(servers[i]._listening_socket, 128) < 0)
 		{
 			std::cerr << "Error while listening on socket (" << strerror(errno) << ")" << std::endl;
@@ -158,6 +238,7 @@ void Socket::setup(Socket *servers)
 			exit(4);
 		}
 	}
+	//freeaddrinfo(servers[0]._info);
 }
 
 int	Socket::initsets(std::list<Client> * clientlist, fd_set *_read, fd_set *_write, Socket *servers)
@@ -265,7 +346,7 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 		}
 		else if (rcv == 0)
 		{
-			std::cout << "max_sock = " << max_sock << std::endl;
+			//std::cout << "max_sock = " << max_sock << std::endl;
 		}
 		else
 		{
@@ -313,7 +394,7 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 				rcv = 0;
 			}
 		}
-		checktimeout(clientlist, &readset, &writeset);
+		//checktimeout(clientlist, &readset, &writeset);
 	}
 }
 

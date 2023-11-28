@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 18:07:46 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/20 18:08:30 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/28 13:18:55 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.hpp"
+//#include "Socket.hpp"
 
 int main( int ac,char **av)
 {
@@ -24,7 +25,9 @@ int main( int ac,char **av)
 	clientlist.push_back(Client());
 	Socket *serverarray = NULL;
 	serverarray = ServerConfig::parsefile(av[1]);
-	Socket::setup(serverarray);
+	//Socket::setup(serverarray);
+	for (int i = 0; i < serverarray[0].getTotalServ(); i++)
+		serverarray[i].setListening(Socket::getListenSock(serverarray[i]._config));
 	Socket::handleConnection(&clientlist, serverarray);
 	delete [] serverarray;
 	return 0;

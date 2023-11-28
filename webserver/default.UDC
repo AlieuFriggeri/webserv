@@ -13,7 +13,7 @@ servers:
             cgi = .cpp | /cgi/bin;
         )
 		- /admin/ (
-            methods = POST;
+            methods = GET POST;
             root = /admin/;
             listing = true;
             index = ./admin.html;
@@ -28,6 +28,27 @@ servers:
         )
         - /super/jpp/ (
             methods = GET;
+            root = ./emdre/;
+            listing = false;
+            index = ./jpp.html;
+            cgi = .mdr | /cgi/bin;
+        )
+        - /directory/ (
+            methods = GET;
+            root = ./YoupiBanane/;
+            listing = false;
+            index = ./jpp.html;
+            cgi = .mdr | /cgi/bin;
+        )
+        - /put_test/ (
+            methods = GET;
+            root = ./emdre/;
+            listing = false;
+            index = ./jpp.html;
+            cgi = .mdr | /cgi/bin;
+        )
+        - /post_body (
+            methods = POST;
             root = ./emdre/;
             listing = false;
             index = ./jpp.html;
