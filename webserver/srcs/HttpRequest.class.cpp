@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/21 15:20:24 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/22 17:24:22 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,10 @@ std::string HttpRequest::getFragment(void) const
 
 std::string HttpRequest::getHeader(std::string const &name) const
 {
-	return _headers.at(name);
+	if (_headers.count(name) != 0)
+		return _headers.at(name);
+	else
+		return "";
 }
 
 std::map<std::string, std::string> HttpRequest::getHeaders(void) const
@@ -194,6 +197,11 @@ void HttpRequest::setErrorCode(int x)
 		_err_code = 0;
 	else
 		_err_code = x;
+}
+
+void	HttpRequest::setParsing(ParsingState ps)
+{
+	_state = ps;
 }
 
 bool HttpRequest::isMultiform(void) const

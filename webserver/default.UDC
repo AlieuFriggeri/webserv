@@ -15,7 +15,7 @@ servers:
 		- /admin/ (
             methods = GET POST;
             root = /admin/;
-            listing = true;
+            listing = false;
             index = ./admin.html;
             cgi = .cpp | /cgi/bin/admin;
         )
@@ -65,7 +65,7 @@ servers:
         - / (
             methods = GET;
             root = ./;
-            listing = false;
+            listing = true;
             index = ./index.html;
             cgi = .cpp | /cgi/bin;
         )
@@ -79,7 +79,7 @@ servers:
         - /k2aris/ (
             methods = GET DELETE;
             root = /b2oba/;
-            listing = false;
+            listing = true;
             index = ./92i.html;
             cgi = .evry | /cgi/bin/admin;
         )

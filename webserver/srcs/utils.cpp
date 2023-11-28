@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 16:45:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/21 14:12:01 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/22 18:26:50 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,10 @@ std::string	openReadCloseDir(std::string path, std::string uri)
 		while ((ent = readdir(dir)) != NULL)
 			files.push_back(ent->d_name);
 		closedir(dir);
+
+		// Supprimme le ./www/ au debut des url afin que les links fonctionnent.
+		if (uri.find("./www/"))
+			uri.erase(uri.find("./www/"), uri.find("./www/") + 5);
 
 		html = "<html><head><title>Index of " + path + "</title></head><body><h1>Index of " + uri + "</h1><hr>\n";
 		for (std::vector<std::string>::iterator it = files.begin(); it < files.end(); it++)

@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:02:28 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/21 16:32:45 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/22 17:38:22 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,14 @@ std::string RequestHandler::handleErrorPage(Socket srv, int errCode)
 	std::string	errfile;
 	
 	errfile = srv._error + toString(errCode) + ".html";
-	// std::cout << "errfile avant test: " << errfile << std::endl;
+	if (openReadFile(errfile).empty())
+		errfile = "./errfile/" + toString(errCode) + ".html";
 	if (openReadFile(errfile).empty())
 	{
-		errfile = "./errfile/" + toString(errCode) + ".html";
+		std::string	str;
+		str = "<html><head><style type=text/css>p {color:blue; font-weight:900; font-size:20px; font-family:Helvetica,Arial,sans-serif; }</style></head><body><p>ERROR ";
+		str += toString(errCode) + " " + getStatusStr(errCode) + "</p><p>The serveur has timeout</p></body></html>";
+		return (str);
 	}
-	// std::cout << "errfile apres test: " << errfile << std::endl;
 	return (openReadFile(errfile));
 }
