@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/22 16:51:13 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/28 14:28:28 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ class HttpRequest
 		void	setErrorCode(int x);
 		void	setKeepAlive(bool b);
 		void	setParsing(ParsingState ps);
-		void	parse(const char *data, size_t len);
+		void	parse(const char *data, size_t len, int maxBody);
 		void	resetRequest(void);
 };
 

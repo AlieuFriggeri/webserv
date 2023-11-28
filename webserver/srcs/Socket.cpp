@@ -471,12 +471,12 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 		if (it->_client_socket == fd && it->_bytesrcv > 0)
 		{
 			Route	rt;
-			it->_req.parse(it->_buff.c_str(), it->_bytesrcv);
-			std::cout << "path\t" << it->_req.getPath() << std::endl;
 			rt = checkroute(&*it, servers);
 			int	i = 0;
 			while (servers[i]._listening_socket != it->_serversocket)
 				i++;
+			it->_req.parse(it->_buff.c_str(), it->_bytesrcv, servers[i].getMaxBodySize());
+			std::cout << "path\t" << it->_req.getPath() << std::endl;
 			//it->_req.printMessage();
 			if (!it->_req.isParsingDone())
 				std::cerr<< "Bad request in sendreponse" << std::endl;
