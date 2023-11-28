@@ -104,7 +104,7 @@ CgiExecutor::execute(Client *client, Socket server, std::string cgi_path)
 	std::map<std::string, std::string> env = get_env(client, server);
 	char **envp = map_to_env(env);
 	/// Make argv
-	std::string request_path = "." + client->_req.getPath();
+	std::string request_path = client->_req.getPath();
 	char *const argv[] = {
 			new char[cgi_path.size() + 1],
 			new char[request_path.size() + 1],

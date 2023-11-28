@@ -93,15 +93,16 @@ std::string removespace(std::string key)
 
 void ServerConfig::configservers(std::vector<std::map<std::string, std::string> > configs, std::vector<std::map<std::string, Route> > routes, Socket *serverarray)
 {
+
 	size_t i = 0;
 	for (std::vector<std::map<std::string, std::string> >::iterator it = configs.begin(); it != configs.end(); it++)
 	{
-		
 		std::map<std::string, std::string> maptmp = *it;
 		serverarray[i].setPort(atoi(maptmp["port"].c_str()));
 		serverarray[i].setMaxBodySize(atoi(maptmp["clientbody"].c_str()));
 		serverarray[i].setServerName(maptmp["server_name"]);
 		serverarray[i]._error = maptmp["error"];
+		serverarray[i]._config = maptmp;
 		i++;
 	}
 	i = 0;
