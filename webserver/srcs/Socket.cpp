@@ -11,7 +11,7 @@ sockaddr_in Socket::getSockaddr(void)
 	return this->_server;
 }
 
-void Socket::setSockaddr(sockaddr_in &server)
+void Socket::setSockaddr(sockaddr_in server)
 {
 	this->_server = server;
 }
@@ -36,7 +36,7 @@ std::string Socket::getServerName(void)
 	return this->_servername;
 }
 
-void Socket::setServerName(std::string &name)
+void Socket::setServerName(std::string name)
 {
 	this->_servername = name;
 }

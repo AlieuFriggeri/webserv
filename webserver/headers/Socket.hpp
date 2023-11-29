@@ -51,12 +51,12 @@ class Socket{
 		static Route checkroute(Client *client, Socket *server);
 
 	sockaddr_in getSockaddr(void);
-	void setSockaddr(sockaddr_in &server);
+	void setSockaddr(sockaddr_in server);
 	int getListening(void);
 	void setListening(int socket);
 	char *getSvc(void);
 	std::string getServerName(void);
-	void setServerName(std::string &name);
+	void setServerName(std::string name);
 	int getMaxBodySize(void);
 	void setMaxBodySize(int max);
 	int getPort(void);

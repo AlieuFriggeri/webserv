@@ -78,7 +78,7 @@ Socket *ServerConfig::parsefile(std::string filename)
 	return serverarray;
 }
 
-std::string removespace(std::string key)
+std::string ServerConfig::removespace(std::string key)
 {
 	size_t i = 0;
 	std::string res;
@@ -100,8 +100,8 @@ void ServerConfig::configservers(std::vector<std::map<std::string, std::string> 
 		std::map<std::string, std::string> maptmp = *it;
 		serverarray[i].setPort(atoi(maptmp["port"].c_str()));
 		serverarray[i].setMaxBodySize(atoi(maptmp["clientbody"].c_str()));
-		serverarray[i].setServerName(maptmp["server_name"]);
-		serverarray[i]._error = maptmp["error"];
+		serverarray[i].setServerName(removespace(maptmp["server_name"]));
+		serverarray[i]._error = removespace(maptmp["error"]);
 		serverarray[i]._config = maptmp;
 		i++;
 	}
@@ -308,7 +308,7 @@ std::vector<std::map<std::string, Route> > ServerConfig::setuproutes(std::vector
 				std::cerr << "Config file: route root not found" << std::endl;
 				exit(1);
 			}
-			maptmp[tmp2]._root = route.substr(route.find("root =") + 6, route.find(";", route.find("root =")) - route.find("root ="));
+			maptmp[tmp2]._root = removespace(route.substr(route.find("root =") + 6, route.find(";", route.find("root =")) - route.find("root =")));
 			maptmp[tmp2]._root.erase(maptmp[tmp2]._root.find(";"));
 			if (route.find("listing = false;") == std::string::npos && route.find("listing = true;") == std::string::npos)
 			{
@@ -326,7 +326,7 @@ std::vector<std::map<std::string, Route> > ServerConfig::setuproutes(std::vector
 			}
 			maptmp[tmp2]._index = route.substr(route.find("index =") + 7, route.find(";", route.find("index =")) - route.find("index ="));
 			maptmp[tmp2]._index.erase(maptmp[tmp2]._index.find(";"));
-			maptmp[tmp2]._index = trimspace(maptmp[tmp2]._index);
+			maptmp[tmp2]._index = removespace(maptmp[tmp2]._index);
 			// maptmp[tmp2]._index.erase(maptmp[tmp2]._index.find("/"));
 			// maptmp[tmp2]._index.erase(maptmp[tmp2]._index.find_first_of("."));
 			// maptmp[tmp2]._index.erase(maptmp[tmp2]._index.find(" "));
@@ -334,7 +334,7 @@ std::vector<std::map<std::string, Route> > ServerConfig::setuproutes(std::vector
 			if (route.find("cgi =") != std::string::npos)
 			{
 				//std::cerr << "Config file: cgi not found" << std::endl;
-				maptmp[tmp2]._cgi = route.substr(route.find("cgi =") + 5, route.find(";", route.find("cgi =") - route.find("cgi =")));
+				maptmp[tmp2]._cgi = removespace(route.substr(route.find("cgi =") + 5, route.find(";", route.find("cgi =") - route.find("cgi ="))));
 				maptmp[tmp2]._cgi.erase(maptmp[tmp2]._cgi.find(";"));
 				//exit(1);
 			}

@@ -27,7 +27,7 @@ class ServerConfig{
 	static int checkdouble(std::string str, std::string tosearch, std::vector<std::map<std::string, std::string> > configs);
 	static std::vector<std::map<std::string, Route> > setuproutes(std::vector<std::string> configs);
 	static void configservers(std::vector<std::map<std::string, std::string> > configs, std::vector<std::map<std::string, Route> > routes, Socket *serverarray);
-
+	static std::string removespace(std::string key);
 	~ServerConfig();
 	ServerConfig();
 
