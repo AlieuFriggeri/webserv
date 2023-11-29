@@ -372,7 +372,7 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 						if (it->_client_socket == i)
 						{
 							sendresponse(clientlist, i, servers);
-							closeconnection(clientlist, i, &readset, &writeset);
+							// // closeconnection(clientlist, i, &readset, &writeset);
 							// if (it->_req.keepAlive() == false)
 							// {
 							// 	std::cout << std::endl << "close the connection with the client" << std::endl;
@@ -380,11 +380,11 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 							// else
 							// {
 							// 	std::cout << std::endl << "keep the connection with the client" << std::endl;
-							// max_sock = rmfdfromset(i, &writeset, max_sock);
-							// max_sock = addfdtoset(i, &readset, max_sock);
+							// 	max_sock = rmfdfromset(i, &writeset, max_sock);
+							// 	max_sock = addfdtoset(i, &readset, max_sock);
 							// 	//std::cout << "ON CLOSE POUR PAS INFINIT LOOP\t";closeconnection(clientlist, i, &readset, &writeset);
 							// }
-							// it->_req.resetRequest();
+							it->_req.resetRequest();
 							break;
 						}
 					}
@@ -543,8 +543,8 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 	std::string line;
 	std::string cgiresp = "";
 
-	std::cout << servers[0]._error << std::endl;
-	std::cout << servers[1]._error << std::endl;
+	// std::cout << servers[0]._error << std::endl;
+	// std::cout << servers[1]._error << std::endl;
 	for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
 	{
 		if (it->_client_socket == fd && it->_bytesrcv > 0)
@@ -602,21 +602,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 					break;
 				}
 			}
-			//std::cout << "IT->_RESP BEFORE = " << it->_resp.getResp() << std::endl;
-			if (cgiresp != "")
-			{
-				response = it->_resp.getResp().substr(0, it->_resp.getResp().find("GMT", 0) + 5);
-				response += '\n';
-				response += cgiresp;
-				//std::cout << "RESPONSE HEADR = " << response << std::endl;
-				//std::cout << "headr index = " << it->_resp.getResp().find("GMT", 0) << std::endl;
-				//exit(1);
-			}
-			else
-				response = it->_resp.getResp();
-			std::cout << "REPONSE = '" << response << "'" << std::endl;
-			//std::cout << "IT->_RESP = " << it->_resp.getResp() << std::endl;
-			write(it->_client_socket, response.c_str(), strlen(response.c_str()));
+			write(it->_client_socket, it->_resp.getResp().c_str(), it->_resp.getResp().length());
 			std::cout << "Respond sended to Client " << it->_clientnumber << " on socket : " << it->_client_socket << std::endl;
 			// exit(1);
 			if (it->_req.keepAlive() == true)
@@ -670,9 +656,6 @@ Route	Socket::checkroute(Client *client, Socket *server)
 		filepath.clear();
 		return rt;
 	}
-
-
-
 	rt = server[i]._route[final_route];
 	//std::cout << server[i].g << std::endl;
 
@@ -690,11 +673,6 @@ Route	Socket::checkroute(Client *client, Socket *server)
 		filepath.replace(filepath.find(final_route), final_route.length(), rt._root);
 		std::cout << "new filepath (rooted): \"" << filepath << "\" where root is :\"" << rt._root << "\"" << std::endl;
 	}
-
-
-
-
-
 	if ((dir = opendir(filepath.c_str())) != NULL)
 	{
 		if (rt._listing)
