@@ -539,7 +539,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 {
 	std::string response;
 	std::ifstream file;
-	std::string filename = ".";
+	std::string filename = "";
 	std::string line;
 	std::string cgiresp = "";
 
@@ -574,8 +574,8 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 					GetRequestHandler	methodHandler;
 					if (rt._methods.find("GET") == std::string::npos)
 						it->_req.setErrorCode(405);
-					if (it->_req.getPath().find(".php") == it->_req.getPath().size() - 4)
-						cgiresp = CgiExecutor::execute(&*it, servers[i], "/usr/bin/php");
+					// if (it->_req.getPath().find(".php") == it->_req.getPath().size() - 4)
+					// 	cgiresp = CgiExecutor::execute(&*it, servers[i], "/usr/bin/php");
 					it->_resp = methodHandler.handleRequest(&(it->_req), &*it, servers[i]);
 					break;
 				}
@@ -654,13 +654,26 @@ Route	Socket::checkroute(Client *client, Socket *server)
 	std::cout << "ROUTE= \'" << route << "\'" << std::endl;
 	route.erase(0, 5);
 	std::cout << "ROUTE ERA= \"" << route << "\"" << std::endl;
-	if (server[i]._route.count(route) == 0)
+	std::string	final_route = "";
+	for(std::map<std::string, Route>::iterator it = server[i]._route.begin(); it != server[i]._route.end(); it++)
+	{
+		if (route.find(it->first) == 0)
+		{
+			if (final_route.size() < it->first.size())	
+				final_route = it->first;
+		}
+	}
+	std::cout << "\"" << final_route << "\"" << std::endl;
+	if (server[i]._route.count(final_route) == 0)
 	{
 		std::cerr << "Route pas accessible avec le port du client" << std::endl;
 		filepath.clear();
 		return rt;
 	}
-	rt = server[i]._route[route];
+
+
+
+	rt = server[i]._route[final_route];
 	//std::cout << server[i].g << std::endl;
 
 	DIR*	dir;
@@ -672,9 +685,9 @@ Route	Socket::checkroute(Client *client, Socket *server)
 	while(filepath.find_first_of(" ") != std::string::npos)
 		filepath.erase(filepath.find_first_of(" "), 1);
 	std::cout << "FP just before trying to opendir: \"" << filepath << "\"" << std::endl;
-	if (filepath.find(route) != std::string::npos)
+	if (filepath.find(final_route) != std::string::npos)
 	{
-		filepath.replace(filepath.find(route), route.length(), rt._root);
+		filepath.replace(filepath.find(final_route), final_route.length(), rt._root);
 		std::cout << "new filepath (rooted): \"" << filepath << "\" where root is :\"" << rt._root << "\"" << std::endl;
 	}
 

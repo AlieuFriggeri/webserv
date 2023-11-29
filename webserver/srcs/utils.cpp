@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 16:45:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/22 18:26:50 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/29 15:13:52 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,13 +172,9 @@ std::string	openReadCloseDir(std::string path, std::string uri)
 		for (std::vector<std::string>::iterator it = files.begin(); it < files.end(); it++)
 		{
 			if (uri.rfind('/') == uri.length() - 1)
-			{
 				html += "<a href=\"" + uri + *it + "\">" + *it + "</a><br>\n";
-			}
 			else
-			{
 				html += "<a href=\"" + uri + "/" + *it + "\">" + *it + "</a><br>\n";
-			}
 		}
 		html += "</hr>\n</body>\r</html>";
 	}
