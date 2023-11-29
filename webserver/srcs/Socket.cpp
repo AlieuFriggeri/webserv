@@ -576,8 +576,8 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 					GetRequestHandler	methodHandler;
 					if (rt._methods.find("GET") == std::string::npos)
 						it->_req.setErrorCode(405);
-					if (it->_req.getPath().find(".php") == it->_req.getPath().size() - 4)
-						cgiresp = CgiExecutor::execute(&*it, servers[i], "/usr/bin/php");
+					//if (it->_req.getPath().find(".php") == it->_req.getPath().size() - 4)
+						//cgiresp = CgiExecutor::execute(&*it, servers[i], "/usr/bin/php");
 					it->_resp = methodHandler.handleRequest(&(it->_req), &*it, servers[i]);
 					break;
 				}
