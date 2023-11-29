@@ -576,6 +576,8 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 					GetRequestHandler	methodHandler;
 					if (rt._methods.find("GET") == std::string::npos)
 						it->_req.setErrorCode(405);
+					//if (it->_req.getPath().find(".php") == it->_req.getPath().size() - 4)
+						//cgiresp = CgiExecutor::execute(&*it, servers[i], "/usr/bin/php");
 					it->_resp = methodHandler.handleRequest(&(it->_req), &*it, servers[i]);
 					break;
 				}
@@ -598,21 +600,21 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				case NONE:
 					break;
 			}
-			// std::cout << "IT->_RESP BEFORE = " << it->_resp.getResp() << std::endl;
-			// if (cgiresp != "")
-			// {
-			// 	response = it->_resp.getResp().substr(0, it->_resp.getResp().find("GMT", 0) + 5);
-			// 	response += '\n';
-			// 	response += cgiresp;
-			// 	std::cout << "RESPONSE HEADR = " << response << std::endl;
-			// 	//std::cout << "headr index = " << it->_resp.getResp().find("GMT", 0) << std::endl;
-			// 	//exit(1);
-			// }
-			// else
-			// 	response = it->_resp.getResp();
-			// //std::cout << "REPONSE = '" << response << "'" << std::endl;
-			// //std::cout << "IT->_RESP = " << it->_resp.getResp() << std::endl;
-			write(it->_client_socket, it->_resp.getResp().c_str(), strlen(it->_resp.getResp().c_str()));
+			std::cout << "IT->_RESP BEFORE = " << it->_resp.getResp() << std::endl;
+			if (cgiresp != "")
+			{
+				response = it->_resp.getResp().substr(0, it->_resp.getResp().find("GMT", 0) + 5);
+				response += '\n';
+				response += cgiresp;
+				std::cout << "RESPONSE HEADR = " << response << std::endl;
+				std::cout << "headr index = " << it->_resp.getResp().find("GMT", 0) << std::endl;
+				//exit(1);
+			}
+			else
+				response = it->_resp.getResp();
+			std::cout << "REPONSE = '" << response << "'" << std::endl;
+			std::cout << "IT->_RESP = " << it->_resp.getResp() << std::endl;
+			write(it->_client_socket, response.c_str(), strlen(response.c_str()));
 			std::cout << "Respond sended to Client " << it->_clientnumber << " on socket : " << it->_client_socket << std::endl;
 			// exit(1);
 			if (it->_req.keepAlive() == true)
