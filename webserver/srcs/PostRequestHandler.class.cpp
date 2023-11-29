@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PostRequestHandler.class.cpp                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:10:16 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/21 13:48:31 by afrigger         ###   ########.fr       */
+/*   Updated: 2023/11/29 16:40:37 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,55 @@ PostRequestHandler::~PostRequestHandler(void)
 
 HttpRespond	PostRequestHandler::handleRequest(HttpRequest *req, Client *clt, Socket srv)
 {
-	HttpRespond	resp;
 	(void)clt;
 	(void)srv;
+	HttpRespond	resp;
 	if (req->isParsingDone() == false)
 		std::cerr << "Le parsing de la requete a rencontre une erreur" << std::endl;
-	
+	else if (req->getPathRelative().empty())
+	{
+		std::cerr << "Le fichier/dossier n'existe pas ou les droits ne sont pas corrects" << std::endl;
+		req->setErrorCode(404);
+	}
+	std::cout << "Status code = " << req->getErrorCode() << std::endl;
+	if (req->getErrorCode() == 0)
+	{
+		/**
+		 * si upload fichier ->
+		 * 				read requete
+		 * 				open fichier
+		 * 				write le content read depuis la requete du Client
+		 * si upload un form ->
+		 * 				envoyer le contenu de la requet au cgi
+		 * 				ajouter une ligne dans user data.txt
+		 * 				actualiser la page
+		*/  
+		if (req->getPath().find(".php") == req->getPath().size() - 4)
+		{
+			std::string cgiresp;
+			std::cout << "entering cgi" << std::endl;
+			cgiresp = CgiExecutor::execute(clt, srv, "/usr/bin/php");
+			std::cout << "CGI resp is : " << std::endl << cgiresp << std::endl;
+			resp.setBody(cgiresp);
+			resp.setStatus(200);
+		}
+
+
+
+
+
+
+
+		
+	}
+	else
+	{
+		/* GESTION ERREUR */
+		resp.setStatus(req->getErrorCode());
+		resp.setBody(handleErrorPage(srv, req->getErrorCode()));
+	}
+	std::cout << req->getErrorCode() << std::endl;
 	resp.build(*req);
+	std::cout << resp.getResp() << std::endl;
 	return (resp);
 }

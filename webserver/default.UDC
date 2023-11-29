@@ -6,7 +6,7 @@ servers:
 	- error = ./www/error/;
     - route{
 		- / (
-            methods = GET;
+            methods = GET POST;
             root = /;
             listing = false;
             index = ./index.html;
