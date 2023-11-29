@@ -41,8 +41,8 @@ static std::map<std::string, std::string> get_env(Client *client, Socket server)
 	}
 	env["REQUEST_METHOD"] = client->_req.getMethodStr();
 	env["FILEPATH_INFO"] = client->_req.getPath();
-	env["PATH_INFO"] = "\\";
-	env["SCRIPT_NAME"] = "./php_cgi.php";
+	env["PATH_INFO"] = client->_req.getPath();
+	env["SCRIPT_NAME"] = client->_req.getPath();
 	env["REMOTE_HOST"] = headers.count("host") ? headers["host"] : "";
 	env["REMOTE_USER"] = headers.count("host") ? headers["host"] : "";
 	env["CONTENT_TYPE"] = headers.count("content-length") ? headers["content-type"] : "";
