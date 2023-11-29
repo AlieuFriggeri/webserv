@@ -555,8 +555,10 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			it->_req.parse(it->_buff.c_str(), it->_bytesrcv, servers[i].getMaxBodySize());
 			it->_req.printMessage();
 			Route	rt;
+			std::cout << "avant checkroute" << std::endl;
 			rt = checkroute(&*it, servers);
-			std::cout << "path\t" << it->_req.getPath() << std::endl;
+			std::cout << "apres checkroute" << std::endl;
+			// std::cout << "path\t" << it->_req.getPath() << std::endl;
 			//it->_req.printMessage();
 			if (!it->_req.isParsingDone())
 				std::cerr<< "Bad request in sendreponse" << std::endl;
@@ -567,6 +569,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				it->_req.setErrorCode(404);
 				std::cerr << "Relative path not found" << std::endl;
 			}
+			std::cout << "Avant switch" << std::endl;
 			switch(it->_req.getMethod())
 			{
 				//	METTRE LES CONFIG DANS LES CREATIONS DES methodHandler
@@ -603,6 +606,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 					break;
 				}
 			}
+			std::cout << "Avant wrtie" << std::endl;
 			write(it->_client_socket, it->_resp.getResp().c_str(), it->_resp.getResp().length());
 			std::cout << "Respond sended to Client " << it->_clientnumber << " on socket : " << it->_client_socket << std::endl;
 			// exit(1);

@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/28 15:03:39 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/29 18:57:22 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -805,6 +805,13 @@ void	HttpRequest::parse(const char *data, size_t len, int maxBody)
 		if (_state == PARSING_DONE)
 			_body_str.append((char *)_body.data(), _body.size());
 	}
+	if (_state == PARSING_DONE)
+	{
+		if (_multiform)
+		{
+			_handleBoundary();
+		}
+	}
 }
 
 void	HttpRequest::_handleHeaders(void)
@@ -873,4 +880,19 @@ void	HttpRequest::resetRequest(void)
 void	HttpRequest::setKeepAlive(bool b)
 {
 	_keep_alive = b;
+}
+
+void	HttpRequest::_handleBoundary(void)
+{
+	std::string	body = _body_str;
+	std::string	tmp;
+	size_t		begin = body.find("--" + _boundary);
+	size_t		end = body.find("--" + _boundary, begin + _boundary.length());
+
+	std::cout << "-------\nBOUNDARY	beg: \"" << begin << "\"	end\"" << end << "\"\n-------" << std::endl;
+	if (begin != std::string::npos)
+	{
+		tmp = body.substr(begin + _boundary.length() + 2, end - (_boundary.length() + 2));
+		std::cout << "\"" << tmp << "\"" << std::endl;
+	}
 }
