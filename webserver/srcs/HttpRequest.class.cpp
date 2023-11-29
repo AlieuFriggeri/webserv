@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/22 17:24:22 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/28 15:03:39 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,7 +258,7 @@ void	HttpRequest::setHeader(std::string key, std::string value)
 	_headers[key] = value;
 }
 
-void	HttpRequest::parse(const char *data, size_t len)
+void	HttpRequest::parse(const char *data, size_t len, int maxBody)
 {
 	char				c;
 	short				mi = 1;
@@ -785,6 +785,11 @@ void	HttpRequest::parse(const char *data, size_t len)
 			}
 			case BODY:
 			{
+				if (_body.size() > (unsigned long)maxBody)
+				{
+					_err_code = 413;
+					return ;
+				}
 				if (_body.size() < _body_len)
 					_body.push_back(c);
 				if (_body.size() == _body_len)

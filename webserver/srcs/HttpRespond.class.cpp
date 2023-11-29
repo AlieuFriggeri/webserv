@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HttpRespond.class.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:11:18 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/29 11:51:41 by afrigger         ###   ########.fr       */
+/*   Updated: 2023/11/29 15:56:10 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,7 @@ bool HttpRespond::build(HttpRequest req)
 {
 	_isBuilt = false;
 	setHeader("Date", getDate());
-	std::cerr << "1" << std::endl;
 	setHeader("Connection", req.getHeader("connection"));
-	std::cerr << "2" << std::endl;
 	if (req.getErrorCode() == 0)
 		_status_code = 200;
 	else if (req.getErrorCode() == 408)

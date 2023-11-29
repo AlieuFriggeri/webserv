@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   GetRequestHandler.class.cpp                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:08:04 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/28 14:24:44 by afrigger         ###   ########.fr       */
+/*   Updated: 2023/11/29 15:50:19 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,23 +61,26 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Sock
 	{
 		if (req->isDirectory() == false)
 		{
-			if (req->getQuery().empty())
+			/* THIS REQUEST WILL BE HANDLE BY THE CGI 		*/
+			/*		This is because there are some queries	*/
+			if (req->getPath().find(".php") == req->getPath().size() - 4)
+			{
+				std::string cgiresp;
+				std::cout << "entering cgi" << std::endl;
+				cgiresp = CgiExecutor::execute(clt, srv, "/usr/bin/php");
+				std::cout << "CGI resp is : " << std::endl << cgiresp << std::endl;
+				resp.setBody(cgiresp);
+				resp.setStatus(200);
+			}
+			else if (req->getQuery().empty())
 			{
 				resp.setBody(openReadFile(req->getPathRelative()));
 				resp.setStatus(200);
 			}
 			else
 			{
-				/* THIS REQUEST WILL BE HANDLE BY THE CGI 		*/
-				/*		This is because there are some queries	*/
-				if (req->getPath().find(".php") == req->getPath().size() - 4)
-				{
-					std::string cgiresp;
-					std::cout << "entering cgi" << std::endl;
-					cgiresp = CgiExecutor::execute(clt, srv, "/usr/bin/php");
-					std::cout << "CGI resp is : " << std::endl << cgiresp << std::endl;
-					resp.setBody(cgiresp);
-				}
+				resp.setBody(openReadFile(req->getPathRelative()));
+				resp.setStatus(200);
 			}
 		}
 		else

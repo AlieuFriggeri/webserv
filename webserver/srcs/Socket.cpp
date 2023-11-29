@@ -102,8 +102,6 @@ void Socket::setTotalServ(int total)
 }
 
 
-
-
 Socket::Socket()
 {
 	bzero(&_svc, sizeof(_svc));
@@ -382,11 +380,11 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 							// else
 							// {
 							// 	std::cout << std::endl << "keep the connection with the client" << std::endl;
-							// max_sock = rmfdfromset(i, &writeset, max_sock);
-							// max_sock = addfdtoset(i, &readset, max_sock);
+							// 	max_sock = rmfdfromset(i, &writeset, max_sock);
+							// 	max_sock = addfdtoset(i, &readset, max_sock);
 							// 	//std::cout << "ON CLOSE POUR PAS INFINIT LOOP\t";closeconnection(clientlist, i, &readset, &writeset);
 							// }
-							// it->_req.resetRequest();
+							it->_req.resetRequest();
 							break;
 						}
 					}
@@ -394,7 +392,7 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 				rcv = 0;
 			}
 		}
-		checktimeout(clientlist, &readset, &writeset, servers);
+		// checktimeout(clientlist, &readset, &writeset, servers);
 	}
 }
 
@@ -541,23 +539,24 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 {
 	std::string response;
 	std::ifstream file;
-	std::string filename = ".";
+	std::string filename = "";
 	std::string line;
 	std::string cgiresp = "";
 
-	std::cout << servers[0]._error << std::endl;
-	std::cout << servers[1]._error << std::endl;
+	// std::cout << servers[0]._error << std::endl;
+	// std::cout << servers[1]._error << std::endl;
 	for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
 	{
 		if (it->_client_socket == fd && it->_bytesrcv > 0)
 		{
-			Route	rt;
-			it->_req.parse(it->_buff.c_str(), it->_bytesrcv);
-			//std::cout << "path\t" << it->_req.getPath() << std::endl;
-			rt = checkroute(&*it, servers);
 			int	i = 0;
 			while (servers[i]._listening_socket != it->_serversocket)
 				i++;
+			it->_req.parse(it->_buff.c_str(), it->_bytesrcv, servers[i].getMaxBodySize());
+			it->_req.printMessage();
+			Route	rt;
+			rt = checkroute(&*it, servers);
+			std::cout << "path\t" << it->_req.getPath() << std::endl;
 			//it->_req.printMessage();
 			if (!it->_req.isParsingDone())
 				std::cerr<< "Bad request in sendreponse" << std::endl;
@@ -598,23 +597,13 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 					break;
 				}
 				case NONE:
+				{
+					GetRequestHandler	methodHandler;
+					it->_resp = methodHandler.handleRequest(&(it->_req), &*it, servers[i]);
 					break;
+				}
 			}
-			//std::cout << "IT->_RESP BEFORE = " << it->_resp.getResp() << std::endl;
-			if (cgiresp != "")
-			{
-				response = it->_resp.getResp().substr(0, it->_resp.getResp().find("GMT", 0) + 5);
-				response += '\n';
-				response += cgiresp;
-				//std::cout << "RESPONSE HEADR = " << response << std::endl;
-				//std::cout << "headr index = " << it->_resp.getResp().find("GMT", 0) << std::endl;
-				//exit(1);
-			}
-			else
-				response = it->_resp.getResp();
-			std::cout << "REPONSE = '" << response << "'" << std::endl;
-			//std::cout << "IT->_RESP = " << it->_resp.getResp() << std::endl;
-			write(it->_client_socket, response.c_str(), strlen(response.c_str()));
+			write(it->_client_socket, it->_resp.getResp().c_str(), it->_resp.getResp().length());
 			std::cout << "Respond sended to Client " << it->_clientnumber << " on socket : " << it->_client_socket << std::endl;
 			// exit(1);
 			if (it->_req.keepAlive() == true)
@@ -647,16 +636,28 @@ Route	Socket::checkroute(Client *client, Socket *server)
 	while (server[i]._listening_socket != client->_serversocket)
 		i++;
 	std::string filepath = client->_req.getPath();
+	// std::cout << "FilepAth= \'" << filepath << "\'" << std::endl;
 	std::string route = filepath.substr(0, filepath.find_last_of("/") + 1);
+	// std::cout << "ROUTE= \'" << route << "\'" << std::endl;
 	route.erase(0, 5);
-	std::cout << "ROUTE= \'" << route << "\'" << std::endl;
-	if (server[i]._route.count(route) == 0)
+	// std::cout << "ROUTE ERA= \"" << route << "\"" << std::endl;
+	std::string	final_route = "";
+	for(std::map<std::string, Route>::iterator it = server[i]._route.begin(); it != server[i]._route.end(); it++)
+	{
+		if (route.find(it->first) == 0)
+		{
+			if (final_route.size() < it->first.size())	
+				final_route = it->first;
+		}
+	}
+	std::cout << "\"" << final_route << "\"" << std::endl;
+	if (server[i]._route.count(final_route) == 0)
 	{
 		std::cerr << "Route pas accessible avec le port du client" << std::endl;
 		filepath.clear();
 		return rt;
 	}
-	rt = server[i]._route[route];
+	rt = server[i]._route[final_route];
 	//std::cout << server[i].g << std::endl;
 
 	DIR*	dir;
@@ -667,7 +668,12 @@ Route	Socket::checkroute(Client *client, Socket *server)
 	}
 	while(filepath.find_first_of(" ") != std::string::npos)
 		filepath.erase(filepath.find_first_of(" "), 1);
-	std::cout << filepath << std::endl;
+	// std::cout << "FP just before trying to opendir: \"" << filepath << "\"" << std::endl;
+	if (filepath.find(final_route) != std::string::npos)
+	{
+		filepath.replace(filepath.find(final_route), final_route.length(), rt._root);
+		// std::cout << "new filepath (rooted): \"" << filepath << "\" where root is :\"" << rt._root << "\"" << std::endl;
+	}
 	if ((dir = opendir(filepath.c_str())) != NULL)
 	{
 		if (rt._listing)
@@ -684,7 +690,7 @@ Route	Socket::checkroute(Client *client, Socket *server)
 				client->_req.setDirectory(false);
 				client->_req.setPathRelative(filepath);
 			}
-			std::cout << "Path + index: \"" << filepath << "\"" << std::endl;
+			// std::cout << "Path + index: \"" << filepath << "\"" << std::endl;
 		}
 	}
 	else if (access(filepath.c_str(), F_OK | R_OK) == 0)

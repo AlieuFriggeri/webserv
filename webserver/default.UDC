@@ -6,8 +6,8 @@ servers:
 	- error = ./www/error/;
     - route{
 		- / (
-            methods = GET;
-            root = ./;
+            methods = GET POST;
+            root = /;
             listing = false;
             index = ./index.html;
             cgi = .cpp | /cgi/bin;
@@ -21,35 +21,35 @@ servers:
         )
         - /lol/mdr/ (
             methods = GET POST;
-            root = ./;
+            root = /;
             listing = false;
             index = ./lol.html;
             cgi = .cpp | /cgi/bin;
         )
         - /super/jpp/ (
             methods = GET;
-            root = ./emdre/;
+            root = /emdre/;
             listing = false;
             index = ./jpp.html;
             cgi = .mdr | /cgi/bin;
         )
         - /directory/ (
             methods = GET;
-            root = ./YoupiBanane/;
+            root = /YoupiBanane/;
             listing = false;
             index = ./jpp.html;
             cgi = .mdr | /cgi/bin;
         )
         - /put_test/ (
             methods = GET;
-            root = ./emdre/;
+            root = /emdre/;
             listing = false;
             index = ./jpp.html;
             cgi = .mdr | /cgi/bin;
         )
         - /post_body (
             methods = POST;
-            root = ./emdre/;
+            root = /emdre/;
             listing = false;
             index = ./jpp.html;
             cgi = .mdr | /cgi/bin;
@@ -64,7 +64,7 @@ servers:
     - route{
         - / (
             methods = GET;
-            root = ./;
+            root = /;
             listing = true;
             index = ./index.html;
             cgi = .cpp | /cgi/bin;

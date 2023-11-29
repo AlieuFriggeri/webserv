@@ -73,8 +73,9 @@ class Socket{
 	static int bindSocket(struct addrinfo *serverInfo);
 	static int getListenSock(std::map<std::string, std::string> config);
 
-	std::string _error;
-	std::map<std::string, std::string> _config;
+		std::string _error;
+		std::map<std::string, std::string> _config;
+
 	private:
 		sockaddr_in _server;
 		int _listening_socket;
