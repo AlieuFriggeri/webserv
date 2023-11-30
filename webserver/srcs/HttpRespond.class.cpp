@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:11:18 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/30 14:40:11 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/30 15:43:08 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,6 @@ std::string	HttpRespond::generateHeaders(void)
 	std::string	heads;
 	
 	setHeader("Content-Length", toString(_body.length() + 2));
-	if (_body.length() != 0)
-	{
-		setHeader("Content-Type", "text/html; charset=UTF-8");
-	}
 	for (std::map<std::string, std::string>::const_iterator i = _headers.begin(); i != _headers.end(); i++)
 		heads += i->first + ": " + i->second + "\r\n";
 	heads += "\r\n";
@@ -67,15 +63,10 @@ bool HttpRespond::build(HttpRequest req)
 
 	if (path.find(".png") != std::string::npos)
 		setHeader("Content-Type", "image/png");
-	
-
-
-
-
-
-
-
-
+	else if (path.find(".jpg") != std::string::npos || path.find(".jpg") != std::string::npos)
+		setHeader("Content-Type", "image/jpeg");
+	else if (_body.length() != 0)
+		setHeader("Content-Type", "text/html; charset=UTF-8");
 	if (req.getErrorCode() == 0)
 		_status_code = 200;
 	else if (req.getErrorCode() == 408)

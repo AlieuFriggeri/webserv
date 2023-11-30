@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/30 14:17:38 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/30 15:24:09 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,7 +260,7 @@ void	HttpRequest::setHeader(std::string key, std::string value)
 
 void	HttpRequest::parse(const char *data, size_t len, int maxBody)
 {
-	std::cout << data << std::endl;
+	// std::cout << data << std::endl;
 	char				c;
 	short				mi = 1;
 	int					chunk_len = 0;

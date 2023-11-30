@@ -377,7 +377,7 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 						if (it->_client_socket == i)
 						{
 							sendresponse(clientlist, i, servers);
-							closeconnection(clientlist, i, &readset, &writeset);
+							// closeconnection(clientlist, i, &readset, &writeset);
 							// if (it->_req.keepAlive() == false)
 							// {
 							// 	std::cout << std::endl << "close the connection with the client" << std::endl;
@@ -558,13 +558,10 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			while (servers[i]._listening_socket != it->_serversocket)
 				i++;
 			it->_req.parse(it->_buff.c_str(), it->_bytesrcv, servers[i].getMaxBodySize());
-			it->_req.printMessage();
+			std::cout << it->_req.getPath() << std::endl;
+			// it->_req.printMessage();
 			Route	rt;
-			std::cout << "avant checkroute" << std::endl;
 			rt = checkroute(&*it, servers);
-			std::cout << "apres checkroute" << std::endl;
-			// std::cout << "path\t" << it->_req.getPath() << std::endl;
-			//it->_req.printMessage();
 			if (!it->_req.isParsingDone())
 				std::cerr<< "Bad request in sendreponse" << std::endl;
 			else if (it->_req.getPath().empty())
@@ -574,7 +571,6 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				it->_req.setErrorCode(404);
 				std::cerr << "Relative path not found" << std::endl;
 			}
-			std::cout << "Avant switch" << std::endl;
 			switch(it->_req.getMethod())
 			{
 				//	METTRE LES CONFIG DANS LES CREATIONS DES methodHandler
@@ -583,8 +579,6 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 					GetRequestHandler	methodHandler;
 					if (rt._methods.find("GET") == std::string::npos)
 						it->_req.setErrorCode(405);
-					//if (it->_req.getPath().find(".php") == it->_req.getPath().size() - 4)
-						//cgiresp = CgiExecutor::execute(&*it, servers[i], "/usr/bin/php");
 					it->_resp = methodHandler.handleRequest(&(it->_req), &*it, servers[i]);
 					break;
 				}

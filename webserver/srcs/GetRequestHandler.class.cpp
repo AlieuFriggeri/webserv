@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:08:04 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/29 15:50:19 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/30 15:47:10 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,11 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Sock
 			}
 			else
 			{
-				resp.setBody(openReadFile(req->getPathRelative()));
+				std::string cgiresp;
+				std::cout << "entering cgi" << std::endl;
+				cgiresp = CgiExecutor::execute(clt, srv, "/usr/bin/php");
+				std::cout << "CGI resp is : " << std::endl << cgiresp << std::endl;
+				resp.setBody(cgiresp);
 				resp.setStatus(200);
 			}
 		}
@@ -98,8 +102,7 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Sock
 		// std::cout << errFile << std::endl;
 		// resp.setBody(openReadFile(errFile));
 	}
-	std::cout << req->getErrorCode() << std::endl;
 	resp.build(*req);
-	std::cout << resp.getResp() << std::endl;
+	// std::cout << resp.getResp() << std::endl;
 	return (resp);
 }
