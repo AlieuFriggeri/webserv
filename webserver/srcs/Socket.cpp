@@ -574,7 +574,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			switch(it->_req.getMethod())
 			{
 				//	METTRE LES CONFIG DANS LES CREATIONS DES methodHandler
-				case GET: 
+				case GET:
 				{
 					GetRequestHandler	methodHandler;
 					if (rt._methods.find("GET") == std::string::npos)
@@ -582,7 +582,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 					it->_resp = methodHandler.handleRequest(&(it->_req), &*it, servers[i]);
 					break;
 				}
-				case POST: 
+				case POST:
 				{
 					PostRequestHandler	methodHandler;
 					if (rt._methods.find("POST") == std::string::npos)
@@ -590,7 +590,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 					it->_resp = methodHandler.handleRequest(&(it->_req), &*it, servers[i]);
 					break;
 				}
-				case DELETE: 
+				case DELETE:
 				{
 					DeleteRequestHandler	methodHandler;
 					if (rt._methods.find("DELETE") == std::string::npos)
