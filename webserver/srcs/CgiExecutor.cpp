@@ -149,7 +149,10 @@ CgiExecutor::execute(Client *client, Socket server, std::string cgi_path)
     delete [] argv[1];
 
 	/// Write to stdin
-	write(fd_in[STDOUT_FILENO], client->_req.getBody().c_str(), client->_req.getBody().size());
+	if (client->_req.getMethod() == GET)
+		write(fd_in[STDOUT_FILENO], client->_req.getQuery().c_str(), client->_req.getQuery().size());
+	else if (client->_req.getMethod() == POST)
+		write(fd_in[STDOUT_FILENO], client->_req.getBody().c_str(), client->_req.getBody().size());
 
 	/// Close pipes and free memory
 	close(fd_in[STDOUT_FILENO]);
