@@ -606,7 +606,8 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				}
 			}
 			//std::cout << "Avant wrtie" << std::endl;
-			write(it->_client_socket, it->_resp.getResp().c_str(), it->_resp.getResp().length() + 1);
+			// std::cout << it->_resp.getResp().data() << std::endl << std::endl;
+			write(it->_client_socket, it->_resp.getResp().data(), it->_resp.getResp().size());
 			std::cout << "Respond sended to Client " << it->_clientnumber << " on socket : " << it->_client_socket << std::endl;
 			// exit(1);
 			if (it->_req.keepAlive() == true)

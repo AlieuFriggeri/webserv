@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:02:28 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/22 17:38:22 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/30 18:01:10 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ RequestHandler::~RequestHandler(void)
 	// std::cout << "RequestHandler destructor called" << std::endl;
 }
 
-std::string RequestHandler::handleErrorPage(Socket srv, int errCode)
+std::vector<char> RequestHandler::handleErrorPage(Socket srv, int errCode)
 {
 	std::string	errfile;
 	
@@ -57,7 +57,9 @@ std::string RequestHandler::handleErrorPage(Socket srv, int errCode)
 		std::string	str;
 		str = "<html><head><style type=text/css>p {color:blue; font-weight:900; font-size:20px; font-family:Helvetica,Arial,sans-serif; }</style></head><body><p>ERROR ";
 		str += toString(errCode) + " " + getStatusStr(errCode) + "</p><p>The serveur has timeout</p></body></html>";
-		return (str);
+		std::vector<char>	res;
+		res.insert(res.end(), str.begin(), str.end());
+		return (res);
 	}
 	return (openReadFile(errfile));
 }

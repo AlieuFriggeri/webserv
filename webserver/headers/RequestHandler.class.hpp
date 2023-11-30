@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:52:34 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/21 15:39:01 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/30 18:00:36 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ class RequestHandler
 		RequestHandler& operator=(const RequestHandler& src);
 		~RequestHandler(void);
 
-		std::string	handleErrorPage(Socket srv, int errCode);
+		std::vector<char>	handleErrorPage(Socket srv, int errCode);
 		//virtual HttpRespond	handleRequest(HttpRequest *req, Client *clt, Socket srv) = 0;
 };
 
