@@ -128,7 +128,6 @@ CgiExecutor::execute(Client *client, Socket server, std::string cgi_path)
 	int fd_in[2];
 	if (pipe(fd_in))
 		throw std::runtime_error("pipe failed");
-
 	/// Execute
 	int pid;
 	pid = fork1();

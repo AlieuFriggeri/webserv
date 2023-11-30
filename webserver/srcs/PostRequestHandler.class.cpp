@@ -6,7 +6,7 @@
 /*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:10:16 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/30 11:20:29 by afrigger         ###   ########.fr       */
+/*   Updated: 2023/11/30 12:34:00 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,18 @@ HttpRespond	PostRequestHandler::handleRequest(HttpRequest *req, Client *clt, Soc
 			std::cout << "CGI resp is : " << std::endl << cgiresp << std::endl;
 			resp.setBody(cgiresp);
 			resp.setStatus(200);
+		}
+		else 
+		{
+			std::string res = "";
+			req->printMessage();
+			// if (req->getBody().find("filename") != std::string::npos)
+			// 	std::cout << "lol" << std::endl;
+			// else
+			// 	std::cout << "tristesse" << std::endl;
+			// std::cout <<req->getBody() << std::endl;
+			std::cout <<res << std::endl;
+			exit(132);
 		}
 
 
