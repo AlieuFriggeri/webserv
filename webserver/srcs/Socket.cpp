@@ -606,7 +606,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				}
 			}
 			//std::cout << "Avant wrtie" << std::endl;
-			write(it->_client_socket, it->_resp.getResp().c_str(), it->_resp.getResp().length());
+			write(it->_client_socket, it->_resp.getResp().c_str(), it->_resp.getResp().length() + 1);
 			std::cout << "Respond sended to Client " << it->_clientnumber << " on socket : " << it->_client_socket << std::endl;
 			// exit(1);
 			if (it->_req.keepAlive() == true)
@@ -639,11 +639,8 @@ Route	Socket::checkroute(Client *client, Socket *server)
 	while (server[i]._listening_socket != client->_serversocket)
 		i++;
 	std::string filepath = client->_req.getPath();
-	// std::cout << "FilepAth= \'" << filepath << "\'" << std::endl;
 	std::string route = filepath.substr(0, filepath.find_last_of("/") + 1);
-	// std::cout << "ROUTE= \'" << route << "\'" << std::endl;
 	route.erase(0, 5);
-	// std::cout << "ROUTE ERA= \"" << route << "\"" << std::endl;
 	std::string	final_route = "";
 	for(std::map<std::string, Route>::iterator it = server[i]._route.begin(); it != server[i]._route.end(); it++)
 	{
@@ -653,7 +650,6 @@ Route	Socket::checkroute(Client *client, Socket *server)
 				final_route = it->first;
 		}
 	}
-	//std::cout << "\"" << final_route << "\"" << std::endl;
 	if (server[i]._route.count(final_route) == 0)
 	{
 		std::cerr << "Route pas accessible avec le port du client" << std::endl;
@@ -661,7 +657,6 @@ Route	Socket::checkroute(Client *client, Socket *server)
 		return rt;
 	}
 	rt = server[i]._route[final_route];
-	//std::cout << server[i].g << std::endl;
 
 	DIR*	dir;
 	if (client->_req.getPath().empty())
@@ -671,11 +666,11 @@ Route	Socket::checkroute(Client *client, Socket *server)
 	}
 	while(filepath.find_first_of(" ") != std::string::npos)
 		filepath.erase(filepath.find_first_of(" "), 1);
-	// std::cout << "FP just before trying to opendir: \"" << filepath << "\"" << std::endl;
+	std::cout << "FP just before trying to opendir: \"" << filepath << "\"\tfinal_route= \"" << final_route << "\"" << std::endl;
 	if (filepath.find(final_route) != std::string::npos)
 	{
 		filepath.replace(filepath.find(final_route), final_route.length(), rt._root);
-		// std::cout << "new filepath (rooted): \"" << filepath << "\" where root is :\"" << rt._root << "\"" << std::endl;
+		std::cout << "new filepath (rooted): \"" << filepath << "\" where root is :\"" << rt._root << "\"" << std::endl;
 	}
 	if ((dir = opendir(filepath.c_str())) != NULL)
 	{
@@ -693,7 +688,6 @@ Route	Socket::checkroute(Client *client, Socket *server)
 				client->_req.setDirectory(false);
 				client->_req.setPathRelative(filepath);
 			}
-			// std::cout << "Path + index: \"" << filepath << "\"" << std::endl;
 		}
 	}
 	else if (access(filepath.c_str(), F_OK | R_OK) == 0)
@@ -713,5 +707,4 @@ Route	Socket::checkroute(Client *client, Socket *server)
 		std::cerr << "Dir and File not accessible" << std::endl;
 	}
 	return rt;
-	// std::cout << "File found here " << filepath << std::endl << std::endl;
 }

@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 16:45:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/30 15:39:07 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/30 16:13:26 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ std::string openReadFile(std::string relative_path)
 	result.clear();
 	if (relative_path.c_str()[0] == '.' && relative_path.c_str()[1] == '/')
 		relative_path.erase(0, 2);
-	file.open(relative_path.c_str());
+	file.open(relative_path.c_str(), std::ios::binary);
 	if (file.is_open())
 	{
 		while (std::getline(file, line))
@@ -168,9 +168,9 @@ std::string	openReadCloseDir(std::string path, std::string uri)
 		closedir(dir);
 
 		// Supprimme le ./www/ au debut des url afin que les links fonctionnent.
-		if (uri.find("./www/"))
+		if (uri.find("./www/") != std::string::npos)
 			uri.erase(uri.find("./www/"), uri.find("./www/") + 5);
-
+		std::cout << "URI=" << uri << std::endl;
 		html = "<html><head><title>Index of " + path + "</title></head><body><h1>Index of " + uri + "</h1><hr>\n";
 		for (std::vector<std::string>::iterator it = files.begin(); it < files.end(); it++)
 		{
