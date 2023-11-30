@@ -3,3 +3,4 @@ a.out
 *.a
 .vscode/
 webserv
+.DS_STORE
