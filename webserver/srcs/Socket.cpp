@@ -377,7 +377,7 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 						if (it->_client_socket == i)
 						{
 							sendresponse(clientlist, i, servers);
-							// closeconnection(clientlist, i, &readset, &writeset);
+							closeconnection(clientlist, i, &readset, &writeset);
 							// if (it->_req.keepAlive() == false)
 							// {
 							// 	std::cout << std::endl << "close the connection with the client" << std::endl;

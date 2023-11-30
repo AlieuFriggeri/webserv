@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:11:18 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/30 15:43:08 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/30 16:24:00 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ bool HttpRespond::build(HttpRequest req)
 
 	if (path.find(".png") != std::string::npos)
 		setHeader("Content-Type", "image/png");
-	else if (path.find(".jpg") != std::string::npos || path.find(".jpg") != std::string::npos)
+	else if (path.find(".jpg") != std::string::npos || path.find(".jpeg") != std::string::npos)
 		setHeader("Content-Type", "image/jpeg");
 	else if (_body.length() != 0)
 		setHeader("Content-Type", "text/html; charset=UTF-8");
