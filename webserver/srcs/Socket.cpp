@@ -558,7 +558,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			while (servers[i]._listening_socket != it->_serversocket)
 				i++;
 			it->_req.parse(it->_buff.c_str(), it->_bytesrcv, servers[i].getMaxBodySize());
-			//it->_req.printMessage();
+			it->_req.printMessage();
 			Route	rt;
 			std::cout << "avant checkroute" << std::endl;
 			rt = checkroute(&*it, servers);

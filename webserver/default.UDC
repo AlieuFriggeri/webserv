@@ -19,6 +19,13 @@ servers:
             index = ./admin.html;
             cgi = .cpp | /cgi/bin/admin;
         )
+		- /downloaded_files/ (
+            methods = GET POST;
+            root = /admin/;
+            listing = true;
+			index = ./index.html;
+            cgi = .cpp | /cgi/bin/admin;
+        )
         - /lol/mdr/ (
             methods = GET POST;
             root = /;

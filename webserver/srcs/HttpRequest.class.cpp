@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/29 18:57:22 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/30 14:17:38 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,6 +260,7 @@ void	HttpRequest::setHeader(std::string key, std::string value)
 
 void	HttpRequest::parse(const char *data, size_t len, int maxBody)
 {
+	std::cout << data << std::endl;
 	char				c;
 	short				mi = 1;
 	int					chunk_len = 0;
@@ -785,9 +786,11 @@ void	HttpRequest::parse(const char *data, size_t len, int maxBody)
 			}
 			case BODY:
 			{
+				// std::cout << "PARSING BODY\ti= " << _body.size() << "\tchar= " << c << "\tbody_len= " << _body_len << "\tmaxBOdy= " << maxBody << std::endl;
 				if (_body.size() > (unsigned long)maxBody)
 				{
 					_err_code = 413;
+					std::cerr << "ERROR WHEN PARSING THE REQUEST (BODY)" << std::endl;
 					return ;
 				}
 				if (_body.size() < _body_len)
@@ -884,6 +887,7 @@ void	HttpRequest::setKeepAlive(bool b)
 
 void	HttpRequest::_handleBoundary(void)
 {
+	std::cout << "HANDLE BOUNDARY" << std::endl;
 	std::string	body = _body_str;
 	std::string	tmp;
 	size_t		begin = body.find("--" + _boundary);
@@ -892,7 +896,7 @@ void	HttpRequest::_handleBoundary(void)
 	std::cout << "-------\nBOUNDARY	beg: \"" << begin << "\"	end\"" << end << "\"\n-------" << std::endl;
 	if (begin != std::string::npos)
 	{
-		tmp = body.substr(begin + _boundary.length() + 2, end - (_boundary.length() + 2));
-		std::cout << "\"" << tmp << "\"" << std::endl;
+		// tmp = body.substr(begin + _boundary.length() + 2, end - (_boundary.length() + 2));
+		// std::cout << "\"" << tmp << "\"" << std::endl;
 	}
 }

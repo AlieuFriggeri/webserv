@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HttpRequest.class.hpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/30 12:28:02 by afrigger         ###   ########.fr       */
+/*   Updated: 2023/11/30 14:13:16 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ class HttpRequest
 		HttpMethod							_method;
 		std::map<HttpMethod, std::string>	_method_str;
 		std::map<std::string, std::string>	_headers;
+		std::vector<unsigned char>			_body;
 		std::string							_body_str;
 		std::string							_path;
 		std::string							_query;
@@ -106,7 +107,6 @@ class HttpRequest
 		HttpRequest(const HttpRequest& src);
 		HttpRequest& operator=(const HttpRequest& src);
 		~HttpRequest();
-		std::vector<unsigned char>			_body;
 
 		HttpMethod							getMethod(void) const;
 		std::string							getMethodStr(void) const;

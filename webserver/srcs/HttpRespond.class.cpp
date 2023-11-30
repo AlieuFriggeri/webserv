@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:11:18 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/29 15:56:10 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/30 14:40:11 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,23 @@ std::string	getDate(void)
 
 bool HttpRespond::build(HttpRequest req)
 {
+	std::string	path = req.getPath();
 	_isBuilt = false;
 	setHeader("Date", getDate());
 	setHeader("Connection", req.getHeader("connection"));
+
+
+	if (path.find(".png") != std::string::npos)
+		setHeader("Content-Type", "image/png");
+	
+
+
+
+
+
+
+
+
 	if (req.getErrorCode() == 0)
 		_status_code = 200;
 	else if (req.getErrorCode() == 408)
