@@ -294,6 +294,13 @@ int checklisteningsock(int i, Socket *servers)
 	return -1;
 }
 
+bool clienterase(Client client)
+{
+	if (client._client_socket == -2)
+		return true;
+	return false;
+}
+
 void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 {
 	long rcv = 0;
@@ -312,11 +319,7 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 
 	while(1)
 	{
-		for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
-		{
-			if (it->_client_socket == -2)
-				clientlist->erase(it);
-		}
+		clientlist->remove_if(clienterase);
 		readcpy = readset;
 		writecpy = writeset;
 		bzero(buffer, sizeof(buffer));
@@ -351,8 +354,10 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 			bzero(buffer, sizeof(buffer));
 			for (int i = 0; i <= max_sock; i++)
 			{
+							
 				if(FD_ISSET(i, &readcpy) && checklisteningsock(i, servers) == i)
 				{
+
 					clientlist->back().acceptConnection(checklisteningsock(i, servers), clientlist->size() - 1, &readset, clientlist, checkport(i, servers));
 					if (clientlist->back()._client_socket != -1)
 						max_sock = addfdtoset(clientlist->back()._client_socket, &readset, max_sock);
@@ -435,9 +440,9 @@ void Socket::closeconnection(std::list<Client> *clientlist, int i, fd_set *reads
 			// std::cout << i << std::endl;
 			close(it->_client_socket);
 			it->_client_socket = -2;
-			//clientlist->erase(it);
 			//std::cout << max_sock << " after closeconn" << std::endl;
 			setMaxSock(clientlist);
+			//clientlist->erase(it);
 			break;
 		}
 	}
@@ -553,7 +558,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			while (servers[i]._listening_socket != it->_serversocket)
 				i++;
 			it->_req.parse(it->_buff.c_str(), it->_bytesrcv, servers[i].getMaxBodySize());
-			it->_req.printMessage();
+			//it->_req.printMessage();
 			Route	rt;
 			std::cout << "avant checkroute" << std::endl;
 			rt = checkroute(&*it, servers);
