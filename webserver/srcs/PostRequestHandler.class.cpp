@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PostRequestHandler.class.cpp                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:10:16 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/29 16:40:37 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/30 11:20:29 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,7 @@ HttpRespond	PostRequestHandler::handleRequest(HttpRequest *req, Client *clt, Soc
 		resp.setStatus(req->getErrorCode());
 		resp.setBody(handleErrorPage(srv, req->getErrorCode()));
 	}
-	std::cout << req->getErrorCode() << std::endl;
+	std::cout << req->getMethodStr() << std::endl;
 	resp.build(*req);
-	std::cout << resp.getResp() << std::endl;
 	return (resp);
 }

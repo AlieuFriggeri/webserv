@@ -120,6 +120,7 @@ CgiExecutor::execute(Client *client, Socket server, std::string cgi_path)
 		throw std::runtime_error("file not found");
 	if (access(argv[0], X_OK) == -1)
 		throw std::runtime_error("file not executable");
+	std::cout << "CGI INPUT === " << client->_req.getBody() << std::endl;
 	/// Make pipes
 	int fd_std[2];
 	if (pipe(fd_std))

@@ -611,7 +611,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 					break;
 				}
 			}
-			std::cout << "Avant wrtie" << std::endl;
+			//std::cout << "Avant wrtie" << std::endl;
 			write(it->_client_socket, it->_resp.getResp().c_str(), it->_resp.getResp().length());
 			std::cout << "Respond sended to Client " << it->_clientnumber << " on socket : " << it->_client_socket << std::endl;
 			// exit(1);
@@ -659,7 +659,7 @@ Route	Socket::checkroute(Client *client, Socket *server)
 				final_route = it->first;
 		}
 	}
-	std::cout << "\"" << final_route << "\"" << std::endl;
+	//std::cout << "\"" << final_route << "\"" << std::endl;
 	if (server[i]._route.count(final_route) == 0)
 	{
 		std::cerr << "Route pas accessible avec le port du client" << std::endl;
