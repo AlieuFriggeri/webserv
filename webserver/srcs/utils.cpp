@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 16:45:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/30 18:41:13 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/30 18:43:07 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ std::vector<char> openReadFile(std::string relative_path)
 
 	if (relative_path.c_str()[0] == '.' && relative_path.c_str()[1] == '/')
 		relative_path.erase(0, 2);
-	file.open(relative_path.c_str(), std::ios::binary);
+	file.open(relative_path, std::ios::binary);
 	if (file.is_open())
 	{
 		std::cout << "DANS openReadFile (utils.cpp)\tOuverture file\t" << relative_path << std::endl;
