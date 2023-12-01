@@ -608,34 +608,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			//std::cout << "Avant wrtie" << std::endl;
     // Ouvrir le fichier image
 			if (it->_req.getPath().find("png") != std::string::npos || it->_req.getPath().find("jpg") != std::string::npos || it->_req.getPath().find("jpeg") != std::string::npos)
-			{
-  			  std::ostringstream responseStream;
-          	  std::ifstream imageFile(it->_req.getPath(), std::ios::binary);
-
-				if (!imageFile) {
-					responseStream << "HTTP/1.1 404 Not Found\r\n\r\n";
-					return;
-				}
-
-				// Obtenir la taille du fichier
-				imageFile.seekg(0, std::ios::end);
-				std::streampos fileSize = imageFile.tellg();
-				imageFile.seekg(0, std::ios::beg);
-
-				// Lire le contenu du fichier image
-				std::vector<char> buffer(fileSize);
-				if (!imageFile.read(buffer.data(), fileSize)) {
-					responseStream << "HTTP/1.1 500 Internal Server Error\r\n\r\n";
-					return;
-				}
-
-				// Envoyer la réponse HTTP avec l'image
-				responseStream << "HTTP/1.1 200 OK\r\n";
-				responseStream << "Content-Type: image/png\r\n";
-				responseStream << "Content-Length: " << fileSize << "\r\n\r\n";
-				responseStream.write(buffer.data(), fileSize);
-         	   send(it->_client_socket, buffer.data(),buffer.size(), 0);
-			}
+				sendImage(it);
 			else
 				send(it->_client_socket, it->_resp.getResp().c_str(), it->_resp.getResp().length() , 0);
 			std::cout << "Respond sended to Client " << it->_clientnumber << " on socket : " << it->_client_socket << std::endl;
@@ -649,6 +622,36 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			it->_bytesrcv = 0;
 		}
 	}
+}
+
+void sendImage(Client *it)
+{
+	std::ostringstream responseStream;
+	std::ifstream imageFile(it->_req.getPath(), std::ios::binary);
+
+	if (!imageFile) {
+		responseStream << "HTTP/1.1 404 Not Found\r\n\r\n";
+		return;
+	}
+
+	// Obtenir la taille du fichier
+	imageFile.seekg(0, std::ios::end);
+	std::streampos fileSize = imageFile.tellg();
+	imageFile.seekg(0, std::ios::beg);
+
+	// Lire le contenu du fichier image
+	std::vector<char> buffer(fileSize);
+	if (!imageFile.read(buffer.data(), fileSize)) {
+		responseStream << "HTTP/1.1 500 Internal Server Error\r\n\r\n";
+		return;
+	}
+
+	// Envoyer la réponse HTTP avec l'image
+	responseStream << "HTTP/1.1 200 OK\r\n";
+	responseStream << "Content-Type: image/png\r\n";
+	responseStream << "Content-Length: " << fileSize << "\r\n\r\n";
+	responseStream.write(buffer.data(), fileSize);
+	send(it->_client_socket, buffer.data(),buffer.size(), 0);
 }
 
 std::string trimspace(std::string str)

@@ -49,7 +49,7 @@ class Socket{
 		static void setMaxSock(std::list<Client> *clientlist);
 		static void sendresponse(std::list<Client> *clientlist, int fd, Socket *servers);
 		static Route checkroute(Client *client, Socket *server);
-
+	static void sendImage(Client *it);
 	sockaddr_in getSockaddr(void);
 	void setSockaddr(sockaddr_in server);
 	int getListening(void);
