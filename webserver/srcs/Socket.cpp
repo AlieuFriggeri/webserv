@@ -571,46 +571,45 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				it->_req.setErrorCode(404);
 				std::cerr << "Relative path not found" << std::endl;
 			}
-			switch(it->_req.getMethod())
-			{
-				//	METTRE LES CONFIG DANS LES CREATIONS DES methodHandler
-				case GET:
-				{
-					GetRequestHandler	methodHandler;
-					if (rt._methods.find("GET") == std::string::npos)
-						it->_req.setErrorCode(405);
-					it->_resp = methodHandler.handleRequest(&(it->_req), &*it, servers[i]);
-					break;
-				}
-				case POST:
-				{
-					PostRequestHandler	methodHandler;
-					if (rt._methods.find("POST") == std::string::npos)
-						it->_req.setErrorCode(405);
-					it->_resp = methodHandler.handleRequest(&(it->_req), &*it, servers[i]);
-					break;
-				}
-				case DELETE:
-				{
-					DeleteRequestHandler	methodHandler;
-					if (rt._methods.find("DELETE") == std::string::npos)
-						it->_req.setErrorCode(405);
-					it->_resp = methodHandler.handleRequest(&(it->_req), &*it, servers[i]);
-					break;
-				}
-				case NONE:
-				{
-					GetRequestHandler	methodHandler;
-					it->_resp = methodHandler.handleRequest(&(it->_req), &*it, servers[i]);
-					break;
-				}
-			}
-			//std::cout << "Avant wrtie" << std::endl;
-    // Ouvrir le fichier image
-			if (it->_req.getPath().find("png") != std::string::npos || it->_req.getPath().find("jpg") != std::string::npos || it->_req.getPath().find("jpeg") != std::string::npos)
+			if (it->_req.getErrorCode() == 0 && (it->_req.getPath().find("png") != std::string::npos || it->_req.getPath().find("jpg") != std::string::npos || it->_req.getPath().find("jpeg") != std::string::npos))
 				sendImage(&*it);
 			else
+			{
+				switch(it->_req.getMethod())
+				{
+					case GET:
+					{
+						GetRequestHandler	methodHandler;
+						if (rt._methods.find("GET") == std::string::npos)
+							it->_req.setErrorCode(405);
+						it->_resp = methodHandler.handleRequest(&(it->_req), &*it, servers[i]);
+						break;
+					}
+					case POST:
+					{
+						PostRequestHandler	methodHandler;
+						if (rt._methods.find("POST") == std::string::npos)
+							it->_req.setErrorCode(405);
+						it->_resp = methodHandler.handleRequest(&(it->_req), &*it, servers[i]);
+						break;
+					}
+					case DELETE:
+					{
+						DeleteRequestHandler	methodHandler;
+						if (rt._methods.find("DELETE") == std::string::npos)
+							it->_req.setErrorCode(405);
+						it->_resp = methodHandler.handleRequest(&(it->_req), &*it, servers[i]);
+						break;
+					}
+					case NONE:
+					{
+						GetRequestHandler	methodHandler;
+						it->_resp = methodHandler.handleRequest(&(it->_req), &*it, servers[i]);
+						break;
+					}
+				}
 				send(it->_client_socket, it->_resp.getResp().c_str(), it->_resp.getResp().length() , 0);
+			}
 			std::cout << "Respond sended to Client " << it->_clientnumber << " on socket : " << it->_client_socket << std::endl;
 			// exit(1);
 			if (it->_req.keepAlive() == true)
@@ -648,10 +647,10 @@ void Socket::sendImage(Client *it)
 
 	// Envoyer la réponse HTTP avec l'image
 	responseStream << "HTTP/1.1 200 OK\r\n";
-	responseStream << "Content-Type: image/png\r\n";
+	responseStream << "Content-Type: image/jpg\r\n";
 	responseStream << "Content-Length: " << fileSize << "\r\n\r\n";
 	responseStream.write(buffer.data(), fileSize);
-	send(it->_client_socket, buffer.data(),buffer.size(), 0);
+	send(it->_client_socket, buffer.data(), buffer.size(), 0);
 }
 
 std::string trimspace(std::string str)

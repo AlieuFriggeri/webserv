@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/30 15:24:09 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/12/01 13:57:07 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,6 +268,8 @@ void	HttpRequest::parse(const char *data, size_t len, int maxBody)
 	std::string			temp;
 	std::string			tmp;
 
+	std::cout << data << std::endl;
+	
 	resetRequest();
 	if (strlen(data) == 0)
 	{
@@ -502,6 +504,7 @@ void	HttpRequest::parse(const char *data, size_t len, int maxBody)
 			}
 			case REQUEST_LINE_MAJOR_DIGIT:
 			{
+				std::cout << c << std::endl;
 				if (!isdigit(c))
 				{
 					_err_code = 400;
