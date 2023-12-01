@@ -6,7 +6,7 @@
 #    By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/30 10:58:16 by afrigger          #+#    #+#              #
-#    Updated: 2023/11/20 17:46:29 by vgroux           ###   ########.fr        #
+#    Updated: 2023/12/01 15:34:22 by vgroux           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ DIR_O =	objs/
 
 SRCS_LIST =	utils.cpp \
 			Client.cpp Socket.cpp ServerConfig.cpp Route.cpp \
-			HttpRequest.class.cpp HttpRespond.class.cpp \
+			HttpRequest.class.cpp HttpRespond.class.cpp Boundary.class.cpp \
 			RequestHandler.class.cpp GetRequestHandler.class.cpp PostRequestHandler.class.cpp DeleteRequestHandler.class.cpp \
 			CgiExecutor.cpp \
 			main.cpp 

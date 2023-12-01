@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HttpRespond.class.hpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:55:44 by vgroux            #+#    #+#             */
-/*   Updated: 2023/12/01 12:40:46 by afrigger         ###   ########.fr       */
+/*   Updated: 2023/12/01 15:08:07 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ class HttpRespond
 		std::string							_body;
 		bool								_isBuilt;
 		std::string							_resp;
+
 		std::string	generateStatusLine(void);
 		std::string	generateHeaders(void);
 

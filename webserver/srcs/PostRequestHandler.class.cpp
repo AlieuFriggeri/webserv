@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PostRequestHandler.class.cpp                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:10:16 by vgroux            #+#    #+#             */
-/*   Updated: 2023/12/01 12:47:15 by afrigger         ###   ########.fr       */
+/*   Updated: 2023/12/01 16:05:16 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,11 @@ PostRequestHandler::~PostRequestHandler(void)
 	// std::cout << "PostRequestHandler destructor called" << std::endl;
 }
 
+void	PostRequestHandler::handlePostFile(HttpRequest *req)
+{
+	(void)req;
+}
+
 HttpRespond	PostRequestHandler::handleRequest(HttpRequest *req, Client *clt, Socket srv)
 {
 	(void)clt;
@@ -81,25 +86,18 @@ HttpRespond	PostRequestHandler::handleRequest(HttpRequest *req, Client *clt, Soc
 		}
 		else 
 		{
-			std::string res = "";
-			req->printMessage();
-	
-			// if (req->getBody().find("filename") != std::string::npos)
-			// 	std::cout << "lol" << std::endl;
-			// else
-			// 	std::cout << "tristesse" << std::endl;
-			// std::cout <<req->getBody() << std::endl;
-			// std::cout <<res << std::endl;
-			// exit(132);
-		}
-
-
-
-
-
-
-
-		
+			if (req->isMultiform())
+			{
+				// for (std::vector<Boundary>::iterator it = req->getBounded().begin(); it != req->getBounded().end(); it++)
+				// {
+				// 	;
+				// }
+			}
+			else
+			{
+				// traitement "classique"
+			}
+		}	
 	}
 	else
 	{
@@ -107,7 +105,6 @@ HttpRespond	PostRequestHandler::handleRequest(HttpRequest *req, Client *clt, Soc
 		resp.setStatus(req->getErrorCode());
 		resp.setBody(handleErrorPage(srv, req->getErrorCode()));
 	}
-	std::cout << req->getMethodStr() << std::endl;
 	resp.build(*req);
 	return (resp);
 }

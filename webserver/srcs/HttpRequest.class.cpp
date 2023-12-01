@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/12/01 13:57:07 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/12/01 16:49:25 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,11 @@ std::string HttpRequest::getPathRelative(void) const
 	return this->_path_relative;
 }
 
+std::vector<Boundary>	HttpRequest::getBounded(void) const
+{
+	return (_bounded);
+}
+
 bool	HttpRequest::isDirectory(void) const
 {
 	return _isDir;
@@ -268,7 +273,7 @@ void	HttpRequest::parse(const char *data, size_t len, int maxBody)
 	std::string			temp;
 	std::string			tmp;
 
-	std::cout << data << std::endl;
+	// std::cout << data << std::endl;
 	
 	resetRequest();
 	if (strlen(data) == 0)
@@ -504,7 +509,6 @@ void	HttpRequest::parse(const char *data, size_t len, int maxBody)
 			}
 			case REQUEST_LINE_MAJOR_DIGIT:
 			{
-				std::cout << c << std::endl;
 				if (!isdigit(c))
 				{
 					_err_code = 400;
@@ -814,9 +818,7 @@ void	HttpRequest::parse(const char *data, size_t len, int maxBody)
 	if (_state == PARSING_DONE)
 	{
 		if (_multiform)
-		{
 			_handleBoundary();
-		}
 	}
 }
 
@@ -893,13 +895,47 @@ void	HttpRequest::_handleBoundary(void)
 	std::cout << "HANDLE BOUNDARY" << std::endl;
 	std::string	body = _body_str;
 	std::string	tmp;
-	size_t		begin = body.find("--" + _boundary);
-	size_t		end = body.find("--" + _boundary, begin + _boundary.length());
+	size_t		begin = 0;
+	size_t		end = 0;
 
-	std::cout << "-------\nBOUNDARY	beg: \"" << begin << "\"	end\"" << end << "\"\n-------" << std::endl;
-	if (begin != std::string::npos)
+	begin = body.find("--" + _boundary);
+	end = body.find("--" + _boundary, begin + _boundary.length());
+	while (end != std::string::npos)
 	{
-		// tmp = body.substr(begin + _boundary.length() + 2, end - (_boundary.length() + 2));
-		// std::cout << "\"" << tmp << "\"" << std::endl;
+		Boundary	bound;
+		tmp = body.substr(begin, end);
+		tmp.erase(end, end + _boundary.length() + 2);
+		tmp.erase(begin, begin + _boundary.length() + 2);
+		tmp.erase(0, 2);
+		tmp.erase(tmp.length() - 2);
+
+		std::istringstream	sstr(tmp);
+		std::string			line;
+		std::getline(sstr, line);
+		while (line.compare("\r\n") != 0)
+		{
+			std::cout << "LINE=\"" << line << "\"" << std::endl << "TMP=\"" << tmp << "\"" << std::endl;
+			std::string	key;
+			std::string	value;
+			size_t		delim = line.find_first_of(':');
+			key = line.substr(0, delim);
+			value = line.substr(delim + 2);
+
+			std::cout << "key= \"" << key << "\"\tvalue= \"" << value << "\"" << std::endl;
+
+			bound.setHeader(key, value);
+			std::getline(sstr, line);
+		}
+
+		begin = body.find("--" + _boundary, end);
+		end = (body.find("--" + _boundary, begin + _boundary.length()));
+		std::cout << begin << std::endl;
+		std::cout << end << std::endl;
 	}
+	// if (begin != std::string::npos)
+	// {
+	// 	// tmp = body.substr(begin + _boundary.length() + 2, end - (_boundary.length() + 2));
+	// 	// std::cout << "\"" << tmp << "\"" << std::endl;
+	// }
+	// std::cout << std::endl << "BODY AFTER BOUNDARY" << std::endl << "\"" << body << "\"" << std::endl;
 }

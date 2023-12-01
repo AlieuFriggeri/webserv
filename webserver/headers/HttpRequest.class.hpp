@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/30 14:13:16 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/12/01 15:18:33 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <vector>
 # include <cstring>
 # include <string.h>
+# include "Boundary.class.hpp"
 
 # ifndef URI_MAX_LEN
 #  define URI_MAX_LEN 4096
@@ -85,7 +86,7 @@ class HttpRequest
 		std::string							_conn;
 		std::string							_server_name;
 		std::string							_boundary;
-		std::vector<std::string>			_bounded;
+		std::vector<Boundary>				_bounded;
 		std::string							_path_relative;
 		bool								_isDir;
 		bool								_fields_done;
@@ -120,6 +121,7 @@ class HttpRequest
 		std::string							getBoundary(void) const;
 		std::string							getPathRelative(void) const;
 		int									getErrorCode(void) const;
+		std::vector<Boundary>				getBounded(void) const;
 
 		bool	isDirectory(void) const;
 		bool	isMultiform(void) const;

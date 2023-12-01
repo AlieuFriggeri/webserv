@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PostRequestHandler.class.hpp                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:14:16 by vgroux            #+#    #+#             */
-/*   Updated: 2023/12/01 12:47:26 by afrigger         ###   ########.fr       */
+/*   Updated: 2023/12/01 15:09:37 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ class PostRequestHandler: public RequestHandler
 		~PostRequestHandler(void);
 
 		HttpRespond	handleRequest(HttpRequest *req, Client *clt, Socket srv);
+		void		handlePostFile(HttpRequest *req);
+
 };
 
 #endif

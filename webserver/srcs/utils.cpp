@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 16:45:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/12/01 12:43:51 by afrigger         ###   ########.fr       */
+/*   Updated: 2023/12/01 14:45:49 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,10 +174,23 @@ std::string	openReadCloseDir(std::string path, std::string uri)
 		html = "<html><head><title>Index of " + path + "</title></head><body><h1>Index of " + uri + "</h1><hr>\n";
 		for (std::vector<std::string>::iterator it = files.begin(); it < files.end(); it++)
 		{
-			if (uri.rfind('/') == uri.length() - 1)
-				html += "<a href=\"" + uri + *it + "\">" + *it + "</a><br>\n";
-			else
-				html += "<a href=\"" + uri + "/" + *it + "\">" + *it + "</a><br>\n";
+			struct stat s;
+
+			if (stat(it->c_str(), &s))
+			{
+				if (s.st_mode & S_IFDIR)
+				{	// is a directory
+					std::cout << *it << " is a directory" << std::endl;
+				}
+				else if (s.st_mode & S_IFREG)
+				{	// is a file
+					std::cout << *it << " is a file" << std::endl;
+				}
+				if (uri.rfind('/') == uri.length() - 1)
+					html += "<a href=\"" + uri + *it + "\">" + *it + "</a><br>\n";
+				else
+					html += "<a href=\"" + uri + "/" + *it + "\">" + *it + "</a><br>\n";
+			}
 		}
 		html += "</hr>\n</body>\r</html>";
 	}

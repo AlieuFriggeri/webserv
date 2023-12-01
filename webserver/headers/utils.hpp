@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 16:44:59 by vgroux            #+#    #+#             */
-/*   Updated: 2023/12/01 12:46:18 by afrigger         ###   ########.fr       */
+/*   Updated: 2023/12/01 14:42:45 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <fstream>
 # include <dirent.h>
 # include <vector>
+# include <sys/stat.h>
 
 # define CRLN "\r\n"
 
