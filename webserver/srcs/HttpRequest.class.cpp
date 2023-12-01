@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/12/01 16:49:25 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/12/01 16:53:00 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,8 +273,6 @@ void	HttpRequest::parse(const char *data, size_t len, int maxBody)
 	std::string			temp;
 	std::string			tmp;
 
-	// std::cout << data << std::endl;
-	
 	resetRequest();
 	if (strlen(data) == 0)
 	{
