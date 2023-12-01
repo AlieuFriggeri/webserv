@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 16:45:38 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/30 17:26:40 by afrigger         ###   ########.fr       */
+/*   Updated: 2023/11/30 18:43:07 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,32 +130,42 @@ std::string	toString(int i)
     return (ss.str());
 }
 
-std::string openReadFile(std::string relative_path)
+std::vector<char> openReadFile(std::string relative_path)
 {
-	std::ifstream	file;
-	std::string		result;
-	std::string		line;
+	std::ifstream		file;
+	std::vector<char>	tmp;
 
-
-	result.clear();
 	if (relative_path.c_str()[0] == '.' && relative_path.c_str()[1] == '/')
 		relative_path.erase(0, 2);
 	file.open(relative_path, std::ios::binary);
 	if (file.is_open())
 	{
-		while (std::getline(file, line))
-		{
-			result += line;
-			result += "\n";
+		std::cout << "DANS openReadFile (utils.cpp)\tOuverture file\t" << relative_path << std::endl;
+		// Obtenir taille du fichier
+		file.seekg(0, std::ios::end);
+		std::streampos fileSize = file.tellg();
+		file.seekg(0, std::ios::beg);
+
+		std::cout << "DANS openReadFile (utils.cpp)\tAvant lecture\tsize= " << fileSize << std::endl;
+
+		// Lire le contenu du fichier
+		std::vector<char> buffer(fileSize);
+		if (!file.read(buffer.data(), fileSize)) {
+			std::cerr << "DANS openReadFile (utils.cpp)\tErreur lecture du fichier" << std::endl;
+			return tmp;
 		}
+
+   		// std::vector<char>	buffer((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+
 		file.close();
+		return buffer;
 	}
 	else
-		std::cerr << "Erreur lors de l'ouverture du fichier" << std::endl;
-	return result;
+		std::cerr << "DANS openReadFile (utils.cpp)\tErreur lors de l'ouverture du fichier" << std::endl;
+	return tmp;
 }
 
-std::string	openReadCloseDir(std::string path, std::string uri)
+std::vector<char>	openReadCloseDir(std::string path, std::string uri)
 {
 	std::vector<std::string>	files;
 	std::string					html;
@@ -181,5 +191,7 @@ std::string	openReadCloseDir(std::string path, std::string uri)
 		}
 		html += "</hr>\n</body>\r</html>";
 	}
-	return (html);
+	std::vector<char>	res;
+	res.insert(res.end(), html.begin(), html.end());
+	return (res);
 }

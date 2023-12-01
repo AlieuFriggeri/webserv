@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:10:16 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/30 14:16:38 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/30 18:03:14 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,9 @@ HttpRespond	PostRequestHandler::handleRequest(HttpRequest *req, Client *clt, Soc
 			std::cout << "entering cgi" << std::endl;
 			cgiresp = CgiExecutor::execute(clt, srv, "/usr/bin/php");
 			std::cout << "CGI resp is : " << std::endl << cgiresp << std::endl;
-			resp.setBody(cgiresp);
+			std::vector<char>	res;
+			res.insert(res.end(), cgiresp.begin(), cgiresp.end());
+			resp.setBody(res);
 			resp.setStatus(200);
 		}
 		else 

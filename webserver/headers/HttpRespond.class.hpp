@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HttpRespond.class.hpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:55:44 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/16 10:28:02 by afrigger         ###   ########.fr       */
+/*   Updated: 2023/11/30 17:55:37 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ class HttpRespond
 	private:
 		int									_status_code;
 		std::map<std::string, std::string>	_headers;
-		std::string							_body;
+		std::vector<char>					_body;
 		bool								_isBuilt;
-		std::string							_resp;
+		std::vector<char>					_resp;
 		std::string	generateStatusLine(void);
 		std::string	generateHeaders(void);
 
@@ -42,12 +42,14 @@ class HttpRespond
 		int									getStatus(void);
 		std::string							getHeader(std::string key);
 		std::map<std::string, std::string>	getHeaders(void);
-		std::string							getBody(void);
-		std::string							getResp(void);
+		std::vector<char>					getBody(void);
+		std::vector<char>					getResp(void);
 
 		void	setStatus(int status);
 		void	setHeader(std::string key, std::string value);
-		void	setBody(std::string body);
+		void	setBody(std::vector<char> body);
+		void	appendBody(std::vector<char> newBody);
+
 };
 
 #endif

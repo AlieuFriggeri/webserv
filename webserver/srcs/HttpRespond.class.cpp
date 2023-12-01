@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:11:18 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/30 16:24:00 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/30 18:02:37 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ HttpRespond::HttpRespond(void)
 {
 	_status_code = 0;
 	(void)_headers;
-	_body = "";
 	_isBuilt = false;
 }
 
@@ -36,10 +35,10 @@ std::string	HttpRespond::generateHeaders(void)
 {
 	std::string	heads;
 	
-	setHeader("Content-Length", toString(_body.length() + 2));
+	setHeader("Content-Length", toString(_body.size() + 2));
 	for (std::map<std::string, std::string>::const_iterator i = _headers.begin(); i != _headers.end(); i++)
 		heads += i->first + ": " + i->second + "\r\n";
-	heads += "\r\n";
+	heads += "\r\n\r\n";
 	return (heads);
 }
 
@@ -59,30 +58,33 @@ bool HttpRespond::build(HttpRequest req)
 	_isBuilt = false;
 	setHeader("Date", getDate());
 	setHeader("Connection", req.getHeader("connection"));
-
-
 	if (path.find(".png") != std::string::npos)
 		setHeader("Content-Type", "image/png");
 	else if (path.find(".jpg") != std::string::npos || path.find(".jpeg") != std::string::npos)
 		setHeader("Content-Type", "image/jpeg");
-	else if (_body.length() != 0)
+	else if (_body.size() != 0)
 		setHeader("Content-Type", "text/html; charset=UTF-8");
 	if (req.getErrorCode() == 0)
 		_status_code = 200;
 	else if (req.getErrorCode() == 408)
-	{
 		setHeader("Connection", "close");
-	}
 	else
 	{
 		_status_code = req.getErrorCode();
+		std::string	statusLine = getStatusStr(_status_code);
 		if (_body.empty())
-			_body = getStatusStr(_status_code);
+			_body.insert(_body.end(), statusLine.begin(), statusLine.end());
 	}
-	_body += "\r\n";
-	_resp = generateStatusLine();
-	_resp += generateHeaders();
-	_resp += "\r\n" + _body;
+	_body.push_back('\r');
+	_body.push_back('\n');
+
+	std::string statusLine = generateStatusLine();
+	_resp.insert(_resp.end(), statusLine.begin(), statusLine.end());
+
+	std::string head = generateHeaders();
+	_resp.insert(_resp.end(), head.begin(), head.end());
+
+	_resp.insert(_resp.end(), _body.begin(), _body.end());
 	_isBuilt = true;
 	return (true);
 }
@@ -107,15 +109,13 @@ std::map<std::string, std::string>	HttpRespond::getHeaders(void)
 	return (_headers);
 }
 
-std::string	HttpRespond::getBody(void)
+std::vector<char>	HttpRespond::getBody(void)
 {
 	return (_body);
 }
 
-std::string	HttpRespond::getResp(void)
+std::vector<char>	HttpRespond::getResp(void)
 {
-	if (_isBuilt == false)
-		return ("");
 	return (_resp);
 }
 
@@ -129,7 +129,12 @@ void	HttpRespond::setHeader(std::string key, std::string value)
 	_headers[key] = value;
 }
 
-void	HttpRespond::setBody(std::string body)
+void	HttpRespond::setBody(std::vector<char> body)
 {
 	_body = body;
+}
+
+void	HttpRespond::appendBody(std::vector<char> newBody)
+{
+	_body.insert(_body.end(), newBody.begin(), newBody.end());
 }

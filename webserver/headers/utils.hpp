@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 16:44:59 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/10 15:48:24 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/11/30 17:47:57 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 
 std::string	getStatusStr(int statusCode);
 std::string	toString(int i);
-std::string	openReadFile(std::string relative_path);
-std::string	openReadCloseDir(std::string path, std::string uri);
+std::vector<char>	openReadFile(std::string relative_path);
+std::vector<char>	openReadCloseDir(std::string path, std::string uri);
 
 #endif
