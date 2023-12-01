@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 16:44:59 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/30 17:47:57 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/12/01 12:46:18 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 
 std::string	getStatusStr(int statusCode);
 std::string	toString(int i);
-std::vector<char>	openReadFile(std::string relative_path);
-std::vector<char>	openReadCloseDir(std::string path, std::string uri);
+std::string	openReadFile(std::string relative_path);
+std::string	openReadCloseDir(std::string path, std::string uri);
 
 #endif

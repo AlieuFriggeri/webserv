@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   RequestHandler.class.hpp                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:52:34 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/30 18:00:36 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/12/01 12:43:02 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ class RequestHandler
 		RequestHandler& operator=(const RequestHandler& src);
 		~RequestHandler(void);
 
-		std::vector<char>	handleErrorPage(Socket srv, int errCode);
+		std::string	handleErrorPage(Socket srv, int errCode);
 		//virtual HttpRespond	handleRequest(HttpRequest *req, Client *clt, Socket srv) = 0;
 };
 

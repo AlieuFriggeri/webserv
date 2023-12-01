@@ -67,7 +67,7 @@ servers:
   @server[
     - listen = 8002;
     - server_name = domain2.com;
-    - clientbody = 409600;
+    - clientbody = 4096;
     - route{
         - / (
             methods = GET;

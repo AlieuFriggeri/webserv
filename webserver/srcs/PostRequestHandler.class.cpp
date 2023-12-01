@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PostRequestHandler.class.cpp                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:10:16 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/30 18:03:14 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/12/01 12:47:15 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,7 @@ HttpRespond	PostRequestHandler::handleRequest(HttpRequest *req, Client *clt, Soc
 			std::cout << "entering cgi" << std::endl;
 			cgiresp = CgiExecutor::execute(clt, srv, "/usr/bin/php");
 			std::cout << "CGI resp is : " << std::endl << cgiresp << std::endl;
-			std::vector<char>	res;
-			res.insert(res.end(), cgiresp.begin(), cgiresp.end());
-			resp.setBody(res);
+			resp.setBody(cgiresp);
 			resp.setStatus(200);
 		}
 		else 

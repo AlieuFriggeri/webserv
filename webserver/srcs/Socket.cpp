@@ -608,7 +608,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			//std::cout << "Avant wrtie" << std::endl;
     // Ouvrir le fichier image
 			if (it->_req.getPath().find("png") != std::string::npos || it->_req.getPath().find("jpg") != std::string::npos || it->_req.getPath().find("jpeg") != std::string::npos)
-				sendImage(it);
+				sendImage(&*it);
 			else
 				send(it->_client_socket, it->_resp.getResp().c_str(), it->_resp.getResp().length() , 0);
 			std::cout << "Respond sended to Client " << it->_clientnumber << " on socket : " << it->_client_socket << std::endl;
@@ -624,7 +624,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 	}
 }
 
-void sendImage(Client *it)
+void Socket::sendImage(Client *it)
 {
 	std::ostringstream responseStream;
 	std::ifstream imageFile(it->_req.getPath(), std::ios::binary);

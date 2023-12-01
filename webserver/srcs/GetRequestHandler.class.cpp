@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   GetRequestHandler.class.cpp                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:08:04 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/30 18:30:42 by vgroux           ###   ########.fr       */
+/*   Updated: 2023/12/01 12:42:09 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,16 +69,12 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Sock
 				std::cout << "entering cgi" << std::endl;
 				cgiresp = CgiExecutor::execute(clt, srv, "/usr/bin/php");
 				std::cout << "CGI resp is : " << std::endl << cgiresp << std::endl;
-				std::vector<char>	res;
-				res.insert(res.end(), cgiresp.begin(), cgiresp.end());
-				resp.setBody(res);
+				resp.setBody(cgiresp);
 				resp.setStatus(200);
 			}
 			else if (req->getQuery().empty())
 			{
-				// std::cout << "AVANT openReadFIle" << std::endl;
 				resp.setBody(openReadFile(req->getPathRelative()));
-				// std::cout << "Segfault apres GETREQUESTHANDLER" << std::endl;
 				resp.setStatus(200);
 			}
 			else
@@ -87,9 +83,7 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Sock
 				std::cout << "entering cgi" << std::endl;
 				cgiresp = CgiExecutor::execute(clt, srv, "/usr/bin/php");
 				std::cout << "CGI resp is : " << std::endl << cgiresp << std::endl;
-				std::vector<char>	res;
-				res.insert(res.end(), cgiresp.begin(), cgiresp.end());
-				resp.setBody(res);
+				resp.setBody(cgiresp);
 				resp.setStatus(200);
 			}
 		}
