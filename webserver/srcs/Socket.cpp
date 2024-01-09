@@ -584,6 +584,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				}
 				case POST:
 				{
+					std::cout << "METHODE POST" << std::endl;
 					PostRequestHandler	methodHandler;
 					if (rt._methods.find("POST") == std::string::npos)
 						it->_req.setErrorCode(405);
