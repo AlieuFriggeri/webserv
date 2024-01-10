@@ -6,7 +6,7 @@
 /*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:11:18 by vgroux            #+#    #+#             */
-/*   Updated: 2023/12/01 12:41:23 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/10 11:00:38 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ bool HttpRespond::build(HttpRequest req)
 	std::string	path = req.getPath();
 	_isBuilt = false;
 	setHeader("Date", getDate());
-	setHeader("Connection", req.getHeader("connection"));
+	//setHeader("Connection", req.getHeader("connection"));
 
 
 	if (path.find(".png") != std::string::npos)

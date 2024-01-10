@@ -377,18 +377,18 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 						if (it->_client_socket == i)
 						{
 							sendresponse(clientlist, i, servers);
-							//closeconnection(clientlist, i, &readset, &writeset);
-							if (it->_req.keepAlive() == false)
-							{
-								std::cout << std::endl << "close the connection with the client" << std::endl;
-							}
-							else
-							{
-								std::cout << std::endl << "keep the connection with the client" << std::endl;
-								max_sock = rmfdfromset(i, &writeset, max_sock);
-								max_sock = addfdtoset(i, &readset, max_sock);
-								//std::cout << "ON CLOSE POUR PAS INFINIT LOOP\t";closeconnection(clientlist, i, &readset, &writeset);
-							}
+							closeconnection(clientlist, i, &readset, &writeset);
+							// if (it->_req.keepAlive() == false)
+							// {
+							// 	std::cout << std::endl << "close the connection with the client" << std::endl;
+							// }
+							// else
+							// {
+							// 	std::cout << std::endl << "keep the connection with the client" << std::endl;
+							// 	max_sock = rmfdfromset(i, &writeset, max_sock);
+							// 	max_sock = addfdtoset(i, &readset, max_sock);
+							// 	//std::cout << "ON CLOSE POUR PAS INFINIT LOOP\t";closeconnection(clientlist, i, &readset, &writeset);
+							// }
 							//it->_req.resetRequest();
 							break;
 						}
@@ -558,7 +558,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			while (servers[i]._listening_socket != it->_serversocket)
 				i++;
 			it->_req.parse(it->_buff.c_str(), it->_bytesrcv, servers[i].getMaxBodySize());
-			std::cout <<  "BODY OF POST IS " << it->_buff << std::endl;
+			//std::cout <<  "BODY OF POST IS " << it->_buff << std::endl;
 			//std::cout << it->_req.getPath() << std::endl;
 			// it->_req.printMessage();
 			Route	rt;
@@ -609,10 +609,14 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			}
 			//std::cout << "Avant wrtie" << std::endl;
     		// Ouvrir le fichier image
-			std::cout << " LA REPONSE de taille "<< it->_resp.getResp().length() <<"============================== "<<it->_resp.getResp() << std::endl;
-			// if (it->_req.getPath().find("png") != std::string::npos || it->_req.getPath().find("jpg") != std::string::npos || it->_req.getPath().find("jpeg") != std::string::npos)
-			// 	sendImage(&*it);
-			// else
+			//std::cout << " LA REPONSE de taille "<< it->_resp.getResp().length() <<"============================== "<<it->_resp.getResp() << std::endl;
+				//sendImage(&*it);
+			if (it->_req.getPath().find("png") != std::string::npos || it->_req.getPath().find("jpg") != std::string::npos || it->_req.getPath().find("jpeg") != std::string::npos)
+				{
+					//std::cout << "start of resp ==== "<< it->_resp.getResp() << " ==== END OF RESP" << std::endl;
+					sendImage(&*it);
+				}
+			else
 				send(it->_client_socket, it->_resp.getResp().c_str(), it->_resp.getResp().length() , 0);
 			std::cout << "Respond sended to Client " << it->_clientnumber << " on socket : " << it->_client_socket << std::endl;
 			// exit(1);
@@ -651,10 +655,10 @@ void Socket::sendImage(Client *it)
 
 	// Envoyer la réponse HTTP avec l'image
 	responseStream << "HTTP/1.1 200 OK\r\n";
-	responseStream << "Content-Type: image/jpeg\r\n";
+	responseStream << "Content-Type: image/png\r\n";
 	responseStream << "Content-Length: " << fileSize << "\r\n\r\n";
 	responseStream.write(buffer.data(), fileSize);
-	send(it->_client_socket, buffer.data(),buffer.size(), 0);
+	send(it->_client_socket, responseStream.str().c_str(), responseStream.str().length(), 0);
 }
 
 std::string trimspace(std::string str)

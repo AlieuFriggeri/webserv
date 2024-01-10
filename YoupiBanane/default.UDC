@@ -1,0 +1,94 @@
+servers:
+  @server[
+    - listen = 80;
+    - server_name = domain1.com;
+    - clientbody = 20480000;
+	- error = ./www/error/;
+    - route{
+		- / (
+            methods = GET POST;
+            root = /;
+            listing = true;
+            index = ./index.html;
+            cgi = .cpp | /cgi/bin;
+        )
+		- /admin/ (
+            methods = GET POST;
+            root = /admin/;
+            listing = false;
+            index = ./admin.html;
+            cgi = .cpp | /cgi/bin/admin;
+        )
+		- /downloaded_files/ (
+            methods = GET POST;
+            root = /admin/;
+            listing = true;
+			index = ./index.html;
+            cgi = .cpp | /cgi/bin/admin;
+        )
+        - /lol/mdr/ (
+            methods = GET POST;
+            root = /;
+            listing = false;
+            index = ./lol.html;
+            cgi = .cpp | /cgi/bin;
+        )
+        - /super/jpp/ (
+            methods = GET;
+            root = /emdre/;
+            listing = false;
+            index = ./jpp.html;
+            cgi = .mdr | /cgi/bin;
+        )
+        - /directory/ (
+            methods = GET;
+            root = /YoupiBanane/;
+            listing = false;
+            index = ./jpp.html;
+            cgi = .mdr | /cgi/bin;
+        )
+        - /put_test/ (
+            methods = GET;
+            root = /emdre/;
+            listing = false;
+            index = ./jpp.html;
+            cgi = .mdr | /cgi/bin;
+        )
+        - /post_body (
+            methods = POST;
+            root = /emdre/;
+            listing = false;
+            index = ./jpp.html;
+            cgi = .mdr | /cgi/bin;
+        )
+    }
+  ]
+
+  @server[
+    - listen = 8002;
+    - server_name = domain2.com;
+    - clientbody = 4096;
+    - route{
+        - / (
+            methods = GET;
+            root = /;
+            listing = true;
+            index = ./index.html;
+            cgi = .cpp | /cgi/bin;
+        )
+        - /admin/ (
+            methods = GET POST;
+            root = /admin/;
+            listing = true;
+            index = ./admin.html;
+            cgi = .cpp | /cgi/bin/admin;
+        )
+        - /k2aris/ (
+            methods = GET DELETE;
+            root = /b2oba/;
+            listing = true;
+            index = ./92i.html;
+            cgi = .evry | /cgi/bin/admin;
+        )
+    }
+  ]
