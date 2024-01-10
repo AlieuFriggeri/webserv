@@ -6,7 +6,7 @@
 /*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:10:16 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/09 16:14:05 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/10 12:51:35 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,10 @@ HttpRespond	PostRequestHandler::handleRequest(HttpRequest *req, Client *clt, Soc
 		{
 			if (req->isMultiform())
 			{
-				// for (std::vector<Boundary>::iterator it = req->getBounded().begin(); it != req->getBounded().end(); it++)
-				// {
-				// 	;
-				// }
+				std::cout << "------------------START HANDLING POST------------------" << std::endl;
+				//std::cout << req->getBody() << std::endl; 
+				req->printMessage();
+				std::cout << "------------------STOP HANDLING POST------------------" << std::endl;
 			}
 			else
 			{

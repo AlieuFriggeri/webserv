@@ -1,0 +1,37 @@
+servers:
+  @server[
+    - listen = 8002;
+    - server_name = domain1.com;
+    - clientbody = 20480000;
+	- error = ./www/error/;
+    - route{
+		- / (
+            methods = GET;
+            root = /;
+            listing = true;
+            index = ./index.html;
+            cgi = .cpp | /cgi/bin;
+        )
+        - /put_test/ (
+            methods = POST;
+            root = /emdre/;
+            listing = false;
+            index = ./jpp.html;
+            cgi = .mdr | /cgi/bin;
+        )
+        - /post_body (
+            methods = POST;
+            root = /emdre/;
+            listing = false;
+            index = ./jpp.html;
+            cgi = .mdr | /cgi/bin;
+            maxbody = 100;
+        )
+        - /directory/ (
+            methods = GET;
+            root = /;
+            listing = false;
+            
+        )
+    }
+  ]

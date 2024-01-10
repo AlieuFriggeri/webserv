@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HttpRequest.class.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2023/12/01 16:53:00 by vgroux           ###   ########.fr       */
+/*   Updated: 2024/01/10 12:48:42 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,7 +247,7 @@ void	HttpRequest::printMessage(void) const
 	std::cout << "--- BODY ---" << std::endl;
 	for (std::vector<unsigned char>::const_iterator i = _body.begin(); i != _body.end(); i++)
 		std::cout << *i;
-	std::cout << std::endl;
+	std::cout <<"--- END OF BODY ---" << std::endl;
 }
 
 void	HttpRequest::setHeader(std::string key, std::string value)
@@ -799,7 +799,10 @@ void	HttpRequest::parse(const char *data, size_t len, int maxBody)
 					return ;
 				}
 				if (_body.size() < _body_len)
+				{
 					_body.push_back(c);
+					_body_str += c;
+				}
 				if (_body.size() == _body_len)
 					_state = PARSING_DONE;
 				break ;
@@ -810,8 +813,8 @@ void	HttpRequest::parse(const char *data, size_t len, int maxBody)
 			}
 		}
 		temp += c;
-		if (_state == PARSING_DONE)
-			_body_str.append((char *)_body.data(), _body.size());
+		// if (_state == PARSING_DONE)
+		// 	_body_str.append((char *)_body.data(), _body.size());
 	}
 	if (_state == PARSING_DONE)
 	{

@@ -1,0 +1,54 @@
+------------------START HANDLING POST------------------
+-----------------------------94757470637967633413792755889
+Content-Disposition: form-data; name="fileToUpload"; filename="image_basse_res.jpg"
+Content-Type: image/jpeg
+
+����und
+Content-��------------94757470637967633413792755889
+Content-Disposition: form-data; npI���00101 Fuser-agentaT�E���Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/119.0R;q=0.8,en-�@���-Encodi
+                                                     acceptentaU@F���text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8ength: 140�H����@���ost
+Coaccept-language1#�F���fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3s: 1
+Sec-Feec-Fetch-Usere-Requestsary=------------------upgrade-insecure-requests413792��A���-----94content-typengaV�G���multipart/form-data; boundary=---------------------------94757470637967633413792755889peg
+
+�؀@��� I��������content-length
+14039A���46
+Con
+   origin-Length http://localhost�F���
+
+
+<hconnectiongthkeep-aliveA���pI���0H���ight: 9refererongth1@���J���@E��� I���rif;   !PG���1J���                 If ysec-fetch-destdocument�I���`J���pI���er.
+                <sec-fetch-modenavigate�J���J���minsec-fetch-sitesame-origin`J���sec-fetch-user?1��-----------947574706379676334w�J��---------------------------94757470637967633413792755889'��-----------94757470637967633413792755889
+Co-----------------------------94757470637967633413792755889
+Content-Disposition: form-data; na
+-----------------------------94757470637967633413792755889
+Content-Disposition: form-data; name="fileToUpload"; filename="ima
+-----------------------------94757470637967633413792755889
+Content-Disposition: form-data; name="fileToUpload"; filename="image_basse_res.jpg"
+Content-Type: image/jpeg
+
+����und
+Conten-----------------------------94757470637967633413792755889
+Content-Disposition: form-data; name="fileToUpload"; filename="image_basse_res.jpg"
+Content-Type: image/jpeg
+
+����und
+Content-���-----------94757470637967633413792755889
+Content-Disposition: form-data; name="fileToUpload"; filename="image_basse_res.jpg"
+Content-Type: image/jpeg
+
+����und
+Content-��------------94757470637967633413792755889
+Co
+-----------------------------94757470637967633413792755889
+Content-Disposition: form-data; name="fileToUpload"; filename="image_basse_res.jpg"
+Content-Type: image/jpeg
+
+����und
+Content-��------------94757470637967633413792755889
+Content-Disposition: form-data; npI���00101 Fuser-agentaT�E���Mozilla/5.0 (M(-----------------------------94757470637967633413792755889
+Content-Disposition: form-data; name="fileToUpload"; filename="image_basse_res.jpg"
+Content-Type: image/jpeg
+
+����und
+Content-��------------947
+------------------STOP HANDLING POST------------------
