@@ -6,7 +6,7 @@
 /*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/10 15:32:56 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/10 16:08:27 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,7 +280,7 @@ void	HttpRequest::parse(const char *data, size_t len, int maxBody)
 		return ;
 	}
 	// std::cout << "[Parsing beginning] Request received: \"" << data << "\"" << std::endl;
-	for (size_t i = 0; i < len; i++)
+	for (size_t i = 0; i <= len; i++)
 	{
 		c = data[i];
 		switch(_state)
@@ -791,9 +791,9 @@ void	HttpRequest::parse(const char *data, size_t len, int maxBody)
 			}
 			case BODY:
 			{
-				// std::cout << "PARSING BODY\ti= " << _body.size() << "\tchar= " << c << "\tbody_len= " << _body_len << "\tmaxBOdy= " << maxBody << std::endl;
+				std::cout << "PARSING BODY\ti= " << _body.size() << "\tchar= " << c << "\tbody_len= " << _body_len << "\tmaxBOdy= " << maxBody << std::endl;
 				//std::cerr << "PARSING BODY\tbodylen= " << _body_len << "\tmax= " << maxBody << std::endl;
-				std::cerr << "PARSING BODY\tbodylen= " << _body_len << "\tlen= " << len << std::endl;
+				// std::cerr << "PARSING BODY\tbodylen= " << _body_len << "\tlen= " << len << std::endl;
 				if (_body.size() > (unsigned long)maxBody)
 				{
 					_err_code = 413;
@@ -821,6 +821,8 @@ void	HttpRequest::parse(const char *data, size_t len, int maxBody)
 		if (_multiform)
 			{//_handleBoundary();
 				std::cout << "HAHAHAHAHAHAHAHAH BOUNDARY LOLooooowswww" << std::endl;
+							_body_str.append((char *)_body.data(), _body.size());
+
 			}
 		else
 			_body_str.append((char *)_body.data(), _body.size());

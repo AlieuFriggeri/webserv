@@ -70,7 +70,7 @@ servers:
     - clientbody = 40960;
     - route{
         - / (
-            methods = GET;
+            methods = GET POST;
             root = /;
             listing = true;
             index = ./index.html;

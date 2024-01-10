@@ -367,7 +367,7 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 				{
 					// std::cout << "READING FROM SOCKET" << std::endl;
 					bzero(buffer, sizeof(buffer));
-					rcv = read(i, buffer, sizeof(buffer));
+					rcv = recv(i, buffer, 409600, 0);
 					readrequest(clientlist, i, rcv, &readset, &writeset, buffer);
 				}
 				else if (FD_ISSET(i, &writecpy))
@@ -505,6 +505,7 @@ void Socket::readrequest(std::list<Client> *clientlist, int fd, long rcv, fd_set
 			if (fd == it->_client_socket)
 			{
 				it->_buff = buffer;
+				std::cout << "LA FIn" << buffer << "VOILA" << std::endl;
 				it->_last_msg = time(NULL);
 				it->_bytesrcv = rcv;
 				max_sock = addfdtoset(fd, writeset, max_sock);
@@ -557,7 +558,9 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			int	i = 0;
 			while (servers[i]._listening_socket != it->_serversocket)
 				i++;
+			std::cout << "before parse -----------" << it->_buff << std::endl << "-------- END OF BUFF before parse " << std::endl;
 			it->_req.parse(it->_buff.c_str(), it->_bytesrcv, servers[i].getMaxBodySize());
+			std::cout << "after PARSE -----------" << it->_req.getBody() << "-------- END OF Body after parse" << std::endl;
 			//std::cout <<  "BODY OF POST IS " << it->_buff << std::endl;
 			//std::cout << it->_req.getPath() << std::endl;
 			// it->_req.printMessage();
