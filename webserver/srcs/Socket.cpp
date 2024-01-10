@@ -305,7 +305,7 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 {
 	long rcv = 0;
 	std::string str;
-	char buffer[4096];
+	char buffer[409600];
 	fd_set readcpy;
 	fd_set writecpy;
 	fd_set readset;

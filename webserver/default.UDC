@@ -2,7 +2,7 @@ servers:
   @server[
     - listen = 80;
     - server_name = domain1.com;
-    - clientbody = 20480;
+    - clientbody = 204800;
 	- error = ./www/error/;
     - route{
 		- / (
@@ -67,7 +67,7 @@ servers:
   @server[
     - listen = 8002;
     - server_name = domain2.com;
-    - clientbody = 4096;
+    - clientbody = 40960;
     - route{
         - / (
             methods = GET;

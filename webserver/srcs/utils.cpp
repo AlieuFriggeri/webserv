@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 16:45:38 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/10 13:51:44 by vgroux           ###   ########.fr       */
+/*   Updated: 2024/01/10 14:02:01 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,41 @@ std::string	toString(int i)
 }
 
 std::string openReadFile(std::string relative_path)
+{
+	std::ifstream	file;
+	std::string		result;
+	std::ostringstream content;
+
+	file.open(relative_path.c_str());
+	if (file.is_open())
+	{
+		content << file.rdbuf();
+		result = content.str();
+
+		file.close();
+	}
+	// std::string		line;
+
+
+	// result.clear();
+	// if (relative_path.c_str()[0] == '.' && relative_path.c_str()[1] == '/')
+	// 	relative_path.erase(0, 2);
+	// file.open(relative_path);
+	// if (file.is_open())
+	// {
+	// 	while (std::getline(file, line))
+	// 	{
+	// 		result += line;
+	// 		result += "\n";
+	// 	}
+	// 	file.close();
+	// }
+	else
+		std::cerr << "Erreur lors de l'ouverture du fichier" << std::endl;
+	return result;
+}
+
+std::string openWriteFile(std::string relative_path)
 {
 	std::ifstream	file;
 	std::string		result;

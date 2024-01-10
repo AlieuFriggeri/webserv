@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HttpRequest.class.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/10 13:51:19 by vgroux           ###   ########.fr       */
+/*   Updated: 2024/01/10 15:32:56 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -792,7 +792,8 @@ void	HttpRequest::parse(const char *data, size_t len, int maxBody)
 			case BODY:
 			{
 				// std::cout << "PARSING BODY\ti= " << _body.size() << "\tchar= " << c << "\tbody_len= " << _body_len << "\tmaxBOdy= " << maxBody << std::endl;
-				std::cerr << "PARSING BODY\tbodylen= " << _body_len << "\tmax= " << maxBody << std::endl;
+				//std::cerr << "PARSING BODY\tbodylen= " << _body_len << "\tmax= " << maxBody << std::endl;
+				std::cerr << "PARSING BODY\tbodylen= " << _body_len << "\tlen= " << len << std::endl;
 				if (_body.size() > (unsigned long)maxBody)
 				{
 					_err_code = 413;
@@ -818,7 +819,9 @@ void	HttpRequest::parse(const char *data, size_t len, int maxBody)
 	if (_state == PARSING_DONE)
 	{
 		if (_multiform)
-			_handleBoundary();
+			{//_handleBoundary();
+				std::cout << "HAHAHAHAHAHAHAHAH BOUNDARY LOLooooowswww" << std::endl;
+			}
 		else
 			_body_str.append((char *)_body.data(), _body.size());
 	}
