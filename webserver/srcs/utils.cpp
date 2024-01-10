@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 16:45:38 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/09 17:26:25 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/10 13:51:44 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ std::string openReadFile(std::string relative_path)
 	std::string		result;
 	std::ostringstream content;
 
-	file.open(relative_path);
+	file.open(relative_path.c_str());
 	if (file.is_open())
 	{
 		content << file.rdbuf();
