@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PostRequestHandler.class.hpp                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:14:16 by vgroux            #+#    #+#             */
-/*   Updated: 2023/12/01 15:09:37 by vgroux           ###   ########.fr       */
+/*   Updated: 2024/01/11 15:21:01 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

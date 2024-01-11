@@ -6,11 +6,12 @@
 /*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:10:16 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/11 14:36:12 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/11 15:26:55 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PostRequestHandler.class.hpp"
+#include <stdlib.h>
 
 PostRequestHandler::PostRequestHandler(void)
 {
@@ -97,19 +98,27 @@ HttpRespond	PostRequestHandler::handleRequest(HttpRequest *req, Client *clt, Soc
 				end = filecontent.find_first_of('"', start);
 				filename = filecontent.substr(start, end - start);
 				std::string tmpname = filename;
-				for (int i = 0; i < 50; i++)
+				for (int i = 0; i < 100; i++)
 				{
-					int nom = i + 48;
 					int fd = open(tmpname.c_str(), O_RDONLY);
 					if (fd != -1)
 					{
+						std::stringstream out;
+						out << i;
+						std::string prefix = out.str();
+						prefix = "(" + prefix + ") ";
+
 						close(fd);
-						tmpname = (char)nom + tmpname;
+						if (i > 10)
+							tmpname.erase(0, 5);
+						else if (i > 0)
+							tmpname.erase(0, 4);
+						tmpname = prefix + tmpname;
 					}
 					else
 					{
 						filename = tmpname;
-						i = 50;
+						break;
 					}
 				}
 				
