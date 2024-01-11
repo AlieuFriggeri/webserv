@@ -123,7 +123,7 @@ void Socket::fillservInfo(struct addrinfo **serverInfo, std::map<std::string, st
 
 	if (int retval = getaddrinfo(NULL, config["port"].c_str(), &hints, serverInfo) != 0)
 	{
-		std::cout << "GetAddrInfo error: " << gai_strerror(retval) << std::endl;
+		std::cerr << "GetAddrInfo error: " << gai_strerror(retval) << std::endl;
 		exit(123);
 	}
 	return;
@@ -213,7 +213,7 @@ void Socket::setup(Socket *servers)
 
 		if (setsockopt(servers[i]._listening_socket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) == -1)
 		{
-			std::cout << "setsockopt error cheh (" << strerror(errno) << ")" << std::endl;
+			std::cerr << "setsockopt error cheh (" << strerror(errno) << ")" << std::endl;
 			exit(-9);
 		}
 
@@ -561,14 +561,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			//std::cout << "on trouve facilement 2-----------" << it->_buff.size() << std::endl << "-------- END OF BUFF before parse " << std::endl;
 			//std::cout << "on trouve facilement -----------" << it->_buff << std::endl << "-------- END OF BUFF before parse " << std::endl;
 			it->_req.parse(it->_buff.c_str(), it->_bytesrcv, servers[i].getMaxBodySize());
-			// this->_map_clients[i].set_request(std::string(buffer, size_read));
-			// this->_map_clients[i].set_request(std::string(buffer, size_read));
-			// this->_map_clients[i].set_request(std::string(buffer, size_read));
-			// this->_map_clients[i].set_request(std::string(buffer, size_read));
-			// this->_map_clients[i].set_request(std::string(buffer, size_read));
-			// this->_map_clients[i].set_request(std::string(buffer, size_read));
-			// this->_map_clients[i].set_request(std::string(buffer, size_read));
-			std::cout << "after PARSE -----------" << it->_req.getBody() << "-------- END OF Body after parse" << std::endl;
+			//std::cout << "after PARSE -----------" << it->_req.getBody() << "-------- END OF Body after parse" << std::endl;
 			//std::cout <<  "BODY OF POST IS " << it->_buff << std::endl;
 			//std::cout << it->_req.getPath() << std::endl;
 			// it->_req.printMessage();
@@ -596,7 +589,6 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				}
 				case POST:
 				{
-					std::cout << "METHODE POST" << std::endl;
 					PostRequestHandler	methodHandler;
 					if (rt._methods.find("POST") == std::string::npos)
 						it->_req.setErrorCode(405);
@@ -629,7 +621,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				}
 			else
 				send(it->_client_socket, it->_resp.getResp().c_str(), it->_resp.getResp().length() , 0);
-			std::cout << "Respond sended to Client " << it->_clientnumber << " on socket : " << it->_client_socket << std::endl;
+			std::cout << "Respond sended to Client " << it->_clientnumber << " on socket : " << it->_client_socket << " on port: "<< it->_port << std::endl;
 			// exit(1);
 			if (it->_req.keepAlive() == true)
 			{

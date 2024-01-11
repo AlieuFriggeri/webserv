@@ -28,7 +28,7 @@ servers:
         )
         - /lol/mdr/ (
             methods = GET POST;
-            root = /;
+            root = /lol/mdr/;
             listing = false;
             index = ./lol.html;
             cgi = .cpp | /cgi/bin;
