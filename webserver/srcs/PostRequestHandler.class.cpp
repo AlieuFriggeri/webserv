@@ -6,7 +6,7 @@
 /*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:10:16 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/10 15:55:18 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/11 12:43:29 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,17 +88,31 @@ HttpRespond	PostRequestHandler::handleRequest(HttpRequest *req, Client *clt, Soc
 		{
 			if (req->isMultiform())
 			{
-				//size_t start, end;
+				size_t start, end;
 				std::string filecontent = req->getBody();
 				std::string filename;
-				
 
+				start = filecontent.find("filename=");
+				start += 10;
+				end = filecontent.find_first_of('"', start);
+				filename = filecontent.substr(start, end - start);
+				std::cout << filename << std::endl;
+				filecontent.erase(0, end - start + 1);
+				filecontent.erase(0, filecontent.find('\n') + 1);
+				filecontent.erase(0, filecontent.find('\n') + 1);
+				filecontent.erase(0, filecontent.find('\n') + 1);
+				filecontent.erase(0, filecontent.find('\n') + 1);
+				filecontent.erase(filecontent.find(req->getBoundary()) - 2, req->getBoundary().length() + 4);
+				std::cout << "content is =====" << filecontent << "====END"<< std::endl;
+				std::cout << "boundary is =====" << req->getBoundary() << std::endl;
+				std::cout << filecontent.size() << std::endl;
+				std::ofstream result(filename);
+				result << filecontent;
+				result.close();
 				std::cout << "------------------START HANDLING POST------------------" << std::endl;
-				std::cout << req->getBody() << std::endl;
-				std::cout << "-------------------------------------------------------" << std::endl;
-				std::cout << req->getBody().size() << std::endl; 
+				std::cout << req->getPath() << std::endl;
 				std::cout << "------------------STOP HANDLING POST------------------" << std::endl;
-				exit(1);
+				//exit(1);
 				
 			}
 			else

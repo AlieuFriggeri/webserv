@@ -6,7 +6,7 @@
 /*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/10 16:08:27 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/11 10:56:23 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -791,7 +791,7 @@ void	HttpRequest::parse(const char *data, size_t len, int maxBody)
 			}
 			case BODY:
 			{
-				std::cout << "PARSING BODY\ti= " << _body.size() << "\tchar= " << c << "\tbody_len= " << _body_len << "\tmaxBOdy= " << maxBody << std::endl;
+				//std::cout << "PARSING BODY\ti= " << _body.size() << "\tchar= " << c << "\tbody_len= " << _body_len << "\tmaxBOdy= " << maxBody << std::endl;
 				//std::cerr << "PARSING BODY\tbodylen= " << _body_len << "\tmax= " << maxBody << std::endl;
 				// std::cerr << "PARSING BODY\tbodylen= " << _body_len << "\tlen= " << len << std::endl;
 				if (_body.size() > (unsigned long)maxBody)
