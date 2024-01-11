@@ -563,7 +563,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			it->_req.parse(it->_buff.c_str(), it->_bytesrcv, servers[i].getMaxBodySize());
 			//std::cout << "after PARSE -----------" << it->_req.getBody() << "-------- END OF Body after parse" << std::endl;
 			//std::cout <<  "BODY OF POST IS " << it->_buff << std::endl;
-			//std::cout << it->_req.getPath() << std::endl;
+			std::cout << " L'HOMME METHODE " << it->_req.getMethod() << std::endl;
 			// it->_req.printMessage();
 			Route	rt;
 			rt = checkroute(&*it, servers);

@@ -6,7 +6,7 @@
 /*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:10:16 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/11 13:03:11 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/11 14:36:12 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,25 @@ HttpRespond	PostRequestHandler::handleRequest(HttpRequest *req, Client *clt, Soc
 				start += 10;
 				end = filecontent.find_first_of('"', start);
 				filename = filecontent.substr(start, end - start);
-		//		std::cout << filename << std::endl;
+				std::string tmpname = filename;
+				for (int i = 0; i < 50; i++)
+				{
+					int nom = i + 48;
+					int fd = open(tmpname.c_str(), O_RDONLY);
+					if (fd != -1)
+					{
+						close(fd);
+						tmpname = (char)nom + tmpname;
+					}
+					else
+					{
+						filename = tmpname;
+						i = 50;
+					}
+				}
+				
+				std::cout << "name is << "<<  filename << std::endl;
+				//exit(1);
 				filecontent.erase(0, end - start + 1);
 				filecontent.erase(0, filecontent.find('\n') + 1);
 				filecontent.erase(0, filecontent.find('\n') + 1);

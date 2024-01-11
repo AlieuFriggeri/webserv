@@ -6,7 +6,7 @@
 /*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 16:45:38 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/10 14:02:01 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/11 14:02:22 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,7 +213,7 @@ std::string	openReadCloseDir(std::string path, std::string uri)
 			files.push_back(ent->d_name);
 		closedir(dir);
 
-		// Supprimme le ./www/ au debut des url afin que les links fonctionnent.
+		// Supprime le ./www/ au debut des url afin que les links fonctionnent.
 		if (uri.find("./www/") != std::string::npos)
 			uri.erase(uri.find("./www/"), uri.find("./www/") + 5);
 		html = "<html><head><title>Index of " + path + "</title></head><body><h1>Index of " + uri + "</h1><hr>\n";
