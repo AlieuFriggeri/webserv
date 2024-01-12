@@ -72,9 +72,11 @@ class Socket{
 	static void fillservInfo(struct addrinfo **serverInfo, std::map<std::string, std::string> config);
 	static int bindSocket(struct addrinfo *serverInfo);
 	static int getListenSock(std::map<std::string, std::string> config);
+	std::string getDownload(void);
+	void setDownload(std::string str);
 
-		std::string _error;
-		std::map<std::string, std::string> _config;
+	std::string _error;
+	std::map<std::string, std::string> _config;
 
 	private:
 		sockaddr_in _server;
@@ -86,6 +88,7 @@ class Socket{
 		std::string _root;
 		std::map<std::string, Route> _route;
 		int _totalserv;
+		std::string _download;
 
 
 };

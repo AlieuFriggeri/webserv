@@ -101,6 +101,7 @@ void ServerConfig::configservers(std::vector<std::map<std::string, std::string> 
 		serverarray[i].setPort(atoi(maptmp["port"].c_str()));
 		serverarray[i].setMaxBodySize(atoi(maptmp["clientbody"].c_str()));
 		serverarray[i].setServerName(removespace(maptmp["server_name"]));
+		serverarray[i].setDownload(removespace(maptmp["download"])) ;
 		serverarray[i]._error = removespace(maptmp["error"]);
 		serverarray[i]._config = maptmp;
 		i++;
@@ -259,6 +260,22 @@ std::vector<std::map<std::string, std::string> > ServerConfig::setupmap(std::vec
 		else
 		{
 			maptmp["error"] = "./errfile/";
+		}
+
+		if (it->find("- download =") != std::string::npos)
+		{	
+			pos = it->find("- download =") + 12; 
+			std::string dldir = it->substr(pos, it->find(";", pos) - pos);
+			if (opendir(removespace(dldir).c_str()) == NULL)
+			{
+				std::cerr << "Directory " << dldir << " does not exist, please create it or change the download folder in the config" << std::endl;
+				exit(1);
+			}
+			maptmp["download"] = dldir;
+		}
+		else
+		{
+			maptmp["download"] = "upload";
 		}
 		//std::cout << "error = \'" << maptmp["error"] << "\'" << std::endl;
 		res.push_back(maptmp);

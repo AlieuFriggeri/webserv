@@ -4,6 +4,7 @@ servers:
     - server_name = domain1.com;
     - clientbody = 204800;
 	- error = ./www/error/;
+    - download = upload2;
     - route{
 		- / (
             methods = GET POST;
@@ -67,7 +68,7 @@ servers:
   @server[
     - listen = 8002;
     - server_name = domain2.com;
-    - clientbody = 40960;
+    - clientbody = 4096000;
     - route{
         - / (
             methods = GET POST;

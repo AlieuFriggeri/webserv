@@ -101,6 +101,15 @@ void Socket::setTotalServ(int total)
 	this->_totalserv = total;
 }
 
+std::string Socket::getDownload(void)
+{
+	return this->_download;
+}
+
+void Socket::setDownload(std::string str)
+{
+	this->_download = str;
+}
 
 Socket::Socket()
 {
