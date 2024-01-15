@@ -42,10 +42,9 @@
 			array_pop($lines); // remove the last line
 			file_put_contents($file, $lines);
 
-			// Redirect back to the script
-			echo '<script type="text/javascript">
-			window.location.reload(true);
-	   </script>';
+			// Redirect back to the script + ratio
+			echo '<html><body><h1>Success!</h1><p>Last User deleted</p>';
+			echo '<button onclick="window.location.href=\'index.html\';">Go Back</button>';
 			exit();
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:06:16 by vgroux            #+#    #+#             */
-/*   Updated: 2023/11/21 13:48:45 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/15 13:59:02 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,33 @@ DeleteRequestHandler::~DeleteRequestHandler(void)
 HttpRespond	DeleteRequestHandler::handleRequest(HttpRequest *req, Client *clt, Socket srv)
 {
 	HttpRespond	resp;
+	int ret = 0;
 	(void)clt;
 	(void)srv;
 	if (req->isParsingDone() == false)
 		std::cerr << "Le parsing de la requete a rencontre une erreur" << std::endl;
-	
+
+	if (req->getPath().find(".php") == req->getPath().size() - 4)
+	{
+		std::string cgiresp;
+		std::cout << "entering cgi" << std::endl;
+		cgiresp = CgiExecutor::execute(clt, srv, "/usr/bin/php");
+		std::cout << "CGI resp is : " << std::endl << cgiresp << std::endl;
+		resp.setBody(cgiresp);
+		resp.setStatus(200);
+	}
+	else
+	{
+		std::cout << "L'HOMME METHODE DELETE" << std::endl;
+
+		ret = std::remove(req->getPath().c_str());
+
+		if (ret == 0)
+			std::cout << "L'HOMME METHODE A BIEN DELETE " << ret <<  std::endl;
+		else
+			std::cout << "L'HOMME METHODE N'AS PAS BIEN DELETE " << ret <<std::endl;
+		resp.setStatus(204);
+	}
 	resp.build(*req);
 	return (resp);
 }

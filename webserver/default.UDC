@@ -7,9 +7,9 @@ servers:
     - download = upload2;
     - route{
 		- / (
-            methods = GET POST;
+            methods = GET POST DELETE;
             root = /;
-            listing = true;
+            listing = false;
             index = ./index.html;
             cgi = .cpp | /cgi/bin;
         )

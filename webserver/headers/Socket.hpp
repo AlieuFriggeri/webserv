@@ -21,6 +21,7 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <fstream>
+#include <cstdio>
 #include "Client.hpp"
 #include "ServerConfig.hpp"
 #include "Route.hpp"

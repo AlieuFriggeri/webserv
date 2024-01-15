@@ -398,7 +398,7 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 							// 	max_sock = addfdtoset(i, &readset, max_sock);
 							// 	//std::cout << "ON CLOSE POUR PAS INFINIT LOOP\t";closeconnection(clientlist, i, &readset, &writeset);
 							// }
-							//it->_req.resetRequest();
+							// it->_req.resetRequest();
 							break;
 						}
 					}
@@ -571,8 +571,8 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			//std::cout << "on trouve facilement -----------" << it->_buff << std::endl << "-------- END OF BUFF before parse " << std::endl;
 			it->_req.parse(it->_buff.c_str(), it->_bytesrcv, servers[i].getMaxBodySize());
 			//std::cout << "after PARSE -----------" << it->_req.getBody() << "-------- END OF Body after parse" << std::endl;
-			//std::cout <<  "BODY OF POST IS " << it->_buff << std::endl;
-			std::cout << " L'HOMME METHODE " << it->_req.getMethod() << std::endl;
+			std::cout <<  "BODY OF DELETE IS ====" << it->_buff << std::endl;
+			//std::cout << " L'HOMME METHODE " << it->_req.getMethod() << std::endl;
 			// it->_req.printMessage();
 			Route	rt;
 			rt = checkroute(&*it, servers);
@@ -610,6 +610,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 					if (rt._methods.find("DELETE") == std::string::npos)
 						it->_req.setErrorCode(405);
 					it->_resp = methodHandler.handleRequest(&(it->_req), &*it, servers[i]);
+					std::cout << "CODE IS == " << it->_resp.getStatus() << std::endl;
 					break;
 				}
 				case NONE:
