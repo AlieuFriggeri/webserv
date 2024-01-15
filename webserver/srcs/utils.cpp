@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 16:45:38 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/11 14:02:22 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/15 17:30:57 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,7 +202,7 @@ std::string openWriteFile(std::string relative_path)
 
 std::string	openReadCloseDir(std::string path, std::string uri)
 {
-	std::vector<std::string>	files;
+	std::vector<std::pair<std::string, unsigned char> >	files;
 	std::string					html;
 	struct dirent	*ent;
 
@@ -210,32 +210,46 @@ std::string	openReadCloseDir(std::string path, std::string uri)
 	if (dir != NULL)
 	{
 		while ((ent = readdir(dir)) != NULL)
-			files.push_back(ent->d_name);
+			files.push_back(std::make_pair(ent->d_name, ent->d_type));
 		closedir(dir);
 
 		// Supprime le ./www/ au debut des url afin que les links fonctionnent.
 		if (uri.find("./www/") != std::string::npos)
 			uri.erase(uri.find("./www/"), uri.find("./www/") + 5);
 		html = "<html><head><title>Index of " + path + "</title></head><body><h1>Index of " + uri + "</h1><hr>\n";
-		for (std::vector<std::string>::iterator it = files.begin(); it < files.end(); it++)
+		for (std::vector<std::pair<std::string, unsigned char> >::iterator it = files.begin(); it < files.end(); it++)
 		{
-			struct stat s;
+			// struct stat s;
 
-			if (stat(it->c_str(), &s))
-			{
-				if (s.st_mode & S_IFDIR)
-				{	// is a directory
-					std::cout << *it << " is a directory" << std::endl;
-				}
-				else if (s.st_mode & S_IFREG)
-				{	// is a file
-					std::cout << *it << " is a file" << std::endl;
-				}
-				if (uri.rfind('/') == uri.length() - 1)
-					html += "<a href=\"" + uri + *it + "\">" + *it + "</a><br>\n";
-				else
-					html += "<a href=\"" + uri + "/" + *it + "\">" + *it + "</a><br>\n";
+			// if (stat(it->c_str(), &s))
+			// {
+			// 	if (s.st_mode & S_IFDIR)
+			// 	{	// is a directory
+			// 		std::cout << *it << " is a directory" << std::endl;
+			// 	}
+			// 	else if (s.st_mode & S_IFREG)
+			// 	{	// is a file
+			// 		std::cout << *it << " is a file" << std::endl;
+			// 	}
+			// 	if (uri.rfind('/') == uri.length() - 1)
+			// 		html += "<a href=\"" + uri + *it + "\">" + *it + "</a><br>\n";
+			// 	else
+			// 		html += "<a href=\"" + uri + "/" + *it + "\">" + *it + "</a><br>\n";
+			// }
+
+			if (it->second == DT_DIR)
+			{	// is a directory
+				std::cout << it->first << " is a directory" << std::endl;
+				it->first.append("/");
 			}
+			else
+			{	// is a file
+				std::cout << it->first << " is a file" << std::endl;
+			}
+			if (uri.rfind('/') == uri.length() - 1)
+				html += "<a href=\"" + uri + it->first + "\">" + it->first + "</a><br>\n";
+			else
+				html += "<a href=\"" + uri + "/" + it->first + "\">" + it->first + "</a><br>\n";
 		}
 		html += "</hr>\n</body>\r</html>";
 	}

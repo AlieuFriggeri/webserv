@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HttpRespond.class.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:11:18 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/15 15:53:19 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/15 15:58:33 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ bool HttpRespond::build(HttpRequest req)
 		setHeader("Content-Type", "image/png");
 	else if (path.find(".jpg") != std::string::npos || path.find(".jpeg") != std::string::npos)
 		setHeader("Content-Type", "image/jpeg");
-	else if (path.find(".ico") != std::string::npos || path.find(".jpeg") != std::string::npos)
+	else if (path.find(".ico") != std::string::npos)
 		setHeader("Content-Type", "image/x-icon");
 	else if (_body.length() != 0)
 		setHeader("Content-Type", "text/html; charset=UTF-8");
