@@ -6,7 +6,7 @@
 /*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:10:16 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/15 15:28:05 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/15 16:04:45 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ HttpRespond	PostRequestHandler::handleRequest(HttpRequest *req, Client *clt, Soc
 				req->setErrorCode(200);
 				// std::cout << req->getPath() << std::endl;
 				// std::cout << "------------------STOP HANDLING POST------------------" << std::endl;
-				//resp.setBody(openReadFile(req->getPath()));
+				resp.setBody(openReadFile(req->getPath()));
 				//exit(1);
 				
 			}
