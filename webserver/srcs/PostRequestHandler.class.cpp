@@ -6,7 +6,7 @@
 /*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:10:16 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/12 11:14:54 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/15 15:28:05 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,31 +122,23 @@ HttpRespond	PostRequestHandler::handleRequest(HttpRequest *req, Client *clt, Soc
 					}
 				}
 				
-				std::cout << "name is << "<<  filename << std::endl;
 				//exit(1);
 				filecontent.erase(0, end - start + 1);
-				std::cout << "------------------START HANDLING POST------------------" << std::endl;
 				filecontent.erase(0, filecontent.find('\n') + 1);
-				std::cout << "------------------START HANDLING POST------------------" << std::endl;
 				filecontent.erase(0, filecontent.find('\n') + 1);
-				std::cout << "------------------START HANDLING POST------------------" << std::endl;
 				filecontent.erase(0, filecontent.find('\n') + 1);
-				std::cout << "------------------START HANDLING POST------------------" << std::endl;
 				filecontent.erase(0, filecontent.find('\n') + 1);
-				std::cout << "------------------START HANDLING POST------------------" << std::endl;
 				//filecontent.erase(filecontent.find(req->getBoundary()) - 2, req->getBoundary().length() + 4);
-				std::cout << "------------------START HANDLING POST------------------" << std::endl;
-				 std::cout << "content is =====" << filecontent << "====END"<< std::endl;
 				// std::cout << "boundary is =====" << req->getBoundary() << std::endl;
 				// std::cout << filecontent.size() << std::endl;
 				std::ofstream result(filename);
 				result << filecontent;
 				result.close();
 				chdir("../");
-				std::cout << "------------------START HANDLING POST------------------" << std::endl;
+				req->setErrorCode(200);
 				// std::cout << req->getPath() << std::endl;
 				// std::cout << "------------------STOP HANDLING POST------------------" << std::endl;
-				resp.setBody(openReadFile(req->getPath()));
+				//resp.setBody(openReadFile(req->getPath()));
 				//exit(1);
 				
 			}

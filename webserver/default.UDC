@@ -9,7 +9,7 @@ servers:
 		- / (
             methods = GET POST DELETE;
             root = /;
-            listing = false;
+            listing = true;
             index = ./index.html;
             cgi = .cpp | /cgi/bin;
         )
