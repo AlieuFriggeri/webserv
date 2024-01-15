@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 18:07:46 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/12 11:19:26 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/15 15:46:59 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,19 @@
 int main( int ac,char **av)
 {
 	ServerConfig configuration;
-	if (ac != 2)
+	Socket *serverarray = NULL;
+
+	if (ac == 1)
+		serverarray = ServerConfig::parsefile("default.UDC");
+	else if (ac == 2)
+		serverarray = ServerConfig::parsefile(av[1]);
+	else
 	{
 		std::cerr << "Usage: ./webserv CONFIG_FILE.UDC" << std::endl;
 		exit(1);
 	}
 	std::list<Client> clientlist;
 	clientlist.push_back(Client());
-	Socket *serverarray = NULL;
 	serverarray = ServerConfig::parsefile(av[1]);
 	//Socket::setup(serverarray);
 	for (int i = 0; i < serverarray[0].getTotalServ(); i++)
