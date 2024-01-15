@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 18:07:46 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/15 15:46:59 by vgroux           ###   ########.fr       */
+/*   Updated: 2024/01/15 16:00:06 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int main( int ac,char **av)
 	}
 	std::list<Client> clientlist;
 	clientlist.push_back(Client());
-	serverarray = ServerConfig::parsefile(av[1]);
 	//Socket::setup(serverarray);
 	for (int i = 0; i < serverarray[0].getTotalServ(); i++)
 	{
