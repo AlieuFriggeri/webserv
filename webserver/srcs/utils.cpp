@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 16:45:38 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/15 17:36:07 by vgroux           ###   ########.fr       */
+/*   Updated: 2024/01/16 15:27:13 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,9 @@ std::string	getStatusStr(int statusCode)
 		case 412:
 			return "Precondition Failed";
 		case 413:
-			return "Payload Too Large";
+			return "Request Too Large";
 		case 414:
-			return "URI Too Long";
+			return "Request URI Too Long";
 		case 415:
 			return "Unsupported Media Type";
 		case 416:
