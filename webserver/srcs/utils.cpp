@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 16:45:38 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/16 15:27:13 by vgroux           ###   ########.fr       */
+/*   Updated: 2024/01/16 17:19:17 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,22 +144,6 @@ std::string openReadFile(std::string relative_path)
 
 		file.close();
 	}
-	// std::string		line;
-
-
-	// result.clear();
-	// if (relative_path.c_str()[0] == '.' && relative_path.c_str()[1] == '/')
-	// 	relative_path.erase(0, 2);
-	// file.open(relative_path);
-	// if (file.is_open())
-	// {
-	// 	while (std::getline(file, line))
-	// 	{
-	// 		result += line;
-	// 		result += "\n";
-	// 	}
-	// 	file.close();
-	// }
 	else
 		std::cerr << "Erreur lors de l'ouverture du fichier" << std::endl;
 	return result;
@@ -179,22 +163,6 @@ std::string openWriteFile(std::string relative_path)
 
 		file.close();
 	}
-	// std::string		line;
-
-
-	// result.clear();
-	// if (relative_path.c_str()[0] == '.' && relative_path.c_str()[1] == '/')
-	// 	relative_path.erase(0, 2);
-	// file.open(relative_path);
-	// if (file.is_open())
-	// {
-	// 	while (std::getline(file, line))
-	// 	{
-	// 		result += line;
-	// 		result += "\n";
-	// 	}
-	// 	file.close();
-	// }
 	else
 		std::cerr << "Erreur lors de l'ouverture du fichier" << std::endl;
 	return result;
@@ -221,15 +189,8 @@ std::string	openReadCloseDir(std::string path, std::string uri)
 			uri.append("/");
 		for (std::vector<std::pair<std::string, unsigned char> >::iterator it = files.begin(); it < files.end(); it++)
 		{
-			if (it->second == DT_DIR)
-			{	// is a directory
-				std::cout << it->first << " is a directory" << std::endl;
+			if (it->second == DT_DIR) // is a directory
 				it->first.append("/");
-			}
-			else
-			{	// is a file
-				std::cout << it->first << " is a file" << std::endl;
-			}
 			html += "<a href=\"" + uri + it->first + "\">" + it->first + "</a><br>\n";
 		}
 		html += "</hr>\n</body>\r</html>";

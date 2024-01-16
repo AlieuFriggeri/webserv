@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PostRequestHandler.class.cpp                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:10:16 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/16 14:23:01 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/16 17:09:31 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,12 @@ PostRequestHandler::PostRequestHandler(const PostRequestHandler &src): RequestHa
 
 PostRequestHandler&	PostRequestHandler::operator=(const PostRequestHandler &src)
 {
-	// std::cout << "Assignement PostRequestHandler constructor called" << std::endl;
-	// _conf = src._conf;
 	(void)src;
 	return (*this);
 }
 
 PostRequestHandler::~PostRequestHandler(void)
 {
-	// std::cout << "PostRequestHandler destructor called" << std::endl;
 }
 
 void	PostRequestHandler::handlePostFile(HttpRequest *req)
@@ -63,89 +60,63 @@ HttpRespond	PostRequestHandler::handleRequest(HttpRequest *req, Client *clt, Soc
 		std::cerr << "Le fichier/dossier n'existe pas ou les droits ne sont pas corrects" << std::endl;
 		req->setErrorCode(404);
 	}
-	std::cout << "Status code = " << req->getErrorCode() << std::endl;
 	if (req->getErrorCode() == 0)
 	{
-		/**
-		 * si upload fichier ->
-		 * 				read requete
-		 * 				open fichier
-		 * 				write le content read depuis la requete du Client
-		 * si upload un form ->
-		 * 				envoyer le contenu de la requet au cgi
-		 * 				ajouter une ligne dans user data.txt
-		 * 				actualiser la page
-		*/  
 		if (req->getPath().find(".php") == req->getPath().size() - 4)
 		{
 			std::string cgiresp;
-			std::cout << "entering cgi" << std::endl;
 			cgiresp = CgiExecutor::execute(clt, srv, "/usr/bin/php");
-			std::cout << "CGI resp is : " << std::endl << cgiresp << std::endl;
 			resp.setBody(cgiresp);
 			resp.setStatus(200);
 		}
 		else 
 		{
-			if (req->isMultiform())
+			size_t start, end;
+			std::string filecontent = req->getBody();
+			std::string filename;
+			chdir(srv.getDownload().c_str());
+			start = filecontent.find("filename=");
+			start += 10;
+			end = filecontent.find_first_of('"', start);
+			filename = filecontent.substr(start, end - start);
+			std::string tmpname = filename;
+			for (int i = 0; i < 100; i++)
 			{
-				size_t start, end;
-				std::string filecontent = req->getBody();
-				std::string filename;
-				chdir(srv.getDownload().c_str());
-				start = filecontent.find("filename=");
-				start += 10;
-				end = filecontent.find_first_of('"', start);
-				filename = filecontent.substr(start, end - start);
-				std::string tmpname = filename;
-				for (int i = 0; i < 100; i++)
+				int fd = open(tmpname.c_str(), O_RDONLY);
+				if (fd != -1)
 				{
-					int fd = open(tmpname.c_str(), O_RDONLY);
-					if (fd != -1)
-					{
-						std::stringstream out;
-						out << i;
-						std::string prefix = out.str();
-						prefix = "(" + prefix + ") ";
+					std::stringstream out;
+					out << i;
+					std::string prefix = out.str();
+					prefix = "(" + prefix + ") ";
 
-						close(fd);
-						if (i > 10)
-							tmpname.erase(0, 5);
-						else if (i > 0)
-							tmpname.erase(0, 4);
-						tmpname = prefix + tmpname;
-					}
-					else
-					{
-						filename = tmpname;
-						break;
-					}
+					close(fd);
+					if (i > 10)
+						tmpname.erase(0, 5);
+					else if (i > 0)
+						tmpname.erase(0, 4);
+					tmpname = prefix + tmpname;
 				}
-				
-				//exit(1);
-				filecontent.erase(0, end - start + 1);
-				filecontent.erase(0, filecontent.find('\n') + 1);
-				filecontent.erase(0, filecontent.find('\n') + 1);
-				filecontent.erase(0, filecontent.find('\n') + 1);
-				filecontent.erase(0, filecontent.find('\n') + 1);
-				//filecontent.erase(filecontent.find(req->getBoundary()) - 2, req->getBoundary().length() + 4);
-				// std::cout << "boundary is =====" << req->getBoundary() << std::endl;
-				// std::cout << filecontent.size() << std::endl;
-				std::ofstream result(filename);
-				result << filecontent;
-				result.close();
-				chdir("../");
-				req->setErrorCode(200);
-				// std::cout << req->getPath() << std::endl;
-				// std::cout << "------------------STOP HANDLING POST------------------" << std::endl;
-				resp.setBody(openReadFile(req->getPath()));
-				//exit(1);
-				
+				else
+				{
+					filename = tmpname;
+					break;
+				}
 			}
-			else
-			{
-				// traitement "classique"
-			}
+			
+			filecontent.erase(0, end - start + 1);
+			filecontent.erase(0, filecontent.find('\n') + 1);
+			filecontent.erase(0, filecontent.find('\n') + 1);
+			filecontent.erase(0, filecontent.find('\n') + 1);
+			filecontent.erase(0, filecontent.find('\n') + 1);
+			//filecontent.erase(filecontent.find(req->getBoundary()) - 2, req->getBoundary().length() + 4);
+			std::ofstream result(filename);
+			result << filecontent;
+			result.close();
+			chdir("../");
+			req->setErrorCode(200);
+			resp.setBody(openReadFile(req->getPath()));
+			//exit(1);
 		}	
 	}
 	else

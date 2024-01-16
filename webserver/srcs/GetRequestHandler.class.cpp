@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   GetRequestHandler.class.cpp                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:08:04 by vgroux            #+#    #+#             */
-/*   Updated: 2023/12/01 12:42:09 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/16 17:04:23 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,19 +56,16 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Sock
 		std::cerr << "Le fichier/dossier n'existe pas ou les droits ne sont pas corrects" << std::endl;
 		req->setErrorCode(404);
 	}
-	std::cout << "Status code = " << req->getErrorCode() << std::endl;
 	if (req->getErrorCode() == 0)
 	{
 		if (req->isDirectory() == false)
 		{
-			/* THIS REQUEST WILL BE HANDLE BY THE CGI 		*/
-			/*		This is because there are some queries	*/
 			if (req->getPath().find(".php") == req->getPath().size() - 4)
 			{
 				std::string cgiresp;
-				std::cout << "entering cgi" << std::endl;
+				// std::cout << "entering cgi" << std::endl;
 				cgiresp = CgiExecutor::execute(clt, srv, "/usr/bin/php");
-				std::cout << "CGI resp is : " << std::endl << cgiresp << std::endl;
+				// std::cout << "CGI resp is : " << std::endl << cgiresp << std::endl;
 				resp.setBody(cgiresp);
 				resp.setStatus(200);
 			}
@@ -80,29 +77,25 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Sock
 			else
 			{
 				std::string cgiresp;
-				std::cout << "entering cgi" << std::endl;
+				// std::cout << "entering cgi" << std::endl;
 				cgiresp = CgiExecutor::execute(clt, srv, "/usr/bin/php");
-				std::cout << "CGI resp is : " << std::endl << cgiresp << std::endl;
+				// std::cout << "CGI resp is : " << std::endl << cgiresp << std::endl;
 				resp.setBody(cgiresp);
 				resp.setStatus(200);
 			}
 		}
 		else
 		{
-			/* THIS WILL BE FOR DIRECTORY */
+			/* DIR */
 			resp.setBody(openReadCloseDir(req->getPathRelative(), req->getPath()));
 		}
 	}
 	else
 	{
-		/* GESTION ERREUR */
+		/* ERREUR */
 		resp.setStatus(req->getErrorCode());
 		resp.setBody(handleErrorPage(srv, req->getErrorCode()));
-		// std::string errFile = "./errfile/" + toString(req->getErrorCode()) + ".html";
-		// std::cout << errFile << std::endl;
-		// resp.setBody(openReadFile(errFile));
 	}
 	resp.build(*req);
-	// std::cout << resp.getResp() << std::endl;
 	return (resp);
 }

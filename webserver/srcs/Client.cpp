@@ -28,7 +28,6 @@ void Client::acceptConnection(int listeningsocket, int nbclient, fd_set *readset
 	// 	return;
 	// }
 
-
 	_client_socket = accept(listeningsocket, (sockaddr *)&_client, (socklen_t *)&_clientsize);
 
 	if (_client_socket < 0 || fcntl(_client_socket, F_SETFL, O_NONBLOCK, FD_CLOEXEC) < 0)
