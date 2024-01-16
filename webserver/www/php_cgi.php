@@ -16,7 +16,7 @@
 
 			// Write contents back to the file
 			file_put_contents($file, $current);
-			echo '<html><body><h1>Success!</h1><p>First Name: ' . $fname . ', Last Name: ' . $lname . '</p>';
+			echo '<!DOCTYPE html><link rel="stylesheet" type="text/css" href="css/pat.css"><html><body><div class="pat"><h1>Success!</h1><p>First Name: ' . $fname . ', Last Name: ' . $lname . '</p></div>';
 			echo '<button onclick="window.location.href=\'index.html\';">Go Back</button>';
 			echo '</body></html>';
 			echo '<script type="text/javascript">
@@ -30,9 +30,9 @@
 		// If the file exists, display its contents
 		if (file_exists($file)) {
 			$contents = file_get_contents($file);
-			echo "<html>\n<body>\n<h1>User Data:</h1>\n<p>";
+			echo "<!DOCTYPE html><link rel=\"stylesheet\" type=\"text/css\" href=\"css/user.css\"><html>\n<body>\n<h1>User Data:</h1>\n<p><div class=\"data\">";
 			echo nl2br($contents);
-			echo '<br><button onclick="window.location.href=\'index.html\';">Go Back</button>';
+			echo '</div><br><button onclick="window.location.href=\'index.html\';">Go Back</button><br><img class="barbie" src="images/BarbieOnWheels.png">';
 			echo "</p>\n</body>\n</html>";
 		}
 	} elseif ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
