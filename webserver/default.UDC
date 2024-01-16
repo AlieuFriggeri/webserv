@@ -2,12 +2,12 @@ servers:
   @server[
     - listen = 80;
     - server_name = domain1.com;
-    - clientbody = 204800;
+    - clientbody = 2;
 	- error = ./www/error/;
     - download = upload2;
     - route{
 		- / (
-            methods = GET POST DELETE;
+            methods = GET POST;
             root = /;
             listing = true;
             index = ./index.html;

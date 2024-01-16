@@ -624,7 +624,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
     		// Ouvrir le fichier image
 			//std::cout << " LA REPONSE de taille "<< it->_resp.getResp().length() <<"============================== "<<it->_resp.getResp() << std::endl;
 				//sendImage(&*it);
-			if (it->_req.getPath().find("png") != std::string::npos || it->_req.getPath().find("jpg") != std::string::npos || it->_req.getPath().find("jpeg") != std::string::npos)
+			if (it->_req.getPath().find("png") != std::string::npos || it->_req.getPath().find("jpg") != std::string::npos || it->_req.getPath().find("jpeg") != std::string::npos || it->_req.getPath().find("ico") != std::string::npos)
 				{
 					//std::cout << "start of resp ==== "<< it->_resp.getResp() << " ==== END OF RESP" << std::endl;
 					sendImage(&*it);
@@ -668,7 +668,7 @@ void Socket::sendImage(Client *it)
 
 	// Envoyer la réponse HTTP avec l'image
 	responseStream << "HTTP/1.1 200 OK\r\n";
-	responseStream << "Content-Type: image/png\r\n";
+	responseStream << "Content-Type: image/jpeg\r\n";
 	responseStream << "Content-Length: " << fileSize << "\r\n\r\n";
 	responseStream.write(buffer.data(), fileSize);
 	send(it->_client_socket, responseStream.str().c_str(), responseStream.str().length(), 0);
