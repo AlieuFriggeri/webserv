@@ -1,10 +1,24 @@
 
 body {
     background-image: url("../images/background.jpg");
+    max-width: 700px;
+    margin: auto;
 }
 
 .title {
     color: black;
+    border-color: black;
+    border-style: dashed;
+    background: pink;
+    text-align: center;
+}
+
+.menu {
+  border-style: dotted;
+  background: rgb(166, 100, 166);
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  color: skyblue;
+  text-align: center;
 }
 
 .image {
@@ -12,9 +26,20 @@ body {
     width: 125px;
 }
 
+.download {
+  height: 50px;
+  width: 185px;
+}
+
+.sponso img {
+  margin-top: 120px;
+  height: 15%;
+  width: 15%;
+}
+
   .login-box {
     position:fixed;
-    top: 225px;
+    top: 235px;
     width: 400px;
     padding: 15px;
     background: #f67abe;
@@ -74,7 +99,6 @@ body {
     text-decoration: none;
     overflow: hidden;
     transition: .5s;
-    margin-top: 40px;
     letter-spacing: 4px
   }
   
@@ -167,3 +191,5 @@ body {
       bottom: 100%;
     }
   }
+
+  
