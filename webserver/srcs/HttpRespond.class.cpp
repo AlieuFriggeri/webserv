@@ -67,6 +67,8 @@ bool HttpRespond::build(HttpRequest req)
 		setHeader("Content-Type", "image/jpeg");
 	else if (path.find(".ico") != std::string::npos)
 		setHeader("Content-Type", "image/x-icon");
+	else if (path.find(".css") != std::string::npos)
+		setHeader("Content-Type", "text/css");
 	else if (_body.length() != 0)
 		setHeader("Content-Type", "text/html; charset=UTF-8");
 	if (req.getErrorCode() == 0)
