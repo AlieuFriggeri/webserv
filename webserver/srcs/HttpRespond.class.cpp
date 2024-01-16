@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:11:18 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/15 15:58:33 by vgroux           ###   ########.fr       */
+/*   Updated: 2024/01/16 14:09:12 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,7 @@ bool HttpRespond::build(HttpRequest req)
 	std::string	path = req.getPath();
 	_isBuilt = false;
 	setHeader("Date", getDate());
-	//setHeader("Connection", req.getHeader("connection"));
-
+	// setHeader("Connection", req.getHeader("connection"));
 
 	if (path.find(".png") != std::string::npos)
 		setHeader("Content-Type", "image/png");
@@ -81,7 +80,17 @@ bool HttpRespond::build(HttpRequest req)
 	{
 		_status_code = req.getErrorCode();
 		if (_body.empty())
-			_body = getStatusStr(_status_code);
+		{
+			_body = "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><style>body {font-family: 'Arial', sans-serif;background-color: #f7f7f7;margin: 0;padding: 0;display: flex;align-items: center;justify-content: center;height: 100vh;}.error-container{text-align:center;padding:20px;background-color:#fff;border-radius:8px;box-shadow: 0 4px 8px rgba(0,0,0,0.1);}h1{color:#e44d26;font-size:3em;margin-bottom:10px;}p{color:#333;font-size:1.2em;margin-bottom:20px;}a{color:#0275d8;text-decoration:none;}a:hover{text-decoration:underline;}</style><title>";
+			_body += req.getErrorCode();
+			_body.append(" - ");
+			_body.append(getStatusStr(_status_code));
+			_body.append("</title></head><body><div class=\"error-container\"><h1>");
+			_body += req.getErrorCode();
+			_body.append(" - ");
+			_body.append(getStatusStr(_status_code));
+			_body.append("</h1><p>Oops! Something goes wrong.</p><p>Return to <a href=\"/\">home</a>.</p></div></body></html>");
+		}
 	}
 	_body += "\r\n";
 	_resp = generateStatusLine();

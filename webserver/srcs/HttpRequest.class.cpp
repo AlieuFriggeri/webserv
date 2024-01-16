@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HttpRequest.class.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/15 15:31:19 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/16 15:18:01 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -651,6 +651,12 @@ void	HttpRequest::parse(const char *data, size_t len, int maxBody)
 					{
 						_err_code = 400;
 						std::cerr << "Bad Request (Doesn't have the Host header)" << std::endl;
+						return ;
+					}
+					if (_method == POST && _body_len == 0 && _chunked == false)
+					{
+						_err_code = 411;
+						std::cerr << "ERROR: Lenght required" << std::endl;
 						return ;
 					}
 					if (_body_exist)
