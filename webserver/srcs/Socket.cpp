@@ -343,16 +343,13 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 		{
 			max_sock = std::max(max_sock, it->_client_socket);
 		}
-		//std::cout << "max_sock: " << max_sock << std::endl;
 		rcv = select(max_sock + 1, &readcpy, &writecpy, NULL, &timeout);
 
 		if (rcv < 0)
 		{
 			perror("select");
-			std::cout << max_sock << " | " << clientlist->size() << std::endl;
+			std::cerr << max_sock << " | " << clientlist->size() << std::endl;
 			exit(1);
-			//std::cout << "maxsock: " << max_sock << std::endl;
-			//exit(12);
 		}
 		else if (rcv == 0)
 		{
@@ -374,7 +371,6 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 				}
 				else if (FD_ISSET(i, &readcpy) && i != checklisteningsock(i, servers))
 				{
-					// std::cout << "READING FROM SOCKET" << std::endl;
 					bzero(buffer, sizeof(buffer));
 					rcv = recv(i, buffer, 409600, 0);
 					readrequest(clientlist, i, rcv, &readset, &writeset, buffer);
@@ -417,7 +413,6 @@ int Socket::rmfdfromset(int fd, fd_set *set, int max_sock)
 		max_sock--;
 	FD_CLR(fd, set);
 	return max_sock;
-	//std::cout << max_sock << " in rmfd" << std::endl;
 }
 
 int Socket::addfdtoset(int fd, fd_set *set, int max_sock)
@@ -439,17 +434,14 @@ void Socket::closeconnection(std::list<Client> *clientlist, int i, fd_set *reads
 			max_sock = rmfdfromset(i, readset, max_sock);
 			//if (FD_ISSET(i, &writeset))
 			max_sock = rmfdfromset(i, writeset, max_sock);
-			//std::cout << i << std::endl;
 			//close(it->_client_socket);
 			if(close(i) != 0)
 			{
 				perror("close");
 				exit(3);
 			}
-			// std::cout << i << std::endl;
 			close(it->_client_socket);
 			it->_client_socket = -2;
-			//std::cout << max_sock << " after closeconn" << std::endl;
 			setMaxSock(clientlist);
 			//clientlist->erase(it);
 			break;
@@ -464,7 +456,7 @@ void Socket::checktimeout(std::list<Client> *clientlist, fd_set *readset, fd_set
 	{
 			if (time(NULL) - it->_last_msg > 5 && it->_client_socket != -1)
 			{
-				std::cout << "Client number {" << it->_clientnumber << "} has timed out" << std::endl;
+				std::cerr << "Client number {" << it->_clientnumber << "} has timed out" << std::endl;
 				// sendresponse(clientlist, it->_client_socket, sockets);
 
 
@@ -513,14 +505,13 @@ void Socket::readrequest(std::list<Client> *clientlist, int fd, long rcv, fd_set
 		{
 			if (fd == it->_client_socket)
 			{
-				//std::cout << "LA FIn" << strlen(buffer) << "VOILA" << std::endl;
 				it->_buff = std::string(buffer, rcv);
 				it->_last_msg = time(NULL);
 				it->_bytesrcv = rcv;
 				max_sock = addfdtoset(fd, writeset, max_sock);
 				max_sock = rmfdfromset(fd, readset, max_sock);
 
-				std::cout << "Request received from Client " << it->_clientnumber << std::endl;
+				std::cout << "Respond received to Client " << it->_clientnumber << " on socket : " << it->_client_socket << " on port: "<< it->_port << std::endl;
 				//str = buffer;
 				break;
 			}
@@ -547,7 +538,6 @@ void Socket::setMaxSock(std::list<Client> *clientlist)
 		if (it->_client_socket > max_sock)
 			max_sock = it->_client_socket;
 	}
-	//std::cout << "max sock is: " << max_sock << std::endl;
 }
 
 void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers)
@@ -558,8 +548,6 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 	std::string line;
 	std::string cgiresp = "";
 
-	// std::cout << servers[0]._error << std::endl;
-	// std::cout << servers[1]._error << std::endl;
 	for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
 	{
 		if (it->_client_socket == fd && it->_bytesrcv > 0)
@@ -567,17 +555,11 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			int	i = 0;
 			while (servers[i]._listening_socket != it->_serversocket)
 				i++;
-			//std::cout << "on trouve facilement 2-----------" << it->_buff.size() << std::endl << "-------- END OF BUFF before parse " << std::endl;
-			//std::cout << "on trouve facilement -----------" << it->_buff << std::endl << "-------- END OF BUFF before parse " << std::endl;
 			it->_req.parse(it->_buff.c_str(), it->_bytesrcv, servers[i].getMaxBodySize());
-			//std::cout << "after PARSE -----------" << it->_req.getBody() << "-------- END OF Body after parse" << std::endl;
-			std::cout <<  "BODY OF DELETE IS ====" << it->_buff << std::endl;
-			//std::cout << " L'HOMME METHODE " << it->_req.getMethod() << std::endl;
-			// it->_req.printMessage();
 			Route	rt;
 			rt = checkroute(&*it, servers);
 			if (!it->_req.isParsingDone())
-				std::cerr<< "Bad request in sendreponse" << std::endl;
+				std::cerr << "Bad request in sendreponse" << std::endl;
 			else if (it->_req.getPath().empty())
 				it->_req.setErrorCode(400);
 			else if ((it->_req.getPathRelative()).empty())
@@ -610,7 +592,6 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 					if (rt._methods.find("DELETE") == std::string::npos)
 						it->_req.setErrorCode(405);
 					it->_resp = methodHandler.handleRequest(&(it->_req), &*it, servers[i]);
-					std::cout << "CODE IS == " << it->_resp.getStatus() << std::endl;
 					break;
 				}
 				case NONE:
@@ -620,19 +601,11 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 					break;
 				}
 			}
-			//std::cout << "Avant wrtie" << std::endl;
-    		// Ouvrir le fichier image
-			//std::cout << " LA REPONSE de taille "<< it->_resp.getResp().length() <<"============================== "<<it->_resp.getResp() << std::endl;
-				//sendImage(&*it);
 			if (it->_req.getPath().find("png") != std::string::npos || it->_req.getPath().find("jpg") != std::string::npos || it->_req.getPath().find("jpeg") != std::string::npos || it->_req.getPath().find("ico") != std::string::npos)
-				{
-					//std::cout << "start of resp ==== "<< it->_resp.getResp() << " ==== END OF RESP" << std::endl;
-					sendImage(&*it);
-				}
+				sendImage(&*it);
 			else
 				send(it->_client_socket, it->_resp.getResp().c_str(), it->_resp.getResp().length() , 0);
 			std::cout << "Respond sended to Client " << it->_clientnumber << " on socket : " << it->_client_socket << " on port: "<< it->_port << std::endl;
-			// exit(1);
 			if (it->_req.keepAlive() == true)
 			{
 				it->_req.resetRequest();
@@ -720,12 +693,8 @@ Route	Socket::checkroute(Client *client, Socket *server)
 	}
 	while(filepath.find_first_of(" ") != std::string::npos)
 		filepath.erase(filepath.find_first_of(" "), 1);
-	std::cout << "FP just before trying to opendir: \"" << filepath << "\"\tfinal_route= \"" << final_route << "\"" << std::endl;
 	if (filepath.find(final_route) != std::string::npos)
-	{
 		filepath.replace(filepath.find(final_route), final_route.length(), rt._root);
-		std::cout << "new filepath (rooted): \"" << filepath << "\" where root is :\"" << rt._root << "\"" << std::endl;
-	}
 	if ((dir = opendir(filepath.c_str())) != NULL)
 	{
 		if (rt._listing)

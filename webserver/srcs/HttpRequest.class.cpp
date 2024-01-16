@@ -6,7 +6,7 @@
 /*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/16 15:18:01 by vgroux           ###   ########.fr       */
+/*   Updated: 2024/01/16 17:06:39 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,7 +265,6 @@ void	HttpRequest::setHeader(std::string key, std::string value)
 
 void	HttpRequest::parse(const char *data, size_t len, int maxBody)
 {
-	// std::cout << data << std::endl;
 	char				c;
 	short				mi = 1;
 	int					chunk_len = 0;
@@ -279,7 +278,6 @@ void	HttpRequest::parse(const char *data, size_t len, int maxBody)
 		std::cerr << "data buff emtpy" << std::endl;
 		return ;
 	}
-	// std::cout << "[Parsing beginning] Request received: \"" << data << "\"" << std::endl;
 	for (size_t i = 0; i <= len; i++)
 	{
 		c = data[i];
@@ -797,9 +795,6 @@ void	HttpRequest::parse(const char *data, size_t len, int maxBody)
 			}
 			case BODY:
 			{
-				//std::cout << "PARSING BODY\ti= " << _body.size() << "\tchar= " << c << "\tbody_len= " << _body_len << "\tmaxBOdy= " << maxBody << std::endl;
-				//std::cerr << "PARSING BODY\tbodylen= " << _body_len << "\tmax= " << maxBody << std::endl;
-				// std::cerr << "PARSING BODY\tbodylen= " << _body_len << "\tlen= " << len << std::endl;
 				if (_body.size() > (unsigned long)maxBody)
 				{
 					_err_code = 413;
@@ -825,10 +820,9 @@ void	HttpRequest::parse(const char *data, size_t len, int maxBody)
 	if (_state == PARSING_DONE)
 	{
 		if (_multiform)
-			{//_handleBoundary();
-				std::cout << "HAHAHAHAHAHAHAHAH BOUNDARY LOLooooowswww" << std::endl;
-							_body_str.append((char *)_body.data(), _body.size());
-
+			{
+				_body_str.append((char *)_body.data(), _body.size());
+				//_handleBoundary();
 			}
 		else
 			_body_str.append((char *)_body.data(), _body.size());

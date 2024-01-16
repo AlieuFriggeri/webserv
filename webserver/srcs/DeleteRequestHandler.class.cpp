@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   DeleteRequestHandler.class.cpp                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:06:16 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/15 13:59:02 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/16 17:02:37 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,15 @@ HttpRespond	DeleteRequestHandler::handleRequest(HttpRequest *req, Client *clt, S
 	if (req->getPath().find(".php") == req->getPath().size() - 4)
 	{
 		std::string cgiresp;
-		std::cout << "entering cgi" << std::endl;
+		// std::cout << "entering cgi" << std::endl;
 		cgiresp = CgiExecutor::execute(clt, srv, "/usr/bin/php");
-		std::cout << "CGI resp is : " << std::endl << cgiresp << std::endl;
+		// std::cout << "CGI resp is : " << std::endl << cgiresp << std::endl;
 		resp.setBody(cgiresp);
 		resp.setStatus(200);
 	}
 	else
 	{
-		std::cout << "L'HOMME METHODE DELETE" << std::endl;
+		// std::cout << "L'HOMME METHODE DELETE" << std::endl;
 
 		ret = std::remove(req->getPath().c_str());
 

@@ -114,13 +114,11 @@ CgiExecutor::execute(Client *client, Socket server, std::string cgi_path)
 	strcpy(argv[0], cgi_path.c_str());
 	argv[0][cgi_path.size()] = '\0';
 	strcpy(argv[1], request_path.c_str());
-	std::cout << argv[1] << std::endl;
 	argv[1][request_path.size()] = '\0';
 	if (access(argv[1], F_OK) == -1)
 		throw std::runtime_error("file not found");
 	if (access(argv[0], X_OK) == -1)
 		throw std::runtime_error("file not executable");
-	std::cout << "CGI INPUT === " << client->_req.getBody() << std::endl;
 	/// Make pipes
 	int fd_std[2];
 	if (pipe(fd_std))
@@ -187,6 +185,5 @@ CgiExecutor::execute(Client *client, Socket server, std::string cgi_path)
 	/// Read from stdout
     std::string result = readAll(fd_std[STDIN_FILENO], NULL);
 	close(fd_std[STDIN_FILENO]);
-	std::cout << "Out of CGI" << std::endl;
 	return result;
 }

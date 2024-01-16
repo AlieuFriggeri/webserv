@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   RequestHandler.class.cpp                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:02:28 by vgroux            #+#    #+#             */
-/*   Updated: 2023/12/01 12:43:00 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/16 17:09:43 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,6 @@ RequestHandler::RequestHandler(void)
 {
 	// std::cout << "RequestHandler default constructor called" << std::endl;
 }
-
-// RequestHandler::RequestHandler(CONFIG SERVER)
-// {
-// 	// std::cout << "RequestHandler default constructor called" << std::endl;
-// 	// _conf = CONFIG SERVER;
-// }
 
 RequestHandler::RequestHandler(const RequestHandler& src)
 {
