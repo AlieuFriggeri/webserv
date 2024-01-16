@@ -1,7 +1,7 @@
 
 body {
     background-image: url("../images/background.jpg");
-    max-width: 700px;
+    max-width: 1000px;
     margin: auto;
 }
 
@@ -32,9 +32,9 @@ body {
 }
 
 .sponso img {
-  margin-top: 120px;
-  height: 15%;
-  width: 15%;
+  margin-top: 30px;
+  height: 10%;
+  width: 10%;
 }
 
   .login-box {
