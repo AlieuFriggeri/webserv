@@ -325,7 +325,6 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 
 	FD_ZERO(&readcpy);
 	FD_ZERO(&writecpy);
-
 	while(1)
 	{
 		clientlist->remove_if(clienterase);

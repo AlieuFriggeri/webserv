@@ -48,7 +48,7 @@ Socket *ServerConfig::parsefile(std::string filename)
 		content += '\n';
 	}
 	file.close();
-
+	
 	if (filename.find(".UDC") != filename.size() - 4)
 	{
 		std::cerr << "Bad file extension" << std::endl;
@@ -65,7 +65,7 @@ Socket *ServerConfig::parsefile(std::string filename)
 	configs = splitserv(content);
 	int nbserv = configs.size();
 	routes = setuproutes(configs);
-
+	//leaks here
 	res = setupmap(configs);
 	Socket *serverarray = new Socket[nbserv];
 	configservers(res, routes, serverarray);
@@ -164,6 +164,7 @@ std::vector<std::map<std::string, std::string> > ServerConfig::setupmap(std::vec
 	std::string tmp;
 	size_t pos;
 	std::string i = "1";
+	
 	for (std::vector<std::string>::iterator it = configs.begin(); it != configs.end(); it++)
 	{
 		pos = it->find("- server_name =");
@@ -213,6 +214,7 @@ std::vector<std::map<std::string, std::string> > ServerConfig::setupmap(std::vec
 		}
 		maptmp["port"] = tmp;
 		pos = it->find("- clientbody =");
+		
 		if (pos == std::string::npos)
 		{
 			std::cerr << "Config file: client max body size not found, syntax is: - clientbody = [...];" << std::endl;
@@ -241,12 +243,14 @@ std::vector<std::map<std::string, std::string> > ServerConfig::setupmap(std::vec
 		{	
 			pos = it->find("- download =") + 12; 
 			std::string dldir = it->substr(pos, it->find(";", pos) - pos);
-			if (opendir(removespace(dldir).c_str()) == NULL)
+			DIR *directory = opendir(removespace(dldir).c_str());
+			if (directory == NULL)
 			{
 				std::cerr << "Directory " << dldir << " does not exist, please create it or change the download folder in the config" << std::endl;
 				exit(1);
 			}
 			maptmp["download"] = dldir;
+			closedir(directory);
 		}
 		else
 		{
@@ -255,6 +259,7 @@ std::vector<std::map<std::string, std::string> > ServerConfig::setupmap(std::vec
 		res.push_back(maptmp);
 		maptmp.clear();
 	}
+	//exit(1);
 	return res;
 }
 

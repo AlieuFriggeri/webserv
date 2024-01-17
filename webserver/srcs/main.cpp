@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 18:07:46 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/15 16:00:06 by vgroux           ###   ########.fr       */
+/*   Updated: 2024/01/17 11:02:41 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int main( int ac,char **av)
 {
 	ServerConfig configuration;
 	Socket *serverarray = NULL;
-
+	
 	if (ac == 1)
 		serverarray = ServerConfig::parsefile("default.UDC");
 	else if (ac == 2)
