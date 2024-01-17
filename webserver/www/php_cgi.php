@@ -16,14 +16,11 @@
 
 			// Write contents back to the file
 			file_put_contents($file, $current);
-			echo '<!DOCTYPE html>';
+			echo '<!DOCTYPE html><html>';
 			echo '<head><link rel="icon" type="image/x-icon" href="images/favicon.ico"><link rel="stylesheet" type="text/css" href="css/pat.css"></head>';
-			echo '<html><body><div class="pat"><h1>Success!</h1><p>First Name: ' . $fname . ', Last Name: ' . $lname . '</p></div>';
+			echo '<body><div class="pat"><h1>Success!</h1><p>First Name: ' . $fname . ', Last Name: ' . $lname . '</p></div>';
 			echo '<button onclick="window.location.href=\'index.html\';">Go Back</button>';
 			echo '</body></html>';
-			echo '<script type="text/javascript">
-			preventDefault();
-			</script>';
 			exit();
 		}
 	} elseif ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -32,9 +29,9 @@
 		// If the file exists, display its contents
 		if (file_exists($file)) {
 			$contents = file_get_contents($file);
-			echo '<!DOCTYPE html>';
+			echo '<!DOCTYPE html><html>';
 			echo '<head><link rel="icon" type="image/x-icon" href="images/favicon.ico"><link rel="stylesheet" type="text/css" href="css/user.css"></head>';
-			echo '<html><body><h1>User Data:</h1><p><div class="data">';
+			echo '<body><h1>User Data:</h1><p><div class="data">';
 			echo nl2br($contents);
 			echo '</div><br><button onclick="window.history.go(-1); return false;">Go Back</button><br><img class="barbie" src="images/BarbieOnWheels.png">';
 			echo "</p></body></html>";
@@ -47,8 +44,9 @@
 			file_put_contents($file, $lines);
 
 			// Redirect back to the script + ratio
-			echo '<html><body><h1>Success!</h1><p>Last User deleted</p>';
-			echo '<button onclick="window.location.href=\'index.html\';">Go Back</button>';
+			echo '<!DOCTYPE html><html><head><link rel="icon" type="image/x-icon" href="images/favicon.ico"></head>';
+			echo '<body><h1>Success!</h1><p>Last User deleted</p>';
+			echo '<button onclick="window.location.href=\'index.html\';">Go Back</button></html>';
 			exit();
 		}
 	}
