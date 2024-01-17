@@ -30,7 +30,7 @@ servers:
   @server[
     - listen = 8002;
     - server_name = domain2.com;
-    - clientbody = 4096000;
+    - clientbody = 40960;
     - route{
         - / (
             methods = GET POST;
