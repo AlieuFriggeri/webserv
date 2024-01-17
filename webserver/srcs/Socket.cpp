@@ -640,7 +640,8 @@ void Socket::sendImage(Client *it)
 
 	// Envoyer la réponse HTTP avec l'image
 	responseStream << "HTTP/1.1 200 OK\r\n";
-	responseStream << "Content-Type: image/jpeg\r\n";
+	responseStream << "Content-Type: ";
+	responseStream << it->_resp.getHeader("Content-Type");
 	responseStream << "Content-Length: " << fileSize << "\r\n\r\n";
 	responseStream.write(buffer.data(), fileSize);
 	send(it->_client_socket, responseStream.str().c_str(), responseStream.str().length(), 0);

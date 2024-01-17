@@ -39,7 +39,6 @@ servers:
             root = /emdre/;
             listing = false;
             index = ./jpp.html;
-            cgi = .mdr | /cgi/bin;
         )
         - /directory/ (
             methods = GET;
