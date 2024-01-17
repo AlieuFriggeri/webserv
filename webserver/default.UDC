@@ -29,7 +29,7 @@ servers:
 
   @server[
     - listen = 8002;
-    - server_name = domain2.com;
+    - server_name = RAAAaaaaaa.com;
     - clientbody = 40960;
     - route{
         - / (

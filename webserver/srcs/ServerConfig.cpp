@@ -168,6 +168,9 @@ std::vector<std::map<std::string, std::string> > ServerConfig::setupmap(std::vec
 	for (std::vector<std::string>::iterator it = configs.begin(); it != configs.end(); it++)
 	{
 		pos = it->find("- server_name =");
+		//std::cout << "pos = \"" << pos << "\"" << std::endl;
+		//std::cout << "Index ; = \"" << it->find(";", pos) - pos << "\"" << std::endl;
+		//std::cout << "it is === \"" << *it << "\"" << std::endl;
 		if (pos == std::string::npos)
 		{
 			std::cerr << "Config file: server name not found, default name given" << std::endl;
@@ -178,14 +181,21 @@ std::vector<std::map<std::string, std::string> > ServerConfig::setupmap(std::vec
 		}
 		else
 		{
-			tmp = it->substr(pos + 16, it->find(";") - 2);
+			
+			//std::cout << "pos = \"" << pos << "\"" << std::endl;
+			tmp = it->substr(pos + 16, it->find(";", pos) - pos);
+			//std::cout << "Value tmp -> \"" << tmp << "\"" << std::endl;
 			if (tmp.find_first_of('\n') != tmp.find_last_of("\n") || tmp.find_first_of(";") != tmp.find_last_of(";"))
 			{
 				std::cerr << "Config file: server_name: bad syntax" << std::endl;
 				exit(1);
 			}
-			tmp.erase(tmp.find("\n"));
-			tmp.erase(tmp.find(";"));
+			//std::cout << "Value tmp before erase -> \"" << tmp << "\"" << std::endl;
+			if (tmp.find("\n") != std::string::npos)
+				tmp.erase(tmp.find("\n"));
+			if (tmp.find(";") != std::string::npos)
+				tmp.erase(tmp.find(";"));
+			//std::cout << "Value tmp after erase -> \"" << tmp << "\"" << std::endl;
 			if (checkdouble(tmp, "server_name", res) != 0)
 			{
 				std::cerr << "Config file: two server cannot have the same name" << std::endl;
@@ -256,6 +266,7 @@ std::vector<std::map<std::string, std::string> > ServerConfig::setupmap(std::vec
 		{
 			maptmp["download"] = "upload";
 		}
+		//std::cout << "FINAL NAME IS --------- \"" << maptmp["server_name"] << "\"" << std::endl;
 		res.push_back(maptmp);
 		maptmp.clear();
 	}
