@@ -32,7 +32,7 @@
 			$contents = file_get_contents($file);
 			echo "<!DOCTYPE html><link rel=\"stylesheet\" type=\"text/css\" href=\"css/user.css\"><html>\n<body>\n<h1>User Data:</h1>\n<p><div class=\"data\">";
 			echo nl2br($contents);
-			echo '</div><br><button onclick="window.location.href=\'index.html\';">Go Back</button><br><img class="barbie" src="images/BarbieOnWheels.png">';
+			echo '</div><br><button onclick="window.history.go(-1); return false;">Go Back</button><br><img class="barbie" src="images/BarbieOnWheels.png">';
 			echo "</p>\n</body>\n</html>";
 		}
 	} elseif ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
