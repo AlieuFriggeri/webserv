@@ -16,7 +16,9 @@
 
 			// Write contents back to the file
 			file_put_contents($file, $current);
-			echo '<!DOCTYPE html><link rel="stylesheet" type="text/css" href="css/pat.css"><html><body><div class="pat"><h1>Success!</h1><p>First Name: ' . $fname . ', Last Name: ' . $lname . '</p></div>';
+			echo '<!DOCTYPE html>';
+			echo '<head><link rel="icon" type="image/x-icon" href="images/favicon.ico"><link rel="stylesheet" type="text/css" href="css/pat.css"></head>';
+			echo '<html><body><div class="pat"><h1>Success!</h1><p>First Name: ' . $fname . ', Last Name: ' . $lname . '</p></div>';
 			echo '<button onclick="window.location.href=\'index.html\';">Go Back</button>';
 			echo '</body></html>';
 			echo '<script type="text/javascript">
@@ -30,10 +32,12 @@
 		// If the file exists, display its contents
 		if (file_exists($file)) {
 			$contents = file_get_contents($file);
-			echo "<!DOCTYPE html><link rel=\"stylesheet\" type=\"text/css\" href=\"css/user.css\"><html>\n<body>\n<h1>User Data:</h1>\n<p><div class=\"data\">";
+			echo '<!DOCTYPE html>';
+			echo '<head><link rel="icon" type="image/x-icon" href="images/favicon.ico"><link rel="stylesheet" type="text/css" href="css/user.css"></head>';
+			echo '<html><body><h1>User Data:</h1><p><div class="data">';
 			echo nl2br($contents);
 			echo '</div><br><button onclick="window.history.go(-1); return false;">Go Back</button><br><img class="barbie" src="images/BarbieOnWheels.png">';
-			echo "</p>\n</body>\n</html>";
+			echo "</p></body></html>";
 		}
 	} elseif ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
 		$file = './www/user_data.txt';
