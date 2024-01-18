@@ -1,7 +1,7 @@
 servers:
   @server[
-    - listen = 80;
-    - server_name = domain1.com;
+    - listen = 4667;
+    - server_name = webserv42.com;
     - clientbody = 600000;
 	- error = ./www/error/;
     - download = upload2;
@@ -27,8 +27,8 @@ servers:
     }
   ]
   @server[
-    - listen = 4667;
-    - server_name = lslslsls.com;
+    - listen = 80;
+    - server_name = domain1.com;
     - clientbody = 40960;
     - route{
         - / (

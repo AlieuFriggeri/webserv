@@ -372,6 +372,7 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 				{
 					memset(buffer, 0, sizeof(buffer));
 					rcv = recv(i, buffer, 409600, 0);
+					std::cout << buffer << std::endl;
 					readrequest(clientlist, i, rcv, &readset, &writeset, buffer);
 				}
 				else if (FD_ISSET(i, &writecpy))
@@ -546,6 +547,8 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 	std::string filename = "";
 	std::string line;
 	std::string cgiresp = "";
+	std::string hostname  = "";
+	std::string server_hostname  = "";
 
 	for (std::list<Client>::iterator it = clientlist->begin(); it != clientlist->end(); it++)
 	{
@@ -555,7 +558,15 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			while (servers[i]._listening_socket != it->_serversocket)
 				i++;
 			it->_req.parse(it->_buff.c_str(), it->_bytesrcv, servers[i].getMaxBodySize());
-			std::cout << it->_req.getPath() << std::endl;
+			std::cout << "REQUEST IS " <<  it->_buff.substr(it->_buff.find("Host:") + 6, it->_buff.find_first_of("\n", it->_buff.find("Host:")) - it->_buff.find("Host:")) << std::endl;
+			std::cout << "server is " << servers[i].getServerName() << ":" << servers[i].getPort() << std::endl;
+			hostname = it->_buff.substr(it->_buff.find("Host:") + 6, it->_buff.find_first_of("\n", it->_buff.find("Host:")) - it->_buff.find("Host:"));
+			server_hostname = servers[i].getServerName();
+			if (hostname.substr(0, hostname.find(":")) != server_hostname && hostname.find("localhost") == std::string::npos)
+			{
+				it->_req.setErrorCode(404);
+			}
+			//std::cout << it->_req.getBody().find("Host:") << std::endl;
 			Route	rt;
 			rt = checkroute(&*it, servers);
 			if (!it->_req.isParsingDone())
