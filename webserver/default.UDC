@@ -1,7 +1,7 @@
 servers:
   @server[
     - listen = 4667;
-    - server_name = webserv42.com;
+    - server_name = superbe.com;
     - clientbody = 600000;
 	- error = ./www/error/;
     - download = upload2;

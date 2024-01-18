@@ -558,13 +558,19 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			while (servers[i]._listening_socket != it->_serversocket)
 				i++;
 			it->_req.parse(it->_buff.c_str(), it->_bytesrcv, servers[i].getMaxBodySize() - 1);
-			// std::cout << "REQUEST IS " <<  it->_buff.substr(it->_buff.find("Host:") + 6, it->_buff.find_first_of("\n", it->_buff.find("Host:")) - it->_buff.find("Host:")) << std::endl;
-			// std::cout << "server is " << servers[i].getServerName() << ":" << servers[i].getPort() << std::endl;
-			hostname = it->_buff.substr(it->_buff.find("Host:") + 6, it->_buff.find_first_of("\n", it->_buff.find("Host:")) - it->_buff.find("Host:"));
+			//std::cout << "REQUEST IS " <<  it->_buff.substr(it->_buff.find("Host:") + 6, it->_buff.find_first_of("\n", it->_buff.find("Host:")) - it->_buff.find("Host:") - 6) << std::endl;
+			//std::cout << "server is " << servers[i].getServerName() << ":" << servers[i].getPort() << std::endl;
+			hostname = it->_buff.substr(it->_buff.find("Host:") + 6, it->_buff.find_first_of("\n", it->_buff.find("Host:")) - it->_buff.find("Host:") - 6);
 			server_hostname = servers[i].getServerName();
 			if (hostname.substr(0, hostname.find(":")) != server_hostname && hostname.find("localhost") == std::string::npos)
 			{
-				it->_req.setErrorCode(500);
+				it->_req.setErrorCode(400);
+			}
+			if (atoi(hostname.substr(hostname.find(":") + 1, hostname.length() - hostname.find(":")).c_str()) != servers[i].getPort())
+			{
+				//std::cout << atoi(hostname.substr(hostname.find(":") + 1, hostname.length() - hostname.find(":")).c_str())<< std::endl;
+				//std::cout << servers[i].getPort() << std::endl;
+				it->_req.setErrorCode(400);
 			}
 			//std::cout << it->_req.getBody().find("Host:") << std::endl;
 			Route	rt;
