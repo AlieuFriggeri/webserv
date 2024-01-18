@@ -6,7 +6,7 @@
 /*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:08:04 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/18 11:05:38 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/18 14:25:09 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,17 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Sock
 				std::string cgiresp;
 				// std::cout << "entering cgi" << std::endl;
 				cgiresp = CgiExecutor::execute(clt, srv, "/usr/bin/php");
-				// std::cout << "CGI resp is : " << std::endl << cgiresp << std::endl;
-				resp.setBody(cgiresp);
-				resp.setStatus(200);
+				std::cout << "CGI resp is : " << std::endl << cgiresp << std::endl;
+				if (cgiresp == "timeout")
+				{
+					resp.setStatus(502);
+					resp.setBody(handleErrorPage(srv, resp.getStatus()));
+				}
+				else
+				{
+					resp.setBody(cgiresp);
+					resp.setStatus(200);
+				}
 			}
 			else if (req->getQuery().empty())
 			{
@@ -80,9 +88,17 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Sock
 				std::string cgiresp;
 				// std::cout << "entering cgi" << std::endl;
 				cgiresp = CgiExecutor::execute(clt, srv, "/usr/bin/php");
-				// std::cout << "CGI resp is : " << std::endl << cgiresp << std::endl;
-				resp.setBody(cgiresp);
-				resp.setStatus(200);
+				std::cout << "CGI resp is : " << std::endl << cgiresp << std::endl;
+				if (cgiresp == "timeout")
+				{
+					resp.setStatus(502);
+					resp.setBody(handleErrorPage(srv, req->getErrorCode()));
+				}
+				else
+				{
+					resp.setBody(cgiresp);
+					resp.setStatus(200);
+				}
 			}
 		}
 		else

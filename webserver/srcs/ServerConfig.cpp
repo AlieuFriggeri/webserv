@@ -99,11 +99,6 @@ void ServerConfig::configservers(std::vector<std::map<std::string, std::string> 
 		serverarray[i].setDownload(removespace(maptmp["download"])) ;
 		serverarray[i]._error = removespace(maptmp["error"]);
 		serverarray[i]._config = maptmp;
-		std::cout << "port = " << maptmp["port"] << std::endl;
-		std::cout << "bodysize = " << maptmp["clientbody"] << std::endl;
-		std::cout << "serv name = " << maptmp["server_name"] << std::endl;
-		std::cout << "Download = " << maptmp["download"] << std::endl;
-		std::cout << "error = " << maptmp["error"] << std::endl;
 		i++;
 	}
 	i = 0;
@@ -120,7 +115,6 @@ void ServerConfig::configservers(std::vector<std::map<std::string, std::string> 
 			}
 			key = it2->first;
 			key = removespace(key);
-			std::cout << "route value for server " << i << "="  << key << std::endl;
 			serverarray[i].setRouteMap(key, it2->second);
 		}
 	}

@@ -29,12 +29,12 @@ servers:
   @server[
     - listen = 80;
     - server_name = domain1.com;
-    - clientbody = 40960;
+    - clientbody = 20;
     - route{
         - / (
             methods = GET POST;
             root = /;
-            listing = true;
+            listing = false;
             index = ./index.html;
         )
         - /admin/ (

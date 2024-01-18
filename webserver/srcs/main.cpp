@@ -6,7 +6,7 @@
 /*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 18:07:46 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/18 10:51:57 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/18 13:47:41 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int main( int ac,char **av)
 		serverarray[i].setListening(Socket::getListenSock(serverarray[i]._config));
 		//std::cout << "server on port " << serverarray[i].getPort() << " downloads to " << serverarray[i].getDownload() << std::endl;
 	}
-	std::cout << "total serv " << serverarray[2].getPort() << std::endl;
 	Socket::handleConnection(&clientlist, serverarray);
 	delete [] serverarray;
 	return 0;

@@ -177,13 +177,18 @@ CgiExecutor::execute(Client *client, Socket server, std::string cgi_path)
 		}
 		usleep(10000);
 	}
-	if (did_timeout)
-		std::cerr << "CGI timed out" << std::endl;
-	if (exit_status != 0)
-		std::cerr << "CGI exited with " << exit_status << std::endl;
 
 	/// Read from stdout
-    std::string result = readAll(fd_std[STDIN_FILENO], NULL);
+    std::string result;
+	if (did_timeout)
+	{
+		std::cerr << "CGI timed out" << std::endl;
+		result = "timeout";
+	}
+	else
+		result = readAll(fd_std[STDIN_FILENO], NULL);
+	if (exit_status != 0)
+		std::cerr << "CGI exited with " << exit_status << std::endl;
 	close(fd_std[STDIN_FILENO]);
 	return result;
 }
