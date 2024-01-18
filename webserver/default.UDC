@@ -26,7 +26,31 @@ servers:
         )
     }
   ]
-
+  @server[
+    - listen = 4667;
+    - server_name = lslslsls.com;
+    - clientbody = 40960;
+    - route{
+        - / (
+            methods = GET POST;
+            root = /;
+            listing = true;
+            index = ./index.html;
+        )
+        - /admin/ (
+            methods = GET POST;
+            root = /admin/;
+            listing = true;
+            index = ./admin.html;
+        )
+        - /k2aris/ (
+            methods = GET DELETE;
+            root = /b2oba/;
+            listing = true;
+            index = ./92i.html;
+        )
+    }
+  ]
   @server[
     - listen = 8002;
     - server_name = RAAAaaaaaa.com;
@@ -35,7 +59,107 @@ servers:
         - / (
             methods = GET POST;
             root = /;
+            listing = false;
+            index = ./index.html;
+        )
+        - /admin/ (
+            methods = GET POST;
+            root = /admin/;
             listing = true;
+            index = ./admin.html;
+        )
+        - /k2aris/ (
+            methods = GET DELETE;
+            root = /b2oba/;
+            listing = true;
+            index = ./92i.html;
+        )
+    }
+  ]
+  @server[
+    - listen = 555;
+    - server_name = dfd.com;
+    - clientbody = 40960;
+    - route{
+        - / (
+            methods = GET POST;
+            root = /;
+            listing = false;
+            index = ./index.html;
+        )
+        - /admin/ (
+            methods = GET POST;
+            root = /admin/;
+            listing = true;
+            index = ./admin.html;
+        )
+        - /k2aris/ (
+            methods = GET DELETE;
+            root = /b2oba/;
+            listing = true;
+            index = ./92i.html;
+        )
+    }
+  ]
+  @server[
+    - listen = 444;
+    - server_name = fdfasd.com;
+    - clientbody = 40960;
+    - route{
+        - / (
+            methods = GET POST;
+            root = /;
+            listing = false;
+            index = ./index.html;
+        )
+        - /admin/ (
+            methods = GET POST;
+            root = /admin/;
+            listing = true;
+            index = ./admin.html;
+        )
+        - /k2aris/ (
+            methods = GET DELETE;
+            root = /b2oba/;
+            listing = true;
+            index = ./92i.html;
+        )
+    }
+  ]
+  @server[
+    - listen = 333;
+    - server_name = asdfa.com;
+    - clientbody = 40960;
+    - route{
+        - / (
+            methods = GET POST;
+            root = /;
+            listing = false;
+            index = ./index.html;
+        )
+        - /admin/ (
+            methods = GET POST;
+            root = /admin/;
+            listing = true;
+            index = ./admin.html;
+        )
+        - /k2aris/ (
+            methods = GET DELETE;
+            root = /b2oba/;
+            listing = true;
+            index = ./92i.html;
+        )
+    }
+  ]
+  @server[
+    - listen = 222;
+    - server_name = asdfsdafads.com;
+    - clientbody = 40960;
+    - route{
+        - / (
+            methods = GET POST;
+            root = /;
+            listing = false;
             index = ./index.html;
         )
         - /admin/ (

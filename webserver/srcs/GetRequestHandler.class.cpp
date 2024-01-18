@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   GetRequestHandler.class.cpp                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:08:04 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/16 17:04:23 by vgroux           ###   ########.fr       */
+/*   Updated: 2024/01/18 11:05:38 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ GetRequestHandler::~GetRequestHandler(void)
 HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Socket srv)
 {
 	HttpRespond	resp;
+	std::cout << "path relative = " << req->getPathRelative() << std::endl;
 	if (req->isParsingDone() == false)
 		std::cerr << "Le parsing de la requete a rencontre une erreur" << std::endl;
 	else if (req->getPathRelative().empty())

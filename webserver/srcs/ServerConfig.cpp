@@ -99,10 +99,15 @@ void ServerConfig::configservers(std::vector<std::map<std::string, std::string> 
 		serverarray[i].setDownload(removespace(maptmp["download"])) ;
 		serverarray[i]._error = removespace(maptmp["error"]);
 		serverarray[i]._config = maptmp;
+		std::cout << "port = " << maptmp["port"] << std::endl;
+		std::cout << "bodysize = " << maptmp["clientbody"] << std::endl;
+		std::cout << "serv name = " << maptmp["server_name"] << std::endl;
+		std::cout << "Download = " << maptmp["download"] << std::endl;
+		std::cout << "error = " << maptmp["error"] << std::endl;
 		i++;
 	}
 	i = 0;
-	for (std::vector<std::map<std::string, Route> >::iterator it = routes.begin(); it != routes.end() && i < 2; it++)
+	for (std::vector<std::map<std::string, Route> >::iterator it = routes.begin(); it != routes.end() && i < (size_t)serverarray[0].getTotalServ(); it++)
 	{
 		std::map<std::string, Route> maptmp = *it;
 		std::string key;
@@ -115,6 +120,7 @@ void ServerConfig::configservers(std::vector<std::map<std::string, std::string> 
 			}
 			key = it2->first;
 			key = removespace(key);
+			std::cout << "route value for server " << i << "="  << key << std::endl;
 			serverarray[i].setRouteMap(key, it2->second);
 		}
 	}
@@ -139,6 +145,7 @@ std::vector<std::string> ServerConfig::splitserv(std::string content)
 		servstart = content.find("@");
 		if (content.substr(servstart, servstart + 7) != "@server[\n")
 		{
+			std::cout << content.substr(servstart, servstart + 7) << std::endl;
 			std::cerr << "Bad syntax, example: @server[...]" << std::endl;
 			exit(1);
 		}

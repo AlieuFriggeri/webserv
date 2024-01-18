@@ -113,7 +113,7 @@ void Socket::setDownload(std::string str)
 
 Socket::Socket()
 {
-	bzero(&_svc, sizeof(_svc));
+	memset(&_svc, 0, sizeof(_svc));
 }
 
 Socket::~Socket()
@@ -356,7 +356,7 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 		}
 		else
 		{
-			bzero(buffer, sizeof(buffer));
+			memset(buffer, 0, sizeof(buffer));
 			for (int i = 0; i <= max_sock; i++)
 			{
 							
@@ -370,7 +370,7 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 				}
 				else if (FD_ISSET(i, &readcpy) && i != checklisteningsock(i, servers))
 				{
-					bzero(buffer, sizeof(buffer));
+					memset(buffer, 0, sizeof(buffer));
 					rcv = recv(i, buffer, 409600, 0);
 					readrequest(clientlist, i, rcv, &readset, &writeset, buffer);
 				}
@@ -490,7 +490,7 @@ void Socket::readrequest(std::list<Client> *clientlist, int fd, long rcv, fd_set
 	{
 		closeconnection(clientlist, fd, readset, writeset);
 		setMaxSock(clientlist);
-		perror("recv");
+		std::cerr << "error: recv" << std::endl;
 		exit(1);
 	}
 	else if (rcv == 0)
@@ -555,6 +555,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			while (servers[i]._listening_socket != it->_serversocket)
 				i++;
 			it->_req.parse(it->_buff.c_str(), it->_bytesrcv, servers[i].getMaxBodySize());
+			std::cout << it->_req.getPath() << std::endl;
 			Route	rt;
 			rt = checkroute(&*it, servers);
 			if (!it->_req.isParsingDone())
@@ -574,6 +575,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 					GetRequestHandler	methodHandler;
 					if (rt._methods.find("GET") == std::string::npos)
 						it->_req.setErrorCode(405);
+					std::cout << "L'HOMME METHODE GET" << std::endl;
 					it->_resp = methodHandler.handleRequest(&(it->_req), &*it, servers[i]);
 					break;
 				}
@@ -604,6 +606,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				sendImage(&*it);
 			else
 				send(it->_client_socket, it->_resp.getResp().c_str(), it->_resp.getResp().length() , 0);
+			//std::cout << " +++++++++++++++++++++++++ " << it->_resp.getResp() << std::endl;
 			std::cout << "Respond sended to Client " << it->_clientnumber << " on socket : " << it->_client_socket << " on port: "<< it->_port << std::endl;
 			if (it->_req.keepAlive() == true)
 			{
@@ -680,7 +683,7 @@ Route	Socket::checkroute(Client *client, Socket *server)
 	}
 	if (server[i]._route.count(final_route) == 0)
 	{
-		std::cerr << "Route pas accessible avec le port du client" << std::endl;
+		std::cerr << "Route pas accessible avec le port du client : "  << filepath << std::endl;
 		filepath.clear();
 		return rt;
 	}
