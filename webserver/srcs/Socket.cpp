@@ -631,9 +631,11 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				it->_resp.setBody(openReadFile("./www/redir.html"));
 				it->_resp.build(it->_req);
 			}
-			else if (it->_req.getPath().find("upload") != std::string::npos && it->_req.getPath().find("upload") == it->_req.getPath().length() - 7)
+			else if (it->_req.getPath().find("upload") != std::string::npos)
 			{
+				std::cout << "FONCTION QUI GERE UPLOAD" << std::endl;
 				it->_req.setErrorCode(200);
+				std::cout << "./" + servers[i].getDownload() << std::endl;
 				it->_resp.setBody(openReadCloseDir("./" + servers[i].getDownload(), "./" + servers[i].getDownload()));
 				it->_resp.build(it->_req);
 			}

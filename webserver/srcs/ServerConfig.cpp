@@ -260,14 +260,14 @@ std::vector<std::map<std::string, std::string> > ServerConfig::setupmap(std::vec
 				std::cerr << "Directory " << dldir << " does not exist, please create it or change the download folder in the config" << std::endl;
 				exit(1);
 			}
-			maptmp["download"] = dldir;
+			maptmp["download"] = removespace(dldir);
 			closedir(directory);
 		}
 		else
 		{
 			maptmp["download"] = "upload";
 		}
-		//std::cout << "FINAL NAME IS --------- \"" << maptmp["server_name"] << "\"" << std::endl;
+		std::cout << "FINAL NAME IS --------- \"" << maptmp["download"] << "\"" << std::endl;
 		res.push_back(maptmp);
 		maptmp.clear();
 	}

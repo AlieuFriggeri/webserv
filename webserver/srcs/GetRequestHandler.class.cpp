@@ -52,8 +52,21 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Sock
 	std::cout << "path IN GET METHOD AT THE START  = " << req->getPath() << std::endl;
 	if (req->getPath().find("upload") != std::string::npos)
 	{
-		req->setPath(req->getPath().erase(1, 4));
-		std::cout << req->getPath() << std::endl;
+		if (srv.getDownload() == "upload")
+		{
+			req->setPath(req->getPath().erase(1, 4));
+			std::cout << req->getPath() << std::endl;
+		}
+		else
+		{
+			req->setPath(req->getPath().erase(0, 12));
+			std::string finalpath = "./" + srv.getDownload() + req->getPath();
+			req->setPath(finalpath);
+			req->setPathRelative(finalpath);
+			
+		}
+		std::cout << "PATH IN GET "<< req->getPath() << std::endl;
+		std::cout << "PATH RELATIVE IN GET "<< req->getPathRelative() << std::endl;
 	}
 	if (req->isParsingDone() == false)
 		std::cerr << "Le parsing de la requete a rencontre une erreur" << std::endl;
