@@ -173,7 +173,7 @@ std::string	openReadCloseDir(std::string path, std::string uri)
 	std::vector<std::pair<std::string, unsigned char> >	files;
 	std::string					html;
 	struct dirent	*ent;
-
+std::cout << "DIR PATH IS === " << path << std::endl;
 	DIR *dir = opendir(path.c_str());
 	if (dir != NULL)
 	{
@@ -197,3 +197,4 @@ std::string	openReadCloseDir(std::string path, std::string uri)
 	}
 	return (html);
 }
+

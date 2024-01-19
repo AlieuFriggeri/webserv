@@ -29,5 +29,6 @@ std::string	toString(int i);
 std::string	openReadFile(std::string relative_path);
 std::string	openReadCloseDir(std::string path, std::string uri);
 std::string openWriteFile(std::string relative_path);
+std::string	openReadCloseUpload(std::string path, std::string uri);
 
 #endif

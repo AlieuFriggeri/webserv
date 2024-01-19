@@ -254,18 +254,18 @@ std::vector<std::map<std::string, std::string> > ServerConfig::setupmap(std::vec
 		{	
 			pos = it->find("- download =") + 12; 
 			std::string dldir = it->substr(pos, it->find(";", pos) - pos);
-			DIR *directory = opendir(removespace(dldir).c_str());
+			DIR *directory = opendir(removespace("./www/" + dldir).c_str());
 			if (directory == NULL)
 			{
 				std::cerr << "Directory " << dldir << " does not exist, please create it or change the download folder in the config" << std::endl;
 				exit(1);
 			}
-			maptmp["download"] = dldir;
+			maptmp["download"] = "./www/" + dldir;
 			closedir(directory);
 		}
 		else
 		{
-			maptmp["download"] = "upload";
+			maptmp["download"] = "./www/upload";
 		}
 		//std::cout << "FINAL NAME IS --------- \"" << maptmp["server_name"] << "\"" << std::endl;
 		res.push_back(maptmp);
