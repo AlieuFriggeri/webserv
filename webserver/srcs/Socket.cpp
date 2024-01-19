@@ -562,14 +562,15 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			//std::cout << "server is " << servers[i].getServerName() << ":" << servers[i].getPort() << std::endl;
 			hostname = it->_buff.substr(it->_buff.find("Host:") + 6, it->_buff.find_first_of("\n", it->_buff.find("Host:")) - it->_buff.find("Host:") - 6);
 			server_hostname = servers[i].getServerName();
+			std::cout << "HOST IS ==="<<hostname << std::endl;
 			if (hostname.substr(0, hostname.find(":")) != server_hostname && hostname.find("localhost") == std::string::npos)
 			{
 				it->_req.setErrorCode(400);
 			}
-			if (atoi(hostname.substr(hostname.find(":") + 1, hostname.length() - hostname.find(":")).c_str()) != servers[i].getPort())
+			if (atoi(hostname.substr(hostname.find(":") + 1, hostname.length() - hostname.find(":")).c_str()) != servers[i].getPort() && servers[i].getPort() != 80)
 			{
-				//std::cout << atoi(hostname.substr(hostname.find(":") + 1, hostname.length() - hostname.find(":")).c_str())<< std::endl;
-				//std::cout << servers[i].getPort() << std::endl;
+				std::cout << atoi(hostname.substr(hostname.find(":") + 1, hostname.length() - hostname.find(":")).c_str() + 1)<< std::endl;
+				std::cout << servers[i].getPort() << std::endl;
 				it->_req.setErrorCode(400);
 			}
 			//std::cout << it->_req.getBody().find("Host:") << std::endl;
