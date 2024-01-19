@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PostRequestHandler.class.cpp                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:10:16 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/16 17:09:31 by vgroux           ###   ########.fr       */
+/*   Updated: 2024/01/19 13:07:04 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,18 @@ HttpRespond	PostRequestHandler::handleRequest(HttpRequest *req, Client *clt, Soc
 		{
 			std::string cgiresp;
 			cgiresp = CgiExecutor::execute(clt, srv, "/usr/bin/php");
-			resp.setBody(cgiresp);
-			resp.setStatus(200);
+			if (cgiresp == "timeout")
+			{
+				resp.setStatus(502);
+				resp.setBody(handleErrorPage(srv, resp.getStatus()));
+			}
+			else
+			{
+				resp.setBody(cgiresp);
+				resp.setStatus(200);
+			}
 		}
-		else 
+		else if (req->isMultiform())
 		{
 			size_t start, end;
 			std::string filecontent = req->getBody();
@@ -103,7 +111,6 @@ HttpRespond	PostRequestHandler::handleRequest(HttpRequest *req, Client *clt, Soc
 					break;
 				}
 			}
-			
 			filecontent.erase(0, end - start + 1);
 			filecontent.erase(0, filecontent.find('\n') + 1);
 			filecontent.erase(0, filecontent.find('\n') + 1);

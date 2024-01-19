@@ -29,10 +29,10 @@ servers:
   @server[
     - listen = 80;
     - server_name = domain1.com;
-    - clientbody = 200000;
+    - clientbody = 10;
     - route{
         - / (
-            methods = GET POST;
+            methods = GET POST DELETE;
             root = /;
             listing = false;
             index = ./index.html;
@@ -40,7 +40,7 @@ servers:
         - /admin/ (
             methods = GET POST;
             root = /admin/;
-            listing = true;
+            listing = false;
             index = ./admin.html;
         )
         - /k2aris/ (
