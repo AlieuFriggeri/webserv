@@ -1,698 +1,376 @@
-port = 80
-bodysize =  600000
-serv name = domain1.com
-Download =  upload2
-error = ./www/error/
-port = 4667
-bodysize =  40960
-serv name = lslslsls.com
-Download = upload
-error = ./errfile/
-port = 8002
-bodysize =  40960
-serv name = RAAAaaaaaa.com
-Download = upload
-error = ./errfile/
-port = 555
-bodysize =  40960
-serv name = dfd.com
-Download = upload
-error = ./errfile/
-port = 444
-bodysize =  40960
-serv name = fdfasd.com
-Download = upload
-error = ./errfile/
-port = 333
-bodysize =  40960
-serv name = asdfa.com
-Download = upload
-error = ./errfile/
-port = 222
-bodysize =  40960
-serv name = asdfsdafads.com
-Download = upload
-error = ./errfile/
-route value for server 0=/
-route value for server 0=/admin/
-route value for server 0=/lol/mdr/
-route value for server 1=/
-route value for server 1=/admin/
-route value for server 1=/k2aris/
-route value for server 2=/
-route value for server 2=/admin/
-route value for server 2=/k2aris/
-route value for server 3=/
-route value for server 3=/admin/
-route value for server 3=/k2aris/
-route value for server 4=/
-route value for server 4=/admin/
-route value for server 4=/k2aris/
-route value for server 5=/
-route value for server 5=/admin/
-route value for server 5=/k2aris/
-route value for server 6=/
-route value for server 6=/admin/
-route value for server 6=/k2aris/
-total serv 8002
-Client [1] has been connected on port 555
+Client [1] has been connected on port 4667
 1 Client actually connected with socket: 10
-Respond received to Client 1 on socket : 10 on port: 555
-./www/index.html
+Respond received to Client 1 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
 L'HOMME METHODE GET
-path relative = ./www/index.html
-Respond sended to Client 1 on socket : 10 on port: 555
+DIR PATH IS === ./www/
+Respond sended to Client 1 on socket : 10 on port: 4667
 Client [1] disconnected
-Client [2] has been connected on port 555
+Client [2] has been connected on port 4667
 1 Client actually connected with socket: 10
-Respond received to Client 2 on socket : 10 on port: 555
-./www/css/index.css
+Respond received to Client 2 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
 L'HOMME METHODE GET
-path relative = ./www/css/index.css
-Respond sended to Client 2 on socket : 10 on port: 555
+Respond sended to Client 2 on socket : 10 on port: 4667
 Client [2] disconnected
-Client [3] has been connected on port 555
+Client [3] has been connected on port 4667
 1 Client actually connected with socket: 10
-Respond received to Client 3 on socket : 10 on port: 555
-Client [4] has been connected on port 555
-2 Client actually connected with socket: 11
-./www/images/MLP.png
+Respond received to Client 3 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
 L'HOMME METHODE GET
-path relative = ./www/images/MLP.png
-Respond sended to Client 3 on socket : 10 on port: 555
+Respond sended to Client 3 on socket : 10 on port: 4667
 Client [3] disconnected
-Client [5] has been connected on port 555
-2 Client actually connected with socket: 10
-Respond received to Client 4 on socket : 11 on port: 555
-Client [6] has been connected on port 555
-3 Client actually connected with socket: 12
-Respond received to Client 5 on socket : 10 on port: 555
-./www/images/MLP2.png
+Client [4] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 4 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
 L'HOMME METHODE GET
-path relative = ./www/images/MLP2.png
-Respond sended to Client 4 on socket : 11 on port: 555
+Respond sended to Client 4 on socket : 10 on port: 4667
 Client [4] disconnected
-Client [7] has been connected on port 555
-3 Client actually connected with socket: 11
-./www/images/2.png
+Client [5] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 5 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
 L'HOMME METHODE GET
-path relative = ./www/images/2.png
-Respond sended to Client 5 on socket : 10 on port: 555
+Respond sended to Client 5 on socket : 10 on port: 4667
 Client [5] disconnected
-Respond received to Client 6 on socket : 12 on port: 555
-Client [8] has been connected on port 555
-3 Client actually connected with socket: 10
-Respond received to Client 7 on socket : 11 on port: 555
-./www/images/1.png
+Client [6] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 6 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
 L'HOMME METHODE GET
-path relative = ./www/images/1.png
-Respond sended to Client 6 on socket : 12 on port: 555
+Respond sended to Client 6 on socket : 10 on port: 4667
 Client [6] disconnected
-Client [9] has been connected on port 555
-3 Client actually connected with socket: 12
-Respond received to Client 8 on socket : 10 on port: 555
-./www/images/3.png
+Client [7] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 7 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
 L'HOMME METHODE GET
-path relative = ./www/images/3.png
-Respond sended to Client 7 on socket : 11 on port: 555
+Respond sended to Client 7 on socket : 10 on port: 4667
 Client [7] disconnected
-Client [10] has been connected on port 555
-3 Client actually connected with socket: 11
-./www/images/4.png
+Client [8] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 8 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
 L'HOMME METHODE GET
-path relative = ./www/images/4.png
-Respond sended to Client 8 on socket : 10 on port: 555
+Respond sended to Client 8 on socket : 10 on port: 4667
 Client [8] disconnected
-Respond received to Client 9 on socket : 12 on port: 555
-Client [11] has been connected on port 555
-3 Client actually connected with socket: 10
-Respond received to Client 10 on socket : 11 on port: 555
-./www/images/6.png
+Client [9] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 9 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
 L'HOMME METHODE GET
-path relative = ./www/images/6.png
-Respond sended to Client 9 on socket : 12 on port: 555
+Respond sended to Client 9 on socket : 10 on port: 4667
 Client [9] disconnected
-Client [12] has been connected on port 555
-3 Client actually connected with socket: 12
-Respond received to Client 11 on socket : 10 on port: 555
-./www/images/5.png
+Client [10] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 10 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
 L'HOMME METHODE GET
-path relative = ./www/images/5.png
-Respond sended to Client 10 on socket : 11 on port: 555
+Respond sended to Client 10 on socket : 10 on port: 4667
 Client [10] disconnected
-./www/images/7.png
+Client [11] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 11 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
 L'HOMME METHODE GET
-path relative = ./www/images/7.png
-Respond sended to Client 11 on socket : 10 on port: 555
+Respond sended to Client 11 on socket : 10 on port: 4667
 Client [11] disconnected
-Respond received to Client 12 on socket : 12 on port: 555
-./www/images/background.jpg
+Client [12] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 12 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
 L'HOMME METHODE GET
-path relative = ./www/images/background.jpg
-Respond sended to Client 12 on socket : 12 on port: 555
+DIR PATH IS === ./www/upload2/
+Respond sended to Client 12 on socket : 10 on port: 4667
 Client [12] disconnected
-Client [13] has been connected on port 555
+Client [13] has been connected on port 4667
 1 Client actually connected with socket: 10
-Respond received to Client 13 on socket : 10 on port: 555
-./www/images/favicon.ico
+Respond received to Client 13 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
 L'HOMME METHODE GET
-path relative = ./www/images/favicon.ico
-Respond sended to Client 13 on socket : 10 on port: 555
+Respond sended to Client 13 on socket : 10 on port: 4667
 Client [13] disconnected
-Client [14] has been connected on port 555
+Client [14] has been connected on port 4667
 1 Client actually connected with socket: 10
-Client [15] has been connected on port 333
-2 Client actually connected with socket: 11
-Respond received to Client 15 on socket : 11 on port: 333
-./www/index.html
+Respond received to Client 14 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
 L'HOMME METHODE GET
-path relative = ./www/index.html
-Respond sended to Client 15 on socket : 11 on port: 333
-Client [15] disconnected
-Client [16] has been connected on port 333
-2 Client actually connected with socket: 11
-Respond received to Client 16 on socket : 11 on port: 333
-./www/css/index.css
-L'HOMME METHODE GET
-path relative = ./www/css/index.css
-Respond sended to Client 16 on socket : 11 on port: 333
-Client [16] disconnected
-Client [17] has been connected on port 333
-2 Client actually connected with socket: 11
-Client [18] has been connected on port 333
-3 Client actually connected with socket: 12
-Respond received to Client 17 on socket : 11 on port: 333
-./www/images/MLP2.png
-L'HOMME METHODE GET
-path relative = ./www/images/MLP2.png
-Respond sended to Client 17 on socket : 11 on port: 333
-Client [17] disconnected
-Client [19] has been connected on port 333
-3 Client actually connected with socket: 11
-Respond received to Client 18 on socket : 12 on port: 333
-Client [20] has been connected on port 333
-4 Client actually connected with socket: 13
-Respond received to Client 19 on socket : 11 on port: 333
-./www/images/MLP.png
-L'HOMME METHODE GET
-path relative = ./www/images/MLP.png
-Respond sended to Client 18 on socket : 12 on port: 333
-Client [18] disconnected
-Client [21] has been connected on port 333
-4 Client actually connected with socket: 12
-./www/images/1.png
-L'HOMME METHODE GET
-path relative = ./www/images/1.png
-Respond sended to Client 19 on socket : 11 on port: 333
-Client [19] disconnected
-Respond received to Client 20 on socket : 13 on port: 333
-Client [22] has been connected on port 333
-4 Client actually connected with socket: 11
-Respond received to Client 21 on socket : 12 on port: 333
-./www/images/3.png
-L'HOMME METHODE GET
-path relative = ./www/images/3.png
-Respond sended to Client 20 on socket : 13 on port: 333
-Client [20] disconnected
-Client [23] has been connected on port 333
-4 Client actually connected with socket: 13
-Respond received to Client 22 on socket : 11 on port: 333
-./www/images/2.png
-L'HOMME METHODE GET
-path relative = ./www/images/2.png
-Respond sended to Client 21 on socket : 12 on port: 333
-Client [21] disconnected
-Client [24] has been connected on port 333
-4 Client actually connected with socket: 12
-./www/images/4.png
-L'HOMME METHODE GET
-path relative = ./www/images/4.png
-Respond sended to Client 22 on socket : 11 on port: 333
-Client [22] disconnected
-Respond received to Client 23 on socket : 13 on port: 333
-Client [25] has been connected on port 333
-4 Client actually connected with socket: 11
-Respond received to Client 24 on socket : 12 on port: 333
-./www/images/6.png
-L'HOMME METHODE GET
-path relative = ./www/images/6.png
-Respond sended to Client 23 on socket : 13 on port: 333
-Client [23] disconnected
-Client [26] has been connected on port 333
-4 Client actually connected with socket: 13
-Respond received to Client 25 on socket : 11 on port: 333
-./www/images/background.jpg
-L'HOMME METHODE GET
-path relative = ./www/images/background.jpg
-Respond sended to Client 24 on socket : 12 on port: 333
-Client [24] disconnected
-./www/images/7.png
-L'HOMME METHODE GET
-path relative = ./www/images/7.png
-Respond sended to Client 25 on socket : 11 on port: 333
-Client [25] disconnected
-Respond received to Client 26 on socket : 13 on port: 333
-./www/images/5.png
-L'HOMME METHODE GET
-path relative = ./www/images/5.png
-Respond sended to Client 26 on socket : 13 on port: 333
-Client [26] disconnected
-Client [27] has been connected on port 333
-2 Client actually connected with socket: 11
-Respond received to Client 27 on socket : 11 on port: 333
-./www/images/favicon.ico
-L'HOMME METHODE GET
-path relative = ./www/images/favicon.ico
-Respond sended to Client 27 on socket : 11 on port: 333
-Client [27] disconnected
-Client [28] has been connected on port 333
-2 Client actually connected with socket: 11
-Respond received to Client 28 on socket : 11 on port: 333
-./www/admin/admin.html
-L'HOMME METHODE GET
-path relative = ./www/admin/admin.html
-Respond sended to Client 28 on socket : 11 on port: 333
-Client [28] disconnected
-Client [29] has been connected on port 333
-2 Client actually connected with socket: 11
-Client [30] has been connected on port 333
-3 Client actually connected with socket: 12
-Client [31] has been connected on port 333
-4 Client actually connected with socket: 13
-Respond received to Client 29 on socket : 11 on port: 333
-Client [32] has been connected on port 333
-5 Client actually connected with socket: 14
-./www/css/admin.css
-L'HOMME METHODE GET
-path relative = ./www/css/admin.css
-Respond sended to Client 29 on socket : 11 on port: 333
-Client [29] disconnected
-Client [33] has been connected on port 333
-5 Client actually connected with socket: 11
-Respond received to Client 30 on socket : 12 on port: 333
-./www/admin/script.js
-L'HOMME METHODE GET
-path relative = ./www/admin/script.js
-Respond sended to Client 30 on socket : 12 on port: 333
-Client [30] disconnected
-Respond received to Client 31 on socket : 13 on port: 333
-Respond received to Client 32 on socket : 14 on port: 333
-Respond received to Client 33 on socket : 11 on port: 333
-./www/images/kitty.png
-L'HOMME METHODE GET
-path relative = ./www/images/kitty.png
-Respond sended to Client 31 on socket : 13 on port: 333
-Client [31] disconnected
-./www/images/hello.png
-L'HOMME METHODE GET
-path relative = ./www/images/hello.png
-Respond sended to Client 32 on socket : 14 on port: 333
-Client [32] disconnected
-Client [34] has been connected on port 333
-3 Client actually connected with socket: 12
-./www/images/download.png
-L'HOMME METHODE GET
-path relative = ./www/images/download.png
-Respond sended to Client 33 on socket : 11 on port: 333
-Client [33] disconnected
-Respond received to Client 34 on socket : 12 on port: 333
-./www/images/background2.png
-L'HOMME METHODE GET
-path relative = ./www/images/background2.png
-Respond sended to Client 34 on socket : 12 on port: 333
-Client [34] disconnected
-Client [35] has been connected on port 333
-2 Client actually connected with socket: 11
-Respond received to Client 35 on socket : 11 on port: 333
-./www/images/favicon.ico
-L'HOMME METHODE GET
-path relative = ./www/images/favicon.ico
-Respond sended to Client 35 on socket : 11 on port: 333
-Client [35] disconnected
-Client [36] has been connected on port 333
-2 Client actually connected with socket: 11
-Respond received to Client 36 on socket : 11 on port: 333
-./www/index.html
-L'HOMME METHODE GET
-path relative = ./www/index.html
-Respond sended to Client 36 on socket : 11 on port: 333
-Client [36] disconnected
-Client [37] has been connected on port 333
-2 Client actually connected with socket: 11
-Respond received to Client 37 on socket : 11 on port: 333
-./www/css/index.css
-L'HOMME METHODE GET
-path relative = ./www/css/index.css
-Respond sended to Client 37 on socket : 11 on port: 333
-Client [37] disconnected
-Client [38] has been connected on port 333
-2 Client actually connected with socket: 11
-Client [39] has been connected on port 333
-3 Client actually connected with socket: 12
-Respond received to Client 38 on socket : 11 on port: 333
-./www/images/MLP.png
-L'HOMME METHODE GET
-path relative = ./www/images/MLP.png
-Respond sended to Client 38 on socket : 11 on port: 333
-Client [38] disconnected
-Client [40] has been connected on port 333
-3 Client actually connected with socket: 11
-Respond received to Client 39 on socket : 12 on port: 333
-Client [41] has been connected on port 333
-4 Client actually connected with socket: 13
-Respond received to Client 40 on socket : 11 on port: 333
-./www/images/MLP2.png
-L'HOMME METHODE GET
-path relative = ./www/images/MLP2.png
-Respond sended to Client 39 on socket : 12 on port: 333
-Client [39] disconnected
-Client [42] has been connected on port 333
-4 Client actually connected with socket: 12
-./www/images/1.png
-L'HOMME METHODE GET
-path relative = ./www/images/1.png
-Respond sended to Client 40 on socket : 11 on port: 333
-Client [40] disconnected
-Respond received to Client 41 on socket : 13 on port: 333
-Client [43] has been connected on port 333
-4 Client actually connected with socket: 11
-Respond received to Client 42 on socket : 12 on port: 333
-./www/images/3.png
-L'HOMME METHODE GET
-path relative = ./www/images/3.png
-Respond sended to Client 41 on socket : 13 on port: 333
-Client [41] disconnected
-Client [44] has been connected on port 333
-4 Client actually connected with socket: 13
-Respond received to Client 43 on socket : 11 on port: 333
-./www/images/2.png
-L'HOMME METHODE GET
-path relative = ./www/images/2.png
-Respond sended to Client 42 on socket : 12 on port: 333
-Client [42] disconnected
-Client [45] has been connected on port 333
-4 Client actually connected with socket: 12
-./www/images/4.png
-L'HOMME METHODE GET
-path relative = ./www/images/4.png
-Respond sended to Client 43 on socket : 11 on port: 333
-Client [43] disconnected
-Respond received to Client 44 on socket : 13 on port: 333
-Client [46] has been connected on port 333
-4 Client actually connected with socket: 11
-Respond received to Client 45 on socket : 12 on port: 333
-./www/images/6.png
-L'HOMME METHODE GET
-path relative = ./www/images/6.png
-Respond sended to Client 44 on socket : 13 on port: 333
-Client [44] disconnected
-Client [47] has been connected on port 333
-4 Client actually connected with socket: 13
-Respond received to Client 46 on socket : 11 on port: 333
-./www/images/background.jpg
-L'HOMME METHODE GET
-path relative = ./www/images/background.jpg
-Respond sended to Client 45 on socket : 12 on port: 333
-Client [45] disconnected
-./www/images/7.png
-L'HOMME METHODE GET
-path relative = ./www/images/7.png
-Respond sended to Client 46 on socket : 11 on port: 333
-Client [46] disconnected
-Respond received to Client 47 on socket : 13 on port: 333
-./www/images/5.png
-L'HOMME METHODE GET
-path relative = ./www/images/5.png
-Respond sended to Client 47 on socket : 13 on port: 333
-Client [47] disconnected
-Client [48] has been connected on port 333
-2 Client actually connected with socket: 11
-Respond received to Client 48 on socket : 11 on port: 333
-./www/images/favicon.ico
-L'HOMME METHODE GET
-path relative = ./www/images/favicon.ico
-Respond sended to Client 48 on socket : 11 on port: 333
-Client [48] disconnected
-Client [49] has been connected on port 333
-2 Client actually connected with socket: 11
+Respond sended to Client 14 on socket : 10 on port: 4667
 Client [14] disconnected
-Respond received to Client 49 on socket : 11 on port: 333
-./www/php_cgi.php
+Client [15] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 15 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
 L'HOMME METHODE GET
-path relative = ./www/php_cgi.php
-Respond sended to Client 49 on socket : 11 on port: 333
+Respond sended to Client 15 on socket : 10 on port: 4667
+Client [15] disconnected
+Client [16] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 16 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 16 on socket : 10 on port: 4667
+Client [16] disconnected
+Client [17] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 17 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 17 on socket : 10 on port: 4667
+Client [17] disconnected
+Client [18] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 18 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 18 on socket : 10 on port: 4667
+Client [18] disconnected
+Client [19] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 19 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 19 on socket : 10 on port: 4667
+Client [19] disconnected
+Client [20] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 20 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 20 on socket : 10 on port: 4667
+Client [20] disconnected
+Client [21] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 21 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 21 on socket : 10 on port: 4667
+Client [21] disconnected
+Client [22] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 22 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 22 on socket : 10 on port: 4667
+Client [22] disconnected
+Client [23] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 23 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 23 on socket : 10 on port: 4667
+Client [23] disconnected
+Client [24] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 24 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 24 on socket : 10 on port: 4667
+Client [24] disconnected
+Client [25] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 25 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 25 on socket : 10 on port: 4667
+Client [25] disconnected
+Client [26] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 26 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 26 on socket : 10 on port: 4667
+Client [26] disconnected
+Client [27] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 27 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 27 on socket : 10 on port: 4667
+Client [27] disconnected
+Client [28] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 28 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 28 on socket : 10 on port: 4667
+Client [28] disconnected
+Client [29] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 29 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 29 on socket : 10 on port: 4667
+Client [29] disconnected
+Client [30] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 30 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 30 on socket : 10 on port: 4667
+Client [30] disconnected
+Client [31] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 31 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 31 on socket : 10 on port: 4667
+Client [31] disconnected
+Client [32] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 32 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 32 on socket : 10 on port: 4667
+Client [32] disconnected
+Client [33] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 33 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 33 on socket : 10 on port: 4667
+Client [33] disconnected
+Client [34] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 34 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 34 on socket : 10 on port: 4667
+Client [34] disconnected
+Client [35] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 35 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 35 on socket : 10 on port: 4667
+Client [35] disconnected
+Client [36] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 36 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 36 on socket : 10 on port: 4667
+Client [36] disconnected
+Client [37] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 37 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 37 on socket : 10 on port: 4667
+Client [37] disconnected
+Client [38] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 38 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 38 on socket : 10 on port: 4667
+Client [38] disconnected
+Client [39] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 39 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 39 on socket : 10 on port: 4667
+Client [39] disconnected
+Client [40] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 40 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 40 on socket : 10 on port: 4667
+Client [40] disconnected
+Client [41] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 41 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 41 on socket : 10 on port: 4667
+Client [41] disconnected
+Client [42] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 42 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 42 on socket : 10 on port: 4667
+Client [42] disconnected
+Client [43] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 43 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 43 on socket : 10 on port: 4667
+Client [43] disconnected
+Client [44] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 44 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 44 on socket : 10 on port: 4667
+Client [44] disconnected
+Client [45] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 45 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 45 on socket : 10 on port: 4667
+Client [45] disconnected
+Client [46] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 46 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 46 on socket : 10 on port: 4667
+Client [46] disconnected
+Client [47] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 47 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 47 on socket : 10 on port: 4667
+Client [47] disconnected
+Client [48] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 48 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 48 on socket : 10 on port: 4667
+Client [48] disconnected
+Client [49] has been connected on port 4667
+1 Client actually connected with socket: 10
+Respond received to Client 49 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
+L'HOMME METHODE GET
+Respond sended to Client 49 on socket : 10 on port: 4667
 Client [49] disconnected
-Client [50] has been connected on port 333
+Client [50] has been connected on port 4667
 1 Client actually connected with socket: 10
-Respond received to Client 50 on socket : 10 on port: 333
-./www/css/user.css
+Respond received to Client 50 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
 L'HOMME METHODE GET
-path relative = ./www/css/user.css
-Respond sended to Client 50 on socket : 10 on port: 333
+Respond sended to Client 50 on socket : 10 on port: 4667
 Client [50] disconnected
-Client [51] has been connected on port 333
+Client [51] has been connected on port 4667
 1 Client actually connected with socket: 10
-Respond received to Client 51 on socket : 10 on port: 333
-./www/images/BarbieOnWheels.png
+Respond received to Client 51 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
 L'HOMME METHODE GET
-path relative = ./www/images/BarbieOnWheels.png
-Respond sended to Client 51 on socket : 10 on port: 333
+Respond sended to Client 51 on socket : 10 on port: 4667
 Client [51] disconnected
-Client [52] has been connected on port 333
+Client [52] has been connected on port 4667
 1 Client actually connected with socket: 10
-Respond received to Client 52 on socket : 10 on port: 333
-./www/images/barbie.jpg
+Respond received to Client 52 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
 L'HOMME METHODE GET
-path relative = ./www/images/barbie.jpg
-Respond sended to Client 52 on socket : 10 on port: 333
+Respond sended to Client 52 on socket : 10 on port: 4667
 Client [52] disconnected
-Client [53] has been connected on port 333
+Client [53] has been connected on port 4667
 1 Client actually connected with socket: 10
-Respond received to Client 53 on socket : 10 on port: 333
-./www/images/favicon.ico
+Respond received to Client 53 on socket : 10 on port: 4667
+HOST IS ===localhost:4667
 L'HOMME METHODE GET
-path relative = ./www/images/favicon.ico
-Respond sended to Client 53 on socket : 10 on port: 333
+Respond sended to Client 53 on socket : 10 on port: 4667
 Client [53] disconnected
-Client [54] has been connected on port 333
+Client [54] has been connected on port 4667
 1 Client actually connected with socket: 10
-Respond received to Client 54 on socket : 10 on port: 333
-./www/favicon.ico
-L'HOMME METHODE GET
-path relative = 
-Respond sended to Client 54 on socket : 10 on port: 333
 Client [54] disconnected
-Client [55] has been connected on port 333
-1 Client actually connected with socket: 10
-Respond received to Client 55 on socket : 10 on port: 333
-./www/favicon.ico
-L'HOMME METHODE GET
-path relative = 
-Respond sended to Client 55 on socket : 10 on port: 333
-Client [55] disconnected
-Client [56] has been connected on port 333
-1 Client actually connected with socket: 10
-Respond received to Client 56 on socket : 10 on port: 333
-./www/favicon.ico
-L'HOMME METHODE GET
-path relative = 
-Respond sended to Client 56 on socket : 10 on port: 333
-Client [56] disconnected
-Client [57] has been connected on port 333
-1 Client actually connected with socket: 10
-Respond received to Client 57 on socket : 10 on port: 333
-./www/favicon.ico
-L'HOMME METHODE GET
-path relative = 
-Respond sended to Client 57 on socket : 10 on port: 333
-Client [57] disconnected
-Client [58] has been connected on port 333
-1 Client actually connected with socket: 10
-Respond received to Client 58 on socket : 10 on port: 333
-./www/favicon.ico
-L'HOMME METHODE GET
-path relative = 
-Respond sended to Client 58 on socket : 10 on port: 333
-Client [58] disconnected
-Client [59] has been connected on port 333
-1 Client actually connected with socket: 10
-Respond received to Client 59 on socket : 10 on port: 333
-./www/favicon.ico
-L'HOMME METHODE GET
-path relative = 
-Respond sended to Client 59 on socket : 10 on port: 333
-Client [59] disconnected
-Client [60] has been connected on port 333
-1 Client actually connected with socket: 10
-Respond received to Client 60 on socket : 10 on port: 333
-./www/favicon.ico
-L'HOMME METHODE GET
-path relative = 
-Respond sended to Client 60 on socket : 10 on port: 333
-Client [60] disconnected
-Client [61] has been connected on port 333
-1 Client actually connected with socket: 10
-Respond received to Client 61 on socket : 10 on port: 333
-./www/favicon.ico
-L'HOMME METHODE GET
-path relative = 
-Respond sended to Client 61 on socket : 10 on port: 333
-Client [61] disconnected
-Client [62] has been connected on port 333
-1 Client actually connected with socket: 10
-Respond received to Client 62 on socket : 10 on port: 333
-./www/favicon.ico
-L'HOMME METHODE GET
-path relative = 
-Respond sended to Client 62 on socket : 10 on port: 333
-Client [62] disconnected
-Client [63] has been connected on port 333
-1 Client actually connected with socket: 10
-Respond received to Client 63 on socket : 10 on port: 333
-./www/favicon.ico
-L'HOMME METHODE GET
-path relative = 
-Respond sended to Client 63 on socket : 10 on port: 333
-Client [63] disconnected
-Client [64] has been connected on port 333
-1 Client actually connected with socket: 10
-Respond received to Client 64 on socket : 10 on port: 333
-./www/images/favicon.ico
-L'HOMME METHODE GET
-path relative = ./www/images/favicon.ico
-Respond sended to Client 64 on socket : 10 on port: 333
-Client [64] disconnected
-Client [65] has been connected on port 333
-1 Client actually connected with socket: 10
-Respond received to Client 65 on socket : 10 on port: 333
-./www/php_cgi.php
-Respond sended to Client 65 on socket : 10 on port: 333
-Client [65] disconnected
-Client [66] has been connected on port 333
-1 Client actually connected with socket: 10
-Respond received to Client 66 on socket : 10 on port: 333
-./www/css/pat.css
-L'HOMME METHODE GET
-path relative = ./www/css/pat.css
-Respond sended to Client 66 on socket : 10 on port: 333
-Client [66] disconnected
-Client [67] has been connected on port 333
-1 Client actually connected with socket: 10
-Respond received to Client 67 on socket : 10 on port: 333
-./www/images/pat.jpg
-L'HOMME METHODE GET
-path relative = ./www/images/pat.jpg
-Respond sended to Client 67 on socket : 10 on port: 333
-Client [67] disconnected
-Client [68] has been connected on port 333
-1 Client actually connected with socket: 10
-Respond received to Client 68 on socket : 10 on port: 333
-./www/images/favicon.ico
-L'HOMME METHODE GET
-path relative = ./www/images/favicon.ico
-Respond sended to Client 68 on socket : 10 on port: 333
-Client [68] disconnected
-Client [69] has been connected on port 333
-1 Client actually connected with socket: 10
-Respond received to Client 69 on socket : 10 on port: 333
-./www/index.html
-L'HOMME METHODE GET
-path relative = ./www/index.html
-Respond sended to Client 69 on socket : 10 on port: 333
-Client [69] disconnected
-Client [70] has been connected on port 333
-1 Client actually connected with socket: 10
-Respond received to Client 70 on socket : 10 on port: 333
-./www/css/index.css
-L'HOMME METHODE GET
-path relative = ./www/css/index.css
-Respond sended to Client 70 on socket : 10 on port: 333
-Client [70] disconnected
-Client [71] has been connected on port 333
-1 Client actually connected with socket: 10
-Client [72] has been connected on port 333
-2 Client actually connected with socket: 11
-Respond received to Client 71 on socket : 10 on port: 333
-./www/images/MLP.png
-L'HOMME METHODE GET
-path relative = ./www/images/MLP.png
-Respond sended to Client 71 on socket : 10 on port: 333
-Client [71] disconnected
-Client [73] has been connected on port 333
-2 Client actually connected with socket: 10
-Respond received to Client 72 on socket : 11 on port: 333
-Client [74] has been connected on port 333
-3 Client actually connected with socket: 12
-Respond received to Client 73 on socket : 10 on port: 333
-./www/images/MLP2.png
-L'HOMME METHODE GET
-path relative = ./www/images/MLP2.png
-Respond sended to Client 72 on socket : 11 on port: 333
-Client [72] disconnected
-Client [75] has been connected on port 333
-3 Client actually connected with socket: 11
-./www/images/1.png
-L'HOMME METHODE GET
-path relative = ./www/images/1.png
-Respond sended to Client 73 on socket : 10 on port: 333
-Client [73] disconnected
-Respond received to Client 74 on socket : 12 on port: 333
-Client [76] has been connected on port 333
-3 Client actually connected with socket: 10
-Respond received to Client 75 on socket : 11 on port: 333
-./www/images/2.png
-L'HOMME METHODE GET
-path relative = ./www/images/2.png
-Respond sended to Client 74 on socket : 12 on port: 333
-Client [74] disconnected
-Client [77] has been connected on port 333
-3 Client actually connected with socket: 12
-Respond received to Client 76 on socket : 10 on port: 333
-./www/images/3.png
-L'HOMME METHODE GET
-path relative = ./www/images/3.png
-Respond sended to Client 75 on socket : 11 on port: 333
-Client [75] disconnected
-Client [78] has been connected on port 333
-3 Client actually connected with socket: 11
-./www/images/4.png
-L'HOMME METHODE GET
-path relative = ./www/images/4.png
-Respond sended to Client 76 on socket : 10 on port: 333
-Client [76] disconnected
-Respond received to Client 77 on socket : 12 on port: 333
-Client [79] has been connected on port 333
-3 Client actually connected with socket: 10
-Respond received to Client 78 on socket : 11 on port: 333
-./www/images/6.png
-L'HOMME METHODE GET
-path relative = ./www/images/6.png
-Respond sended to Client 77 on socket : 12 on port: 333
-Client [77] disconnected
-Client [80] has been connected on port 333
-3 Client actually connected with socket: 12
-Respond received to Client 79 on socket : 10 on port: 333
-./www/images/5.png
-L'HOMME METHODE GET
-path relative = ./www/images/5.png
-Respond sended to Client 78 on socket : 11 on port: 333
-Client [78] disconnected
-./www/images/7.png
-L'HOMME METHODE GET
-path relative = ./www/images/7.png
-Respond sended to Client 79 on socket : 10 on port: 333
-Client [79] disconnected
-Respond received to Client 80 on socket : 12 on port: 333
-./www/images/background.jpg
-L'HOMME METHODE GET
-path relative = ./www/images/background.jpg
-Respond sended to Client 80 on socket : 12 on port: 333
-Client [80] disconnected
-Client [81] has been connected on port 333
-1 Client actually connected with socket: 10
-Respond received to Client 81 on socket : 10 on port: 333
-./www/images/favicon.ico
-L'HOMME METHODE GET
-path relative = ./www/images/favicon.ico
-Respond sended to Client 81 on socket : 10 on port: 333
-Client [81] disconnected

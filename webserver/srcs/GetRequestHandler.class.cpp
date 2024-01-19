@@ -49,7 +49,7 @@ GetRequestHandler::~GetRequestHandler(void)
 HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Socket srv)
 {
 	HttpRespond	resp;
-	std::cout << "path relative = " << req->getPathRelative() << std::endl;
+	//std::cout << "path  = " << req->getPath() << std::endl;
 	if (req->isParsingDone() == false)
 		std::cerr << "Le parsing de la requete a rencontre une erreur" << std::endl;
 	else if (req->getPathRelative().empty())
