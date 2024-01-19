@@ -562,7 +562,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			//std::cout << "server is " << servers[i].getServerName() << ":" << servers[i].getPort() << std::endl;
 			hostname = it->_buff.substr(it->_buff.find("Host:") + 6, it->_buff.find_first_of("\n", it->_buff.find("Host:")) - it->_buff.find("Host:") - 6);
 			server_hostname = servers[i].getServerName();
-			std::cout << "HOST IS ==="<<hostname << std::endl;
+			std::cout << "path IS ==="<<it->_req.getPath() << std::endl;
 			if (hostname.substr(0, hostname.find(":")) != server_hostname && hostname.find("localhost") == std::string::npos)
 			{
 				it->_req.setErrorCode(400);
@@ -624,6 +624,13 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 					break;
 				}
 			}
+			if (it->_req.getPath() == "./www/index2.html")
+			{
+				it->_req.setErrorCode(301);
+				it->_resp.setBody(openReadFile("./www/redir.html"));
+				it->_resp.build(it->_req);
+			}
+
 			if (it->_req.getPath().find("png") != std::string::npos || it->_req.getPath().find("jpg") != std::string::npos || it->_req.getPath().find("jpeg") != std::string::npos || it->_req.getPath().find("ico") != std::string::npos)
 				sendImage(&*it);
 			else
