@@ -6,7 +6,7 @@
 /*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:08:04 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/19 14:03:22 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/19 14:45:28 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ GetRequestHandler::~GetRequestHandler(void)
 HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Socket srv)
 {
 	HttpRespond	resp;
-	//std::cout << "path  = " << req->getPath() << std::endl;
+	std::cout << "path IN GET METHOD AT THE START  = " << req->getPath() << std::endl;
 	if (req->isParsingDone() == false)
 		std::cerr << "Le parsing de la requete a rencontre une erreur" << std::endl;
 	else if (req->getPathRelative().empty())
@@ -80,6 +80,7 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Sock
 			}
 			else if (req->getQuery().empty())
 			{
+				std::cout << " relative path is " << req->getPathRelative() << std::endl;
 				resp.setBody(openReadFile(req->getPathRelative()));
 				resp.setStatus(200);
 			}

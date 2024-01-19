@@ -6,7 +6,7 @@
 /*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:10:16 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/19 13:07:04 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/19 14:36:58 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ HttpRespond	PostRequestHandler::handleRequest(HttpRequest *req, Client *clt, Soc
 					std::stringstream out;
 					out << i;
 					std::string prefix = out.str();
-					prefix = "(" + prefix + ") ";
+					prefix = "(" + prefix + ")";
 
 					close(fd);
 					if (i > 10)
