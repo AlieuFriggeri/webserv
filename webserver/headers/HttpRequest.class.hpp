@@ -6,7 +6,7 @@
 /*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:38 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/10 12:47:47 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/19 15:36:39 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ class HttpRequest
 
 		void	printMessage(void) const;
 		void	setPathRelative(std::string &str);
+		void	setPath(std::string &str);
 		void	setHeader(std::string key, std::string value);
 		void	setDirectory(bool b);
 		void	setErrorCode(int x);

@@ -5,14 +5,10 @@ path IS ===./www/upload/
 Download IS ===upload
 L'HOMME METHODE GET
 path IN GET METHOD AT THE START  = ./www/upload/
+./upload/
 ERRFILE == ./errfile/404.html
-DIR PATH IS === ./upload/
-DIR URI IS === ./upload/
-FIRST IS .
-FIRST IS ..
-FIRST IS 1
-FIRST IS 9
-FIRST IS favicon copy.ico
+DIR PATH IS === ./upload
+DIR URI IS === ./upload
 FIRST IS favicon.ico
 FIRST IS firefox.png
 FIRST IS image_basse_res.jpg
@@ -121,20 +117,22 @@ Client [11] disconnected
 Client [12] has been connected on port 8002
 1 Client actually connected with socket: 10
 Respond received to Client 12 on socket : 10 on port: 8002
-path IS ===./www/upload/favicon.ico
+path IS ===./www/upload/image_basse_res.jpg
 Download IS ===upload
 L'HOMME METHODE GET
-path IN GET METHOD AT THE START  = ./www/upload/favicon.ico
+path IN GET METHOD AT THE START  = ./www/upload/image_basse_res.jpg
+./upload/image_basse_res.jpg
 ERRFILE == ./errfile/404.html
 Respond sended to Client 12 on socket : 10 on port: 8002
 Client [12] disconnected
 Client [13] has been connected on port 8002
 1 Client actually connected with socket: 10
 Respond received to Client 13 on socket : 10 on port: 8002
-path IS ===./www/upload/favicon.ico
+path IS ===./www/upload/firefox.png
 Download IS ===upload
 L'HOMME METHODE GET
-path IN GET METHOD AT THE START  = ./www/upload/favicon.ico
+path IN GET METHOD AT THE START  = ./www/upload/firefox.png
+./upload/firefox.png
 ERRFILE == ./errfile/404.html
 Respond sended to Client 13 on socket : 10 on port: 8002
 Client [13] disconnected
@@ -145,6 +143,7 @@ path IS ===./www/upload/favicon.ico
 Download IS ===upload
 L'HOMME METHODE GET
 path IN GET METHOD AT THE START  = ./www/upload/favicon.ico
+./upload/favicon.ico
 ERRFILE == ./errfile/404.html
 Respond sended to Client 14 on socket : 10 on port: 8002
 Client [14] disconnected
@@ -155,6 +154,7 @@ path IS ===./www/upload/favicon.ico
 Download IS ===upload
 L'HOMME METHODE GET
 path IN GET METHOD AT THE START  = ./www/upload/favicon.ico
+./upload/favicon.ico
 ERRFILE == ./errfile/404.html
 Respond sended to Client 15 on socket : 10 on port: 8002
 Client [15] disconnected
@@ -165,6 +165,7 @@ path IS ===./www/upload/favicon.ico
 Download IS ===upload
 L'HOMME METHODE GET
 path IN GET METHOD AT THE START  = ./www/upload/favicon.ico
+./upload/favicon.ico
 ERRFILE == ./errfile/404.html
 Respond sended to Client 16 on socket : 10 on port: 8002
 Client [16] disconnected
@@ -175,6 +176,7 @@ path IS ===./www/upload/favicon.ico
 Download IS ===upload
 L'HOMME METHODE GET
 path IN GET METHOD AT THE START  = ./www/upload/favicon.ico
+./upload/favicon.ico
 ERRFILE == ./errfile/404.html
 Respond sended to Client 17 on socket : 10 on port: 8002
 Client [17] disconnected
@@ -185,6 +187,7 @@ path IS ===./www/upload/favicon.ico
 Download IS ===upload
 L'HOMME METHODE GET
 path IN GET METHOD AT THE START  = ./www/upload/favicon.ico
+./upload/favicon.ico
 ERRFILE == ./errfile/404.html
 Respond sended to Client 18 on socket : 10 on port: 8002
 Client [18] disconnected
@@ -195,6 +198,7 @@ path IS ===./www/upload/favicon.ico
 Download IS ===upload
 L'HOMME METHODE GET
 path IN GET METHOD AT THE START  = ./www/upload/favicon.ico
+./upload/favicon.ico
 ERRFILE == ./errfile/404.html
 Respond sended to Client 19 on socket : 10 on port: 8002
 Client [19] disconnected
@@ -205,16 +209,10 @@ path IS ===./www/upload/favicon.ico
 Download IS ===upload
 L'HOMME METHODE GET
 path IN GET METHOD AT THE START  = ./www/upload/favicon.ico
+./upload/favicon.ico
 ERRFILE == ./errfile/404.html
 Respond sended to Client 20 on socket : 10 on port: 8002
 Client [20] disconnected
 Client [21] has been connected on port 8002
 1 Client actually connected with socket: 10
-Respond received to Client 21 on socket : 10 on port: 8002
-path IS ===./www/upload/favicon.ico
-Download IS ===upload
-L'HOMME METHODE GET
-path IN GET METHOD AT THE START  = ./www/upload/favicon.ico
-ERRFILE == ./errfile/404.html
-Respond sended to Client 21 on socket : 10 on port: 8002
 Client [21] disconnected

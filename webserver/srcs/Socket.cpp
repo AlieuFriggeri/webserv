@@ -631,10 +631,10 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				it->_resp.setBody(openReadFile("./www/redir.html"));
 				it->_resp.build(it->_req);
 			}
-			else if (it->_req.getPath().find(servers[i].getDownload()) != std::string::npos && it->_req.getPath().length() - 7 == servers[i].getDownload().length())
+			else if (it->_req.getPath().find("upload") != std::string::npos && it->_req.getPath().find("upload") == it->_req.getPath().length() - 7)
 			{
 				it->_req.setErrorCode(200);
-				it->_resp.setBody(openReadCloseDir("./" + it->_req.getPath().erase(0, 6), "./" + it->_req.getPath().erase(0, 6)));
+				it->_resp.setBody(openReadCloseDir("./" + servers[i].getDownload(), "./" + servers[i].getDownload()));
 				it->_resp.build(it->_req);
 			}
 			if (it->_req.getPath().find("png") != std::string::npos || it->_req.getPath().find("jpg") != std::string::npos || it->_req.getPath().find("jpeg") != std::string::npos || it->_req.getPath().find("ico") != std::string::npos)

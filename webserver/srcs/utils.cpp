@@ -6,7 +6,7 @@
 /*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 16:45:38 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/19 14:34:10 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/19 15:27:25 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,10 +190,13 @@ std::cout << "DIR URI IS === " << uri << std::endl;
 			uri.append("/");
 		for (std::vector<std::pair<std::string, unsigned char> >::iterator it = files.begin(); it < files.end(); it++)
 		{
-			std::cout << "FIRST IS " << it->first << std::endl;
-			if (it->second == DT_DIR) // is a directory
-				it->first.append("/");
-			html += "<a href=\"" + it->first +  "\"" + "download>" + it->first + "</a><br>\n";
+			if (it->first != "." && it->first != "..")
+			{
+				std::cout << "FIRST IS " << it->first << std::endl;
+				if (it->second == DT_DIR) // is a directory
+					it->first.append("/");
+				html += "<a href=\"" + it->first +  "\"" + "download>" + it->first + "</a><br>\n";
+			}
 		}
 		html += "</hr>\n</body>\r</html>";
 	}

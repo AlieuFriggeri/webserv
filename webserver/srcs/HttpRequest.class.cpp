@@ -6,7 +6,7 @@
 /*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/18 13:29:59 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/19 15:37:00 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,6 +195,12 @@ void HttpRequest::setPathRelative(std::string &str)
 {
 	this->_path_relative = str;
 }
+
+void HttpRequest::setPath(std::string &str)
+{
+	this->_path = str;
+}
+
 
 void HttpRequest::setErrorCode(int x)
 {

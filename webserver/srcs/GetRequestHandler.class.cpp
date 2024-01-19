@@ -6,7 +6,7 @@
 /*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:08:04 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/19 14:45:28 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/19 15:41:39 by afrigger         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,11 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Sock
 {
 	HttpRespond	resp;
 	std::cout << "path IN GET METHOD AT THE START  = " << req->getPath() << std::endl;
+	if (req->getPath().find("upload") != std::string::npos)
+	{
+		req->setPath(req->getPath().erase(1, 4));
+		std::cout << req->getPath() << std::endl;
+	}
 	if (req->isParsingDone() == false)
 		std::cerr << "Le parsing de la requete a rencontre une erreur" << std::endl;
 	else if (req->getPathRelative().empty())
