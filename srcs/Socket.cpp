@@ -441,7 +441,7 @@ void Socket::closeconnection(std::list<Client> *clientlist, int i, fd_set *reads
 			}
 			close(it->_client_socket);
 			it->_client_socket = -2;
-			setMaxSock(clientlist);
+			//setMaxSock(clientlist);
 			//clientlist->erase(it);
 			break;
 		}
@@ -476,7 +476,7 @@ void Socket::checktimeout(std::list<Client> *clientlist, fd_set *readset, fd_set
 				// write(it->_client_socket, it->_resp.getResp().c_str(), strlen(it->_resp.getResp().c_str()));
 
 				closeconnection(clientlist, it->_client_socket, readset, writeset);
-				setMaxSock(clientlist);
+				//setMaxSock(clientlist);
 			}
 	}
 }
@@ -489,14 +489,14 @@ void Socket::readrequest(std::list<Client> *clientlist, int fd, long rcv, fd_set
 	if (rcv < 0)
 	{
 		closeconnection(clientlist, fd, readset, writeset);
-		setMaxSock(clientlist);
+		//setMaxSock(clientlist);
 		std::cerr << "error: recv" << std::endl;
 		exit(1);
 	}
 	else if (rcv == 0)
 	{
 		closeconnection(clientlist, fd, readset, writeset);
-		setMaxSock(clientlist);
+		//setMaxSock(clientlist);
 	}
 	else
 	{
