@@ -382,19 +382,18 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 						if (it->_client_socket == i)
 						{
 							sendresponse(clientlist, i, servers);
-							closeconnection(clientlist, i, &readset, &writeset);
-							// if (it->_req.keepAlive() == false)
-							// {
-							// 	std::cout << std::endl << "close the connection with the client" << std::endl;
-							// }
-							// else
-							// {
-							// 	std::cout << std::endl << "keep the connection with the client" << std::endl;
-							// 	max_sock = rmfdfromset(i, &writeset, max_sock);
-							// 	max_sock = addfdtoset(i, &readset, max_sock);
-							// 	//std::cout << "ON CLOSE POUR PAS INFINIT LOOP\t";closeconnection(clientlist, i, &readset, &writeset);
-							// }
-							// it->_req.resetRequest();
+							if (it->_req.keepAlive() == false)
+							{
+								// std::cout << std::endl << "close the connection with the client" << std::endl;
+								closeconnection(clientlist, i, &readset, &writeset);
+							}
+							else
+							{
+								// std::cout << std::endl << "keep the connection with the client" << std::endl;
+								max_sock = rmfdfromset(i, &writeset, max_sock);
+								max_sock = addfdtoset(i, &readset, max_sock);
+								it->_req.resetRequest();
+							}
 							break;
 						}
 					}
@@ -402,7 +401,7 @@ void Socket::handleConnection(std::list<Client> * clientlist, Socket *servers)
 				rcv = 0;
 			}
 		}
-		//checktimeout(clientlist, &readset, &writeset, servers);
+		checktimeout(clientlist, &readset, &writeset, servers);
 	}
 }
 
@@ -564,7 +563,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			{
 				it->_req.setErrorCode(400);
 			}
-			if (atoi(hostname.substr(hostname.find(":") + 1, hostname.length() - hostname.find(":")).c_str()) != servers[i].getPort() && servers[i].getPort() != 80)
+			if (std::atoi(hostname.substr(hostname.find(":") + 1, hostname.length() - hostname.find(":")).c_str()) != servers[i].getPort() && servers[i].getPort() != 80)
 			{
 				// std::cout << atoi(hostname.substr(hostname.find(":") + 1, hostname.length() - hostname.find(":")).c_str() + 1)<< std::endl;
 				// std::cout << servers[i].getPort() << std::endl;
@@ -589,7 +588,6 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				//	METTRE LES CONFIG DANS LES CREATIONS DES methodHandler
 				case GET:
 				{
-					std::cout << "L'HOMME METHODE GET" << std::endl;
 					GetRequestHandler	methodHandler;
 					if (it->_req.getErrorCode() == 0 && rt._methods.find("GET") == std::string::npos)
 						it->_req.setErrorCode(405);
@@ -599,7 +597,6 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				case POST:
 				{
 					PostRequestHandler	methodHandler;
-					std::cout << "L'HOMME METHODE POST" << std::endl;
 					if (it->_req.getErrorCode() == 0 && rt._methods.find("POST") == std::string::npos)
 						it->_req.setErrorCode(405);
 					it->_resp = methodHandler.handleRequest(&(it->_req), &*it, servers[i]);
@@ -607,7 +604,6 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				}
 				case DELETE:
 				{
-					std::cout << "L'HOMME METHODE DELETE" << std::endl;
 					DeleteRequestHandler	methodHandler;
 					if (it->_req.getErrorCode() == 0 && rt._methods.find("DELETE") == std::string::npos)
 						it->_req.setErrorCode(405);
@@ -629,9 +625,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 			}
 			else if (it->_req.getPath().find("upload") != std::string::npos)
 			{
-				std::cout << "FONCTION QUI GERE UPLOAD" << std::endl;
 				it->_req.setErrorCode(200);
-				std::cout << "./" + servers[i].getDownload() << std::endl;
 				it->_resp.setBody(openReadCloseDir("./" + servers[i].getDownload(), "./" + servers[i].getDownload()));
 				it->_resp.build(it->_req);
 			}
@@ -639,7 +633,6 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				sendImage(&*it);
 			else
 				send(it->_client_socket, it->_resp.getResp().c_str(), it->_resp.getResp().length() , 0);
-			//std::cout << " +++++++++++++++++++++++++ " << it->_resp.getResp() << std::endl;
 			std::cout << "Respond sended to Client " << it->_clientnumber << " on socket : " << it->_client_socket << " on port: "<< it->_port << std::endl;
 			if (it->_req.keepAlive() == true)
 			{

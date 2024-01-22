@@ -6,7 +6,7 @@
 #    By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/30 10:58:16 by afrigger          #+#    #+#              #
-#    Updated: 2023/12/01 15:34:22 by vgroux           ###   ########.fr        #
+#    Updated: 2024/01/22 14:34:06 by vgroux           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ RESET = \033[0m
 NAME =     webserv
 
 CC =         c++
-CFLAGS =     -Wall -Wextra -Werror -std=c++98 -pedantic -g
+CFLAGS =     -Wall -Wextra -Werror -std=c++98 -pedantic
 RM =         rm -rf
 
 DIR_H = headers/
@@ -37,7 +37,6 @@ SRCS =		${addprefix ${DIR_S}, ${SRCS_LIST}}
 
 OBJS =		${SRCS:${DIR_S}%.cpp=${DIR_O}%.o}
 
-# ${NAME}: title ${LIBFT} ${MLX} ${OBJS}
 ${NAME}: ${OBJS}
 	@echo "$(RESET)[$(GREENGREEN)${NAME}$(RESET)]: ${NAME} Objects were created${GREY}"
 	${CC} ${CFLAGS} ${OBJS} -o ${NAME}
@@ -65,7 +64,7 @@ clean:
 fclean: clean
 	@echo "${RESET}[$(RED)${NAME}$(RESET)]: Cleaning...${GREY}"
 	${RM} ${NAME}
-	@echo "${RESET}[$(RED)${NAME}$(RESET)]:Executable was cleaned"
+	@echo "${RESET}[$(RED)${NAME}$(RESET)]: Executable was cleaned"
 
 re: fclean all
 
