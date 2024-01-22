@@ -591,7 +591,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				{
 					std::cout << "L'HOMME METHODE GET" << std::endl;
 					GetRequestHandler	methodHandler;
-					if (rt._methods.find("GET") == std::string::npos)
+					if (it->_req.getErrorCode() == 0 && rt._methods.find("GET") == std::string::npos)
 						it->_req.setErrorCode(405);
 					it->_resp = methodHandler.handleRequest(&(it->_req), &*it, servers[i]);
 					break;
@@ -600,7 +600,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				{
 					PostRequestHandler	methodHandler;
 					std::cout << "L'HOMME METHODE POST" << std::endl;
-					if (rt._methods.find("POST") == std::string::npos)
+					if (it->_req.getErrorCode() == 0 && rt._methods.find("POST") == std::string::npos)
 						it->_req.setErrorCode(405);
 					it->_resp = methodHandler.handleRequest(&(it->_req), &*it, servers[i]);
 					break;
@@ -609,7 +609,7 @@ void Socket::sendresponse(std::list<Client> *clientlist, int fd, Socket *servers
 				{
 					std::cout << "L'HOMME METHODE DELETE" << std::endl;
 					DeleteRequestHandler	methodHandler;
-					if (rt._methods.find("DELETE") == std::string::npos)
+					if (it->_req.getErrorCode() == 0 && rt._methods.find("DELETE") == std::string::npos)
 						it->_req.setErrorCode(405);
 					it->_resp = methodHandler.handleRequest(&(it->_req), &*it, servers[i]);
 					break;
