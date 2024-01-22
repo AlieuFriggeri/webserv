@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HttpRequest.class.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 15:09:14 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/19 15:37:00 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/22 13:49:31 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -905,7 +905,7 @@ void	HttpRequest::setKeepAlive(bool b)
 
 void	HttpRequest::_handleBoundary(void)
 {
-	std::cout << "HANDLE BOUNDARY" << std::endl;
+	// std::cout << "HANDLE BOUNDARY" << std::endl;
 	std::string	body = _body_str;
 	std::string	tmp;
 	size_t		begin = 0;
@@ -927,14 +927,14 @@ void	HttpRequest::_handleBoundary(void)
 		std::getline(sstr, line);
 		while (line.compare("\r\n") != 0)
 		{
-			std::cout << "LINE=\"" << line << "\"" << std::endl << "TMP=\"" << tmp << "\"" << std::endl;
+			// std::cout << "LINE=\"" << line << "\"" << std::endl << "TMP=\"" << tmp << "\"" << std::endl;
 			std::string	key;
 			std::string	value;
 			size_t		delim = line.find_first_of(':');
 			key = line.substr(0, delim);
 			value = line.substr(delim + 2);
 
-			std::cout << "key= \"" << key << "\"\tvalue= \"" << value << "\"" << std::endl;
+			// std::cout << "key= \"" << key << "\"\tvalue= \"" << value << "\"" << std::endl;
 
 			bound.setHeader(key, value);
 			std::getline(sstr, line);
@@ -942,13 +942,7 @@ void	HttpRequest::_handleBoundary(void)
 
 		begin = body.find("--" + _boundary, end);
 		end = (body.find("--" + _boundary, begin + _boundary.length()));
-		std::cout << begin << std::endl;
-		std::cout << end << std::endl;
+		// std::cout << begin << std::endl;
+		// std::cout << end << std::endl;
 	}
-	// if (begin != std::string::npos)
-	// {
-	// 	// tmp = body.substr(begin + _boundary.length() + 2, end - (_boundary.length() + 2));
-	// 	// std::cout << "\"" << tmp << "\"" << std::endl;
-	// }
-	// std::cout << std::endl << "BODY AFTER BOUNDARY" << std::endl << "\"" << body << "\"" << std::endl;
 }

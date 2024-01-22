@@ -139,7 +139,7 @@ std::vector<std::string> ServerConfig::splitserv(std::string content)
 		servstart = content.find("@");
 		if (content.substr(servstart, servstart + 7) != "@server[\n")
 		{
-			std::cout << content.substr(servstart, servstart + 7) << std::endl;
+			// std::cout << content.substr(servstart, servstart + 7) << std::endl;
 			std::cerr << "Bad syntax, example: @server[...]" << std::endl;
 			exit(1);
 		}
@@ -267,7 +267,7 @@ std::vector<std::map<std::string, std::string> > ServerConfig::setupmap(std::vec
 		{
 			maptmp["download"] = "upload";
 		}
-		std::cout << "FINAL NAME IS --------- \"" << maptmp["download"] << "\"" << std::endl;
+		// std::cout << "FINAL NAME IS --------- \"" << maptmp["download"] << "\"" << std::endl;
 		res.push_back(maptmp);
 		maptmp.clear();
 	}

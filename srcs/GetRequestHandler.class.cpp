@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   GetRequestHandler.class.cpp                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:08:04 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/19 15:41:39 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/22 13:49:04 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,12 @@ GetRequestHandler::~GetRequestHandler(void)
 HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Socket srv)
 {
 	HttpRespond	resp;
-	std::cout << "path IN GET METHOD AT THE START  = " << req->getPath() << std::endl;
 	if (req->getPath().find("upload") != std::string::npos)
 	{
 		if (srv.getDownload() == "upload")
 		{
 			req->setPath(req->getPath().erase(1, 4));
-			std::cout << req->getPath() << std::endl;
+			// std::cout << req->getPath() << std::endl;
 		}
 		else
 		{
@@ -65,8 +64,6 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Sock
 			req->setPathRelative(finalpath);
 			
 		}
-		std::cout << "PATH IN GET "<< req->getPath() << std::endl;
-		std::cout << "PATH RELATIVE IN GET "<< req->getPathRelative() << std::endl;
 	}
 	if (req->isParsingDone() == false)
 		std::cerr << "Le parsing de la requete a rencontre une erreur" << std::endl;
@@ -82,9 +79,8 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Sock
 			if (req->getPath().find(".php") == req->getPath().size() - 4)
 			{
 				std::string cgiresp;
-				// std::cout << "entering cgi" << std::endl;
+
 				cgiresp = CgiExecutor::execute(clt, srv, "/usr/bin/php");
-				std::cout << "CGI resp is : " << std::endl << cgiresp << std::endl;
 				if (cgiresp == "timeout")
 				{
 					resp.setStatus(502);
@@ -98,16 +94,14 @@ HttpRespond	GetRequestHandler::handleRequest(HttpRequest *req, Client *clt, Sock
 			}
 			else if (req->getQuery().empty())
 			{
-				std::cout << " relative path is " << req->getPathRelative() << std::endl;
+				// std::cout << " relative path is " << req->getPathRelative() << std::endl;
 				resp.setBody(openReadFile(req->getPathRelative()));
 				resp.setStatus(200);
 			}
 			else
 			{
 				std::string cgiresp;
-				// std::cout << "entering cgi" << std::endl;
 				cgiresp = CgiExecutor::execute(clt, srv, "/usr/bin/php");
-				std::cout << "CGI resp is : " << std::endl << cgiresp << std::endl;
 				if (cgiresp == "timeout")
 				{
 					resp.setStatus(502);

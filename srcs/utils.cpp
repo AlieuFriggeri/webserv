@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 16:45:38 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/19 15:27:25 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/22 13:52:16 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,8 +173,6 @@ std::string	openReadCloseDir(std::string path, std::string uri)
 	std::vector<std::pair<std::string, unsigned char> >	files;
 	std::string					html;
 	struct dirent	*ent;
-std::cout << "DIR PATH IS === " << path << std::endl;
-std::cout << "DIR URI IS === " << uri << std::endl;
 	DIR *dir = opendir(path.c_str());
 	if (dir != NULL)
 	{
@@ -192,7 +190,6 @@ std::cout << "DIR URI IS === " << uri << std::endl;
 		{
 			if (it->first != "." && it->first != "..")
 			{
-				std::cout << "FIRST IS " << it->first << std::endl;
 				if (it->second == DT_DIR) // is a directory
 					it->first.append("/");
 				html += "<a href=\"" + it->first +  "\"" + "download>" + it->first + "</a><br>\n";

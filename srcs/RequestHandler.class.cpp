@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   RequestHandler.class.cpp                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afrigger <afrigger@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vgroux <vgroux@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:02:28 by vgroux            #+#    #+#             */
-/*   Updated: 2024/01/19 13:05:25 by afrigger         ###   ########.fr       */
+/*   Updated: 2024/01/22 13:50:03 by vgroux           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ std::string RequestHandler::handleErrorPage(Socket srv, int errCode)
 	std::string	errfile;
 	
 	errfile = srv._error + toString(errCode) + ".html";
-	std::cout << "ERRFILE == " << errfile << std::endl;
+
 	if (openReadFile(errfile).empty())
 		errfile = "./errfile/" + toString(errCode) + ".html";
 	if (openReadFile(errfile).empty())
